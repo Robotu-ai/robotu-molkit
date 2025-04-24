@@ -9,7 +9,7 @@ An open-source Python library for retrieving, structuring, and enriching molecul
 
 ## 🔍 About
 
-**RobotU MolKit** is part of the [RobotU] ecosystem — an open-source Python library that automates the extraction, structuring, and enrichment of chemical data directly from **PubChem’s XML-based APIs**.
+**robotu-molkit** is part of the **RobotU Quantum** ecosystem — an open-source Python library that automates the extraction, structuring, and enrichment of chemical data directly from **PubChem’s XML-based APIs**.
 
 The library retrieves and organizes a wide range of chemical property categories — including geometric, thermodynamic, quantum, and spectroscopic data — into a unified data model, making it instantly usable for quantum frameworks like **Qiskit**, AI pipelines, and molecular modeling tools.
 
