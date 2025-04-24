@@ -18,11 +18,11 @@ The library retrieves and organizes a wide range of chemical property categories
 ## ✅ Features
 
 - ⚛️ **Quantum-ready**: Seamless integration with Qiskit and other quantum simulation frameworks  
-- 🔗 **PubChem-native**: Pulls data directly from PubChem’s APIs (no scraping, no local database)  
-- 🧬 **10+ property categories**: Includes geometries, quantum/electronic properties, thermodynamics, etc.  
-- 🧠 **AI Enrichment**: Optional IBM Granite integration for semantic metadata and natural language search  
-- 🔁 **Batch-ready**: Iterate and prepare multiple molecules with simple Python loops  
-- 📦 **Cloud-free**: Fully local, portable, and open-source
+- 🔗 **Direct PubChem API access**: Connects to PubChem’s XML APIs — no scraping, no manual downloads  
+- 🧠 **AI-powered parsing and structuring**: Uses IBM Granite to parse complex XML responses and organize molecular data into structured Python objects  
+- 🧬 **10+ property categories**: Automatically extracts and formats data like geometries, thermodynamics, quantum/electronic properties, spectroscopy, and more  
+- 🔁 **Batch-friendly**: Easily iterate through thousands of molecules programmatically  
+- 📦 **Cloud-free**: Entirely open-source and locally executable — no dependency on external cloud infrastructure
 
 ---
 
