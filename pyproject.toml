@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robotu-molkit"
+version = "0.1.0a0"
+description = "An open-source Python library for retrieving, structuring, and enriching molecular data from PubChem — ready for quantum simulation, AI pipelines, and scientific research."
+readme = "README.md"
+requires-python = ">=3.8"
+
+authors = [
+  {name = "Carlos Alberto Murillo Garcia", email = "tech@robotu.ai"}
+]
+
+maintainers = [
+  {name = "Carlos Alberto Murillo Garcia", email = "tech@robotu.ai"}
+]
+
+license = {text = "Apache-2.0"}
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Chemistry"
+]
+
+dependencies = [
+]
+
+[project.optional-dependencies]
+dev = [
+  "coverage",
+  "mypy",
+  "pytest",
+  "ruff"
+]
+
+[project.urls]
+homepage = "https://github.com/carlosamurillo/robotu_molkit"
+bugs = "https://github.com/carlosamurillo/robotu_molkit/issues"
+changelog = "https://github.com/carlosamurillo/robotu_molkit/blob/main/HISTORY.rst"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+[tool.mypy]
+files = "."
+
+strict = true
+warn_unreachable = true
+warn_no_return = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+allow_untyped_defs = true
+disable_error_code = "attr-defined"
