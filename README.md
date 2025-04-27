@@ -3,7 +3,7 @@
 > 🚧 **This project is under active development.** Expect frequent changes as we build the foundation for quantum-ready molecular discovery.
 
 **Quantum-ready molecular toolkit.**  
-An open-source Python library for retrieving, structuring, and enriching molecular data from PubChem — ready for quantum simulation, AI pipelines, and scientific research.
+An open-source Python library that pulls PubChem records, structures them into Molecule objects with rich property sets, and enriches each with IBM Granite summaries and embeddings—ready for quantum simulations, AI pipelines, and scientific research.
 
 ---
 
