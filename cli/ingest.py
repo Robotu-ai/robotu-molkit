@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ingest_worker.py  – PubChem‑safe downloader
+ingest.py  – PubChem‑safe downloader
 ===========================================
 Step 1 of the RobotU Molkit pipeline downloads **raw PubChem JSON** while **respecting the official
 rate‑limits**:
@@ -16,10 +16,10 @@ Usage examples
 --------------
 ```bash
 # direct list of CIDs
-python ingest_worker.py 2519 2244 5957
+python ingest.py 2519 2244 5957
 
 # newline‑delimited file of CIDs, custom output dir, 12 workers
-python ingest_worker.py --file cids.txt --out raw --concurrency 12
+python ingest.py --file cids.txt --out raw --concurrency 12
 ```
 
 Dependencies
