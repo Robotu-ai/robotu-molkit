@@ -173,5 +173,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Code Editor
+# Code editor
 .idx/
+
+# Molecules Examples
+raw/
