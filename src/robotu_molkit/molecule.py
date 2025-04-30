@@ -22,7 +22,6 @@ real chemists’ workflows:
 
 Feel free to extend – all stubs raise ``NotImplementedError``.
 """
-
 from __future__ import annotations
 
 import datetime as _dt
@@ -64,10 +63,7 @@ class Structure(BaseModel):
     )
 
     def to_rdkit(self) -> Any:  # pragma: no cover – stub
-        """
-        Convert this Structure into an RDKit Mol object,
-        preserving coordinates and partial charges if available.
-        """
+        """Return an RDKit Mol object with coordinates & charges."""
         raise NotImplementedError
 
 
@@ -101,7 +97,7 @@ class Quantum(BaseModel):
 
     @computed_field
     def homo_lumo_gap(self) -> Optional[float]:
-        """Compute the HOMO-LUMO energy gap (eV), if energies available."""
+        """Compute the HOMO-LUMO gap (eV) if MO energies are available."""
         if self.mo_energies is None or self.homo_index is None:
             return None
         try:
@@ -110,16 +106,11 @@ class Quantum(BaseModel):
             return None
 
     def to_qiskit(self, basis: str = "sto3g", mapping: str = "jordan_wigner") -> Any:
-        """
-        Export electronic structure as a Qiskit Nature ElectronicStructureProblem
-        using the specified basis set and qubit mapping.
-        """
+        """Export as a Qiskit Nature ElectronicStructureProblem stub."""
         raise NotImplementedError
 
     def to_openfermion(self) -> Any:
-        """
-        Export electronic structure as an OpenFermion MolecularData object.
-        """
+        """Export as an OpenFermion MolecularData stub."""
         raise NotImplementedError
 
 
@@ -136,134 +127,98 @@ class Thermo(BaseModel):
     )
     heat_capacity: Optional[float] = Field(
         None,
-        description="Heat capacity Cp° (J/mol·K) at default 298 K unless t_heat_capacity specified",
+        description="Heat capacity Cp° (J/mol·K) at 298 K unless t_heat_capacity set",
     )
     t_heat_capacity: Optional[float] = Field(
-        None,
-        description="Temperature (K) at which heat_capacity is reported",
+        None, description="Temperature (K) at which Cp° refers"
     )
     gibbs_vs_t: Optional[Dict[float, float]] = Field(
-        None,
-        description="Mapping of temperature (K) to Gibbs free energy ΔG° (kJ/mol)",
+        None, description="Mapping {T [K]: ΔG° (kJ/mol)}"
     )
 
 
 class Spectra(BaseModel):
-    """Spectroscopic data: IR, Raman, NMR, UV-Vis, etc."""
+    """Spectroscopic data blocks (IR, Raman, NMR, UV-Vis)."""
 
-    ir_frequencies: Optional[List[float]] = Field(
-        None, description="Infrared peak positions (cm^-1)"
-    )
-    ir_intensities: Optional[List[float]] = Field(
-        None, description="Infrared band intensities (km/mol)"
-    )
-    raman_frequencies: Optional[List[float]] = Field(
-        None, description="Raman peak positions (cm^-1)"
-    )
-    raman_intensities: Optional[List[float]] = Field(
-        None, description="Raman band intensities"
-    )
+    ir_frequencies: Optional[List[float]] = Field(None, description="IR peaks (cm⁻¹)")
+    ir_intensities: Optional[List[float]] = Field(None, description="IR intensities (km/mol)")
+    raman_frequencies: Optional[List[float]] = Field(None, description="Raman peaks (cm⁻¹)")
+    raman_intensities: Optional[List[float]] = Field(None, description="Raman intensities")
     nmr_shifts: Optional[Dict[str, List[float]]] = Field(
-        None, description="NMR chemical shifts by nucleus (ppm)"
+        None, description="NMR shifts by nucleus {symbol: [ppm,…]}"
     )
-    uvvis_lambda: Optional[List[float]] = Field(
-        None, description="UV-Vis absorption wavelengths (nm)"
-    )
-    uvvis_osc_strength: Optional[List[float]] = Field(
-        None, description="UV-Vis oscillator strengths"
-    )
+    uvvis_lambda: Optional[List[float]] = Field(None, description="UV-Vis absorption wavelengths (nm)")
+    uvvis_osc_strength: Optional[List[float]] = Field(None, description="Corresponding oscillator strengths")
 
 
 class Safety(BaseModel):
-    """Safety and regulatory information for the compound."""
+    """Safety & regulatory information."""
 
-    ghs_codes: Optional[List[str]] = Field(
-        None, description="GHS hazard classification codes"
-    )
-    flash_point: Optional[float] = Field(
-        None, description="Flash point temperature (°C)"
-    )
-    ld50: Optional[float] = Field(
-        None, description="Median lethal dose (LD50, mg/kg)"
-    )
+    ghs_codes: Optional[List[str]] = Field(None, description="GHS hazard codes")
+    flash_point: Optional[float] = Field(None, description="Flash-point temperature (°C)")
+    ld50: Optional[float] = Field(None, description="LD₅₀ (mg/kg) – species/route TBD")
 
 
 class Solubility(BaseModel):
-    """Solubility and partitioning behavior data."""
+    """Solubility & partitioning behaviour."""
 
-    logp: Optional[float] = Field(None, description="Partition coefficient logP")
-    logs: Optional[float] = Field(None, description="Solubility logS")
-    pka: Optional[List[float]] = Field(None, description="Acid dissociation constants pKa")
+    logp: Optional[float] = Field(None, description="logP (octanol/water)")
+    logs: Optional[float] = Field(None, description="logS (solubility)")
+    pka: Optional[List[float]] = Field(None, description="pKa values")
+
+
+class Embeddings(BaseModel):
+    """Two distinct float-vector embeddings."""
+
+    summary: Optional[List[float]] = Field(
+        None, description="Natural-language embedding of summary"
+    )
+    structure: Optional[List[float]] = Field(
+        None, description="SMILES-based embedding"
+    )
 
 
 class Search(BaseModel):
-    """Identifiers, fingerprints, and embeddings for searching and lookup."""
+    """Identifiers, fingerprints, and ML-ready encodings."""
 
-    cid: Optional[int] = Field(None, description="PubChem Compound ID (CID)")
-    inchi: Optional[str] = Field(None, description="International Chemical Identifier (InChI)")
-    inchikey: Optional[str] = Field(None, description="Hashed InChIKey for compact search")
-    smiles: Optional[str] = Field(None, description="Canonical SMILES string")
-    ecfp: Optional[str] = Field(
-        None, description="Extended-Connectivity Fingerprint (ECFP4) in hex"
-    )
-    maccs: Optional[str] = Field(None, description="MACCS structural keys in hex")
-    embedding: Optional[List[float]] = Field(
-        None, description="AI-derived vector embedding"
-    )
+    cid: Optional[int] = Field(None, description="PubChem CID")
+    inchi: Optional[str] = Field(None, description="InChI string")
+    inchikey: Optional[str] = Field(None, description="InChIKey")
+    smiles: Optional[str] = Field(None, description="Canonical SMILES")
+    ecfp: Optional[str] = Field(None, description="ECFP-4 fingerprint in hex")
+    maccs: Optional[str] = Field(None, description="MACCS keys in hex")
+    embeddings: Embeddings = Field(default_factory=Embeddings, description="Float-vector embeddings")
 
     def generate_fingerprint(self, method: str = "ecfp", radius: int = 2) -> str:
-        """
-        Generate a molecular fingerprint string using the specified method
-        and radius (for ECFP) via an external toolkit (e.g., RDKit).
-        """
+        """Generate a molecular fingerprint string using specified method and radius."""
         raise NotImplementedError
 
-    def embed(self, model: str = "granite", **kwargs) -> List[float]:
-        """
-        Compute an AI embedding vector for this molecule using the
-        specified model (e.g., IBM Granite) and return as a float list.
-        """
+    def embed(self, *, text_model: str = "sbert", struct_model: str = "mol2vec") -> None:
+        """Populate both embedding vectors via external models."""
         raise NotImplementedError
 
 
 class Names(BaseModel):
-    """Compound naming information: IUPAC, CAS-like, systematic, synonyms."""
+    """Compound naming conventions and synonyms."""
 
-    preferred: Optional[str] = Field(
-        None, description="Preferred name (IUPAC or common)"
-    )
-    cas_like: Optional[str] = Field(
-        None, description="CAS-like formatted name"
-    )
-    systematic: Optional[str] = Field(
-        None, description="Systematic IUPAC name"
-    )
-    traditional: Optional[str] = Field(
-        None, description="Traditional/common name"
-    )
-    synonyms: Optional[List[str]] = Field(
-        None, description="List of alternative names and synonyms"
-    )
+    preferred: Optional[str] = Field(None, description="Preferred (IUPAC/common) name")
+    cas_like: Optional[str] = Field(None, description="CAS-like name")
+    systematic: Optional[str] = Field(None, description="Systematic IUPAC name")
+    traditional: Optional[str] = Field(None, description="Traditional/common name")
+    synonyms: Optional[List[str]] = Field(None, description="Alternative names")
 
 
 class Meta(BaseModel):
-    """Provenance and caching metadata always included."""
+    """Provenance, units & caching metadata."""
 
     fetched: _dt.datetime = Field(
         default_factory=_dt.datetime.utcnow,
-        description="UTC timestamp when data were fetched or loaded",
+        description="UTC timestamp when data was fetched",
     )
-    source: str = Field("PubChem", description="Primary data source name")
-    source_version: Optional[str] = Field(
-        None, description="Version or release tag of source database"
-    )
-    calc_level: Optional[str] = Field(
-        None,
-        description="Quantum calculation method and basis (e.g., B3LYP/6-31G*)",
-    )
-    cache_path: Optional[str] = Field(
-        None, description="Filesystem path to cached JSON if saved"
-    )
+    source: str = Field("PubChem", description="Primary data source")
+    source_version: Optional[str] = Field(None, description="Release date of source data")
+    calc_level: Optional[str] = Field(None, description="Quantum method/basis used")
+    cache_path: Optional[str] = Field(None, description="Filesystem path to cached JSON")
 
 
 class Molecule(BaseModel):
@@ -277,60 +232,43 @@ class Molecule(BaseModel):
     solubility: Solubility = Field(default_factory=Solubility)
     search: Search = Field(default_factory=Search)
     names: Names = Field(default_factory=Names)
+    summary: Optional[str] = Field(
+        None, description="AI-generated 40–70 word summary of this molecule"
+    )
     meta: Meta = Field(default_factory=Meta)
 
     def to_dict(self, *, exclude_none: bool = True) -> Dict[str, Any]:
-        """
-        Serialize the Molecule to a Python dict,
-        excluding fields with None values by default.
-        """
+        """Serialize the Molecule to a dict, excluding None fields by default."""
         return self.model_dump(exclude_none=exclude_none)
 
-    def to_json(self, *, indent: int | None = 2, **kwargs) -> str:
-        """
-        Serialize the Molecule to a JSON-formatted string
-        with the given indentation.
-        """
+    def to_json(self, *, indent: Optional[int] = 2, **kwargs) -> str:
+        """Serialize the Molecule to a JSON string with given indentation."""
         return self.model_dump_json(indent=indent, **kwargs)
 
     def cache(self, path: str) -> None:
-        """
-        Write the current Molecule JSON to the given filesystem path
-        and update meta.cache_path accordingly.
-        """
-        import json
-        import pathlib
+        """Write Molecule JSON to disk and update cache_path metadata."""
+        import json, pathlib
 
         path_obj = pathlib.Path(path)
         path_obj.write_text(self.to_json())
         self.meta.cache_path = str(path_obj)
 
     def to_qiskit(self, **kwargs) -> Any:
-        """
-        Proxy method: export this molecule to a Qiskit Nature ElectronicStructureProblem.
-        """
+        """Proxy to quantum.to_qiskit for Qiskit export."""
         return self.quantum.to_qiskit(**kwargs)
 
     def to_openfermion(self, **kwargs) -> Any:
-        """
-        Proxy method: export this molecule to an OpenFermion MolecularData object.
-        """
+        """Proxy to quantum.to_openfermion for OpenFermion export."""
         return self.quantum.to_openfermion(**kwargs)
 
     @classmethod
     def from_pubchem(cls, cid: int | str) -> "Molecule":
-        """
-        Fetch compound data from PubChem REST API by CID
-        and construct a Molecule instance.
-        """
-        raise NotImplementedError("Remote fetch not yet implemented – coming soon!")
+        """Fetch & construct a Molecule from PubChem by CID."""
+        raise NotImplementedError("Remote fetch not yet implemented.")
 
     @classmethod
     def from_json(cls, data: str | Dict[str, Any]) -> "Molecule":
-        """
-        Construct a Molecule from a JSON string or dict.
-        Accepts raw JSON text or already-parsed dict.
-        """
+        """Construct a Molecule from raw JSON text or dict."""
         if isinstance(data, str):
             import json
 
@@ -346,6 +284,7 @@ __all__ = [
     "Spectra",
     "Safety",
     "Solubility",
+    "Embeddings",
     "Search",
     "Names",
     "Meta",
