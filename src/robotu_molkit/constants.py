@@ -1,4 +1,3 @@
-# ingest/utils.py
 from pathlib import Path
 
 MAX_RPS = 5

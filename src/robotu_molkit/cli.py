@@ -8,7 +8,7 @@ from typing import Optional
 from ibm_watsonx_ai import Credentials
 from ibm_watsonx_ai.foundation_models import Embeddings
 
-from robotu_molkit.ingest.constants import (
+from robotu_molkit.constants import (
     DEFAULT_RAW_DIR,
     DEFAULT_PARSED_DIR,
     DEFAULT_CONCURRENCY,
