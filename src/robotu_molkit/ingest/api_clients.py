@@ -4,7 +4,7 @@ import logging
 from typing import Any, Dict, Optional
 from aiolimiter import AsyncLimiter
 
-from .utils import RECORD_API, SYNONYMS_API, PROPERTIES_API, PUG_VIEW_API, MAX_RPS, MAX_RPM, TIMEOUT_S
+from .constants import RECORD_API, SYNONYMS_API, PROPERTIES_API, PUG_VIEW_API, MAX_RPS, MAX_RPM, TIMEOUT_S
 
 async def _get_json(
     session: aiohttp.ClientSession, url: str,

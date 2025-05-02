@@ -10,10 +10,10 @@ import typer
 from ibm_watsonx_ai import Credentials
 from ibm_watsonx_ai.foundation_models import Embeddings
 
-from .utils import DEFAULT_RAW_DIR, DEFAULT_PARSED_DIR, DEFAULT_CONCURRENCY, EMBED_MODEL_ID
+from .constants import DEFAULT_RAW_DIR, DEFAULT_PARSED_DIR, DEFAULT_CONCURRENCY, EMBED_MODEL_ID
 from .workers import run as _run_workers
-from robotu_molkit.utils import load_credentials
-from robotu_molkit.vector import WatsonxIndex
+from robotu_molkit.config import load_credentials
+from robotu_molkit.vector.watsonx_index import WatsonxIndex
 
 ingest_app = typer.Typer(help="Download and parse molecules from PubChem.")
 CONFIG_PATH = Path.home() / ".config" / "molkit" / "config.json"
@@ -81,9 +81,9 @@ def run_ingest(
 
     logging.info("Done! Raw → %s | Parsed → %s", raw_dir, parsed_dir)
 
-@app.command("embed")
+@ingest_app.command("embed")
 def embed(
-    cids: List[int] = typer.Option(..., "--cids", "-c", help="Lista de CIDs a procesar."),
+    cids: list[int] = typer.Option(..., "--cids", "-c", help="Lista de CIDs a procesar."),
     model: str = typer.Option(
         "granite-embedding-278m-multilingual", "--model", "-m",
         help="Modelo Granite a usar para embeddings."

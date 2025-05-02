@@ -1,6 +1,5 @@
 # ingest/utils.py
 from pathlib import Path
-from aiolimiter import AsyncLimiter
 
 MAX_RPS = 5
 MAX_RPM = 400

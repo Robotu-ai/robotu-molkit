@@ -6,11 +6,10 @@ from aiolimiter import AsyncLimiter
 import aiohttp
 
 # ← Add this:
-from .utils import MAX_RPS, MAX_RPM, TIMEOUT_S, DEFAULT_RAW_DIR, DEFAULT_PARSED_DIR
+from .constants import MAX_RPS, MAX_RPM, TIMEOUT_S, DEFAULT_RAW_DIR, DEFAULT_PARSED_DIR
 
 from .api_clients import fetch_record, fetch_synonyms, fetch_properties, fetch_view
 from .parsers import build_parsed
-from .utils import DEFAULT_RAW_DIR, DEFAULT_PARSED_DIR
 from ibm_watsonx_ai.foundation_models import Embeddings
 import re
 
