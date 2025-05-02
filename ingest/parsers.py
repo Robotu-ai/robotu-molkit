@@ -1,5 +1,7 @@
 # ingest/parsers.py
 
+# ingest/parsers.py
+
 import logging
 import re
 import datetime
@@ -10,17 +12,28 @@ from ibm_watsonx_ai.foundation_models import Embeddings
 # RDKit availability
 try:
     from rdkit import Chem
-    from rdkit.Chem import AllChem, MACCSkeys
+    from rdkit.Chem import AllChem, MACCSkeys, Descriptors
     RDKit_OK = True
 except Exception as e:
-    logging.warning("RDKit unavailable in parsers – fingerprints disabled (%s)", e)
+    logging.warning("RDKit unavailable – chemical descriptors and fingerprints disabled (%s)", e)
     RDKit_OK = False
+
+# ESOL model for logS
+if RDKit_OK:
+    def esol_logS(smiles: str) -> float:
+        m = Chem.MolFromSmiles(smiles)
+        logP = Descriptors.MolLogP(m)
+        mw   = Descriptors.MolWt(m)
+        rb   = Descriptors.NumRotatableBonds(m)
+        ap   = sum(atom.GetIsAromatic() for atom in m.GetAtoms()) / m.GetNumHeavyAtoms()
+        return 0.16 - 0.63*logP - 0.0062*mw + 0.066*rb - 0.74*ap
+
+# pKa predictor disabled – not available via pip
+PKA_OK = False
+
 
 
 def find_section(sections: List[Dict[str, Any]], heading: str) -> Dict[str, Any]:
-    """
-    Recorre recursivamente secciones de PUG-View para encontrar la que coincide con heading.
-    """
     for sec in sections:
         if sec.get("TOCHeading") == heading:
             return sec
@@ -31,9 +44,6 @@ def find_section(sections: List[Dict[str, Any]], heading: str) -> Dict[str, Any]
 
 
 def _extract_number(info: List[Dict[str, Any]], key: str) -> Optional[float]:
-    """
-    Extrae un valor numérico de la lista Information donde Name == key.
-    """
     for entry in info:
         if entry.get("Name") == key:
             num = entry.get("Value", {}).get("Number")
@@ -51,9 +61,6 @@ def build_parsed(
     cid: int,
     raw_path: Path,
 ) -> Dict[str, Any]:
-    """
-    Ensambla el JSON final de la molécula a partir de respuestas de PUG-REST, PC_Compounds y PUG-View.
-    """
     # --- Structure 3D ---
     xyz: Optional[List[Tuple[float, float, float]]] = None
     atom_symbols: Optional[List[str]] = None
@@ -84,7 +91,9 @@ def build_parsed(
                         atom_symbols = [str(n) for n in elems]
                 else:
                     atom_symbols = [str(n) for n in elems]
-        aid1, aid2, orders = comp.get("bonds", {}).get("aid1", []), comp.get("bonds", {}).get("aid2", []), comp.get("bonds", {}).get("order", [])
+        aid1 = comp.get("bonds", {}).get("aid1", [])
+        aid2 = comp.get("bonds", {}).get("aid2", [])
+        orders = comp.get("bonds", {}).get("order", [])
         if aid1 and aid2 and orders:
             bond_orders = list(zip(aid1, aid2, orders))
 
@@ -93,6 +102,11 @@ def build_parsed(
     smiles = p.get("CanonicalSMILES")
     logp = p.get("XLogP")
     formal_charge = p.get("Charge")
+
+    # --- Extended solubility ---
+    logs = None
+    # pKa prediction disabled
+    pka_vals = None
 
     # --- PUG-View helper ---
     view_secs = view.get("Record", {}).get("Section", []) if view else []
@@ -107,8 +121,7 @@ def build_parsed(
 
     # --- Safety (GHS codes) ---
     ghs_codes: List[str] = []
-    raw_entries = info_fn("GHS Classification")
-    for entry in raw_entries:
+    for entry in info_fn("GHS Classification"):
         text_blob = ""
         val = entry.get("Value", {})
         for sm in val.get("StringWithMarkup", []):
@@ -121,7 +134,6 @@ def build_parsed(
                 text_blob += str(s_val)
         codes = re.findall(r"\b[HP]\d{3}\b", text_blob)
         ghs_codes.extend(codes)
-    # dedupe preserving order
     seen = set()
     ghs_codes = [c for c in ghs_codes if not (c in seen or seen.add(c))]
     flash = _extract_number(info_fn("Physical Properties"), "Flash Point")
@@ -143,7 +155,13 @@ def build_parsed(
     if RDKit_OK and smiles:
         try:
             mol = Chem.MolFromSmiles(smiles)
-            ecfp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048).ToBitString()
+            # Use new MorganGenerator if available to avoid deprecation
+            try:
+                from rdkit.Chem.AllChem import MorganGenerator
+                mg = MorganGenerator(radius=2)
+                ecfp = mg.GetFingerprint(mol).ToBitString()
+            except Exception:
+                ecfp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048).ToBitString()
             maccs = MACCSkeys.GenMACCSKeys(mol).ToBitString()
         except Exception as e:
             logging.warning("Fingerprint error: %s", e)
@@ -156,6 +174,7 @@ def build_parsed(
         except Exception as e:
             logging.warning("Embedding error: %s", e)
 
+    # --- Assemble final JSON ---
     return {
         "structure": {"xyz": xyz, "atom_symbols": atom_symbols, "bond_orders": bond_orders,
                        "formal_charge": formal_charge, "spin_multiplicity": None},
@@ -165,7 +184,7 @@ def build_parsed(
                     "heat_capacity": heat_capacity},
         "safety": {"ghs_codes": ghs_codes, "flash_point": flash, "ld50": ld50},
         "spectra": {"raw": spectra_raw},
-        "solubility": {"logp": logp, "pka": None},
+        "solubility": {"logp": logp, "logs": logs, "pka": pka_vals},
         "search": {"cid": cid, "inchi": p.get("InChI"), "inchikey": p.get("InChIKey"),
                     "smiles": smiles, "ecfp": ecfp, "maccs": maccs,
                     "embeddings": {"summary": None, "structure": struct_emb}},
