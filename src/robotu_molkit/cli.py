@@ -14,6 +14,7 @@ from robotu_molkit.constants import (
     DEFAULT_CONCURRENCY,
     DEFAULT_EMBED_MODEL_ID,
     DEFAULT_WATSONX_AI_URL,
+    FAST_EMBED_MODEL_ID
 )
 from robotu_molkit.ingest.workers import run as _run_workers
 from robotu_molkit.config import load_credentials
@@ -47,33 +48,10 @@ def ingest(
     raw_dir: Path = typer.Option(DEFAULT_RAW_DIR, "--raw-dir", "-r", help="Directory to save raw JSON files"),
     parsed_dir: Path = typer.Option(DEFAULT_PARSED_DIR, "--parsed-dir", "-p", help="Directory to save parsed payloads"),
     concurrency: int = typer.Option(DEFAULT_CONCURRENCY, "--concurrency", "-c", help="Number of concurrent workers"),
-    api_key: Optional[str] = typer.Option(
-        None, "--watsonx-api-key", "-k",
-        help="IBM Watsonx API Key (override config/envvar)"
-    ),
-    project_id: Optional[str] = typer.Option(
-        None, "--watsonx-project-id", "-j",
-        help="IBM Watsonx Project ID (override config/envvar)"
-    ),
-    ibm_url: str = typer.Option(
-        DEFAULT_WATSONX_AI_URL, "--watsonx-url", help="IBM Watsonx service URL"
-    ),
 ):
     """
     Fetch CID(s) from PubChem, save raw JSON and parsed Molecule payloads.
     """
-    saved_key, saved_proj = load_credentials()
-    api_key = api_key or saved_key
-    project_id = project_id or saved_proj
-
-    if not api_key or not project_id:
-        typer.secho(
-            "❌ Missing IBM Watsonx credentials: pass them with --watsonx-api-key/--watsonx-project-id, "
-            "or run `molkit config` or set the environment variables IBM_API_KEY / IBM_PROJECT_ID.",
-            fg=typer.colors.RED,
-            err=True
-        )
-        raise typer.Exit(code=1)
 
     if file:
         file_cids = [int(line.strip()) for line in file.read_text().splitlines() if line.strip()]
@@ -96,8 +74,8 @@ def ingest(
 def embed_command(
     cids: list[int] = typer.Option(..., "--cids", "-c", help="List of CIDs to process."),
     model: str = typer.Option(
-        "granite-embedding-278m-multilingual", "--model", "-m",
-        help="Granite model to use for embeddings."
+        DEFAULT_EMBED_MODEL_ID, "--model", "-m",
+        help="Granite model id to use for embeddings. Check https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models-embed.html?context=wx&audience=wdp#ibm-provided"
     ),
     chunk_size: int = typer.Option(250, "--chunk-size", help="Token chunk size."),
     overlap: int = typer.Option(40, "--overlap", help="Token overlap between chunks."),
@@ -126,7 +104,7 @@ def embed_command(
         raise typer.Exit(code=1)
 
     if fast:
-        model = "granite-embedding-107m-multilingual"
+        model = FAST_EMBED_MODEL_ID
 
     typer.echo(f"Using model {model}, chunk_size={chunk_size}, overlap={overlap}")
     index = WatsonxIndex(

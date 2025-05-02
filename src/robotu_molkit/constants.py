@@ -16,4 +16,5 @@ PROPERTIES_API = (
 )
 PUG_VIEW_API = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{cid}/JSON"
 DEFAULT_EMBED_MODEL_ID = "ibm/granite-embedding-278m-multilingual"
+FAST_EMBED_MODEL_ID = "ibm/granite-embedding-107m-multilingual"
 DEFAULT_WATSONX_AI_URL = "https://us-south.ml.cloud.ibm.com"
