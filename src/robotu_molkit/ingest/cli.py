@@ -1,7 +1,10 @@
 # src/robotu_molkit/ingest/cli.py
 import asyncio
 import logging
+import os
+import json
 from pathlib import Path
+from typing import Optional
 
 import typer
 from ibm_watsonx_ai import Credentials
@@ -9,8 +12,10 @@ from ibm_watsonx_ai.foundation_models import Embeddings
 
 from .utils import DEFAULT_RAW_DIR, DEFAULT_PARSED_DIR, DEFAULT_CONCURRENCY, EMBED_MODEL_ID
 from .workers import run as _run_workers
+from robotu_molkit.utils import load_credentials
 
 ingest_app = typer.Typer(help="Download and parse molecules from PubChem.")
+CONFIG_PATH = Path.home() / ".config" / "molkit" / "config.json"
 
 @ingest_app.command("run")
 def run_ingest(
@@ -19,22 +24,44 @@ def run_ingest(
     raw_dir: Path = typer.Option(DEFAULT_RAW_DIR, "--raw-dir", "-r"),
     parsed_dir: Path = typer.Option(DEFAULT_PARSED_DIR, "--parsed-dir", "-p"),
     concurrency: int = typer.Option(DEFAULT_CONCURRENCY, "--concurrency", "-c"),
-    api_key: str = typer.Option(..., "--api-key", "-k", envvar="IBM_API_KEY", help="IBM API Key"),
-    project_id: str = typer.Option(..., "--project-id", "-j", envvar="IBM_PROJECT_ID", help="IBM Project ID"),
-    ibm_url: str = typer.Option("https://us-south.ml.cloud.ibm.com", "--ibm-url", help="IBM service URL"),
+    api_key: Optional[str] = typer.Option(
+        None, "--api-key", "-k",
+        help="IBM API Key (override config/envvar)"
+    ),
+    project_id: Optional[str] = typer.Option(
+        None, "--project-id", "-j",
+        help="IBM Project ID (override config/envvar)"
+    ),
+    ibm_url: str = typer.Option(
+        "https://us-south.ml.cloud.ibm.com", "--ibm-url", help="IBM service URL"
+    ),
 ):
     """
-    Fetches CID(s) from PubChem, saves raw JSON and parsed Molecule payloads.
+    Fetches CID(s) from PubChem, saves raw JSON and parsed Molecule payloads, y genera embeddings con watsonx.ai.
     """
-    # 1) combinar CIDs de --file
+    # Cargar credenciales guardadas
+    saved_key, saved_proj = load_credentials()
+    api_key = api_key or saved_key
+    project_id = project_id or saved_proj
+
+    if not api_key or not project_id:
+        typer.secho(
+            "❌ Faltan credenciales IBM: pásalas con --api-key/--project-id, "
+            "o bien ejecuta `molkit config` o define las envvars IBM_API_KEY / IBM_PROJECT_ID.",
+            fg=typer.colors.RED,
+            err=True
+        )
+        raise typer.Exit(code=1)
+
+    # Combinar CIDs de archivo y argumentos CLI
     if file:
-        file_cids = [int(l) for l in file.read_text().splitlines() if l.strip()]
+        file_cids = [int(line.strip()) for line in file.read_text().splitlines() if line.strip()]
         cids = file_cids + cids
     if not cids:
         typer.secho("❌ No CIDs provided", err=True, fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
-    # 2) preparar servicio de embeddings
+    # Configurar servicio de embeddings
     creds = Credentials(api_key=api_key, url=ibm_url)
     embed_service = Embeddings(
         model_id=EMBED_MODEL_ID,
@@ -42,7 +69,7 @@ def run_ingest(
         project_id=project_id,
     )
 
-    # 3) ejecutar ingest
+    # Ejecutar ingest y embeddings
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     logging.info("Starting ingest of %d CIDs...", len(cids))
     try:
@@ -50,4 +77,5 @@ def run_ingest(
     except KeyboardInterrupt:
         typer.secho("⚠️ Ingest interrupted by user", err=True, fg=typer.colors.YELLOW)
         raise typer.Exit(code=1)
+
     logging.info("Done! Raw → %s | Parsed → %s", raw_dir, parsed_dir)
