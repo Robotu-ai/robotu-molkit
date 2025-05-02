@@ -1,5 +1,3 @@
-# src/robotu_molkit/vector/WatsonxIndex.py
-
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -11,7 +9,7 @@ from robotu_molkit.constants import DEFAULT_EMBED_MODEL_ID, DEFAULT_WATSONX_AI_U
 
 class WatsonxIndex:
     """
-    Clase para gestionar ingest de embeddings y búsquedas en Watsonx Vector DB.
+    Class to manage embedding ingestion and search operations in Watsonx Vector DB.
     """
     def __init__(
         self,
@@ -22,7 +20,7 @@ class WatsonxIndex:
         chunk_size: int = 250,
         overlap: int = 40,
     ):
-        # Credenciales y servicio de embeddings
+        # Credentials and embedding service
         self.credentials = Credentials(api_key=api_key, url=ibm_url)
         self.embed_service = Embeddings(
             model_id=model,
@@ -38,29 +36,29 @@ class WatsonxIndex:
         parsed_dir: Path,
     ) -> None:
         """
-        Para cada CID:
-          1. Carga el JSON parseado (parsed_dir/{cid}.json).
-          2. Genera un summary y su embedding.
-          3. Trocea cada sección temática y genera embeddings.
-          4. (TODO) Sube cada vector con metadatos a Watsonx Vector DB.
+        For each CID:
+          1. Load the parsed JSON (parsed_dir/{cid}.json).
+          2. Generate a global summary and its embedding.
+          3. Split each thematic section into chunks and generate embeddings.
+          4. (TODO) Upload each vector with metadata to Watsonx Vector DB.
         """
         for cid in cids:
             path = Path(parsed_dir) / f"pubchem_{cid}.json"
             if not path.exists():
-                raise FileNotFoundError(f"No se encontró el archivo para CID {cid}: {path}")
+                raise FileNotFoundError(f"File not found for CID {cid}: {path}")
             data = json.loads(path.read_text())
 
-            # 1) Summary global
+            # 1) Global summary
             summary_text = self._generate_summary(data)
             summary_emb = self._get_embeddings([summary_text])[0]
-            # TODO: subir summary_emb con metadatos {'cid': cid, 'section': 'summary'}
+            # TODO: upload summary_emb with metadata {"cid": cid, "section": "summary"}
 
-            # 2) Secciones temáticas
+            # 2) Thematic sections
             for section, text in self._iter_sections(data):
                 chunks = self._chunk_text(text)
                 embeddings = self._get_embeddings(chunks)
                 for chunk, emb in zip(chunks, embeddings):
-                    # TODO: subir emb con metadatos {'cid': cid, 'section': section}
+                    # TODO: upload emb with metadata {"cid": cid, "section": section}
                     pass
 
     def search(
@@ -70,19 +68,19 @@ class WatsonxIndex:
         filters: Optional[Dict[str, Any]] = None,
     ) -> List[Dict[str, Any]]:
         """
-        Ejecuta una búsqueda por embedding:
-          - Obtiene embedding de la query.
-          - Llama a Watsonx Vector DB con filtros.
-          - Devuelve lista de hits agrupados por CID.
+        Executes an embedding search:
+          - Obtains the embedding for the query.
+          - Calls Watsonx Vector DB with any provided filters.
+          - Returns a list of hits grouped by CID.
         """
         q_emb = self._get_embeddings([query])[0]
-        # TODO: implementar llamada real al vector index:
+        # TODO: implement real call to the vector index:
         # response = self.vector_db.query(...)
         return []
 
     def _get_embeddings(self, texts: List[str]) -> List[List[float]]:
         """
-        Llama al servicio de embeddings de Watsonx y devuelve la lista de vectores.
+        Calls the Watsonx embedding service and returns the list of vectors.
         """
         vector = None
         try:
@@ -92,9 +90,9 @@ class WatsonxIndex:
             logging.warning("Embedding error: %s", e)
         return vector
 
-    def _iter_sections(self, data: Dict[str, Any]) -> List[Any]:
+    def _iter_sections(self, data: Dict[str, Any]):
         """
-        Genera pares (sección, texto) para las categorías de la molécula.
+        Generates (section, text) pairs for the molecule categories.
         """
         sections = ["structure", "safety", "spectra", "solubility", "search"]
         for sec in sections:
@@ -103,7 +101,7 @@ class WatsonxIndex:
 
     def _chunk_text(self, text: str) -> List[str]:
         """
-        Trocea el texto en chunks de `chunk_size` tokens con `overlap`.
+        Splits the text into chunks of `chunk_size` tokens with `overlap`.
         """
         tokens = text.split()
         step = self.chunk_size - self.overlap
@@ -117,9 +115,10 @@ class WatsonxIndex:
 
     def _generate_summary(self, data: Dict[str, Any]) -> str:
         """
-        Genera un resumen global de la molécula (40-70 palabras).
-        Implementa aquí tu propia lógica o llamada a un modelo generativo.
+        Generates a global summary of the molecule (40–70 words).
+        Implement your own logic here or call a generative model.
         """
         name = data.get("names", {}).get("preferred", "Unknown")
         cid = data.get("search", {}).get("cid")
         return f"Molecule {name} (CID {cid}): summary placeholder."
+
