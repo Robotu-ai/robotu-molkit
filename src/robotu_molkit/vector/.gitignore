@@ -1,0 +1,4 @@
+# Prompts given by user
+/prompt/*             # ignora todo en vector/prompt
+!/prompt/default/     # excepto la carpeta default
+!/prompt/default/**   # y su contenido

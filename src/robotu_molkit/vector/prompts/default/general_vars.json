@@ -1,0 +1,9 @@
+{
+    "preferred_name": "Preferred name of the molecule",
+    "hazard_tag": "Qualitative hazard classification (e.g. high hazard, low hazard)",
+    "solubility_tag": "Qualitative solubility classification (e.g. very soluble, poorly soluble)",
+    "spectra_tag": "Available spectra types (comma-separated, e.g. 1D NMR, UV, Raman)",
+    "notable_peak": "Key UV or MS peak (e.g. 227 nm or 194 m/z)",
+    "cid": "PubChem CID (for reference only)"
+  }
+  
