@@ -12,7 +12,8 @@ from robotu_molkit.constants import (
     DEFAULT_RAW_DIR,
     DEFAULT_PARSED_DIR,
     DEFAULT_CONCURRENCY,
-    EMBED_MODEL_ID,
+    DEFAULT_EMBED_MODEL_ID,
+    DEFAULT_WATSONX_AI_URL,
 )
 from robotu_molkit.ingest.workers import run as _run_workers
 from robotu_molkit.config import load_credentials
@@ -20,46 +21,46 @@ from robotu_molkit.vector.watsonx_index import WatsonxIndex
 
 CONFIG_PATH = Path.home() / ".config" / "molkit" / "config.json"
 
-# CLI principal con descripción general
+# Main CLI with overall description
 desc = "Download and parse molecules from PubChem."
 app = typer.Typer(help=desc, add_completion=False)
 
 @app.command("config")
 def config(
-    api_key: str = typer.Option(..., "--api-key", "-k", help="IBM API Key"),
-    project_id: str = typer.Option(..., "--project-id", "-j", help="IBM Project ID"),
+    api_key: str = typer.Option(..., "--watsonx-api-key", "-k", help="IBM Watsonx API Key"),
+    project_id: str = typer.Option(..., "--watsonx-project-id", "-j", help="IBM Watsonx Project ID"),
 ):
     """
-    Guarda las credenciales IBM en ~/.config/molkit/config.json
+    Save IBM Watsonx credentials to ~/.config/molkit/config.json
     """
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
     CONFIG_PATH.write_text(json.dumps({
         "api_key": api_key,
         "project_id": project_id
     }, indent=2))
-    typer.secho(f"Credenciales guardadas en {CONFIG_PATH}", fg=typer.colors.GREEN)
+    typer.secho(f"Credentials saved to {CONFIG_PATH}", fg=typer.colors.GREEN)
 
 @app.command("ingest")
 def ingest(
     cids: list[int] = typer.Argument(..., help="CID(s) to fetch"),
     file: Path = typer.Option(None, "--file", "-f", help="File with one CID per line"),
-    raw_dir: Path = typer.Option(DEFAULT_RAW_DIR, "--raw-dir", "-r"),
-    parsed_dir: Path = typer.Option(DEFAULT_PARSED_DIR, "--parsed-dir", "-p"),
-    concurrency: int = typer.Option(DEFAULT_CONCURRENCY, "--concurrency", "-c"),
+    raw_dir: Path = typer.Option(DEFAULT_RAW_DIR, "--raw-dir", "-r", help="Directory to save raw JSON files"),
+    parsed_dir: Path = typer.Option(DEFAULT_PARSED_DIR, "--parsed-dir", "-p", help="Directory to save parsed payloads"),
+    concurrency: int = typer.Option(DEFAULT_CONCURRENCY, "--concurrency", "-c", help="Number of concurrent workers"),
     api_key: Optional[str] = typer.Option(
-        None, "--api-key", "-k",
-        help="IBM API Key (override config/envvar)"
+        None, "--watsonx-api-key", "-k",
+        help="IBM Watsonx API Key (override config/envvar)"
     ),
     project_id: Optional[str] = typer.Option(
-        None, "--project-id", "-j",
-        help="IBM Project ID (override config/envvar)"
+        None, "--watsonx-project-id", "-j",
+        help="IBM Watsonx Project ID (override config/envvar)"
     ),
     ibm_url: str = typer.Option(
-        "https://us-south.ml.cloud.ibm.com", "--ibm-url", help="IBM service URL"
+        DEFAULT_WATSONX_AI_URL, "--watsonx-url", help="IBM Watsonx service URL"
     ),
 ):
     """
-    Fetches CID(s) from PubChem, saves raw JSON and parsed Molecule payloads, y genera embeddings con watsonx.ai.
+    Fetch CID(s) from PubChem, save raw JSON and parsed Molecule payloads.
     """
     saved_key, saved_proj = load_credentials()
     api_key = api_key or saved_key
@@ -67,8 +68,8 @@ def ingest(
 
     if not api_key or not project_id:
         typer.secho(
-            "❌ Faltan credenciales IBM: pásalas con --api-key/--project-id, "
-            "o bien ejecuta `molkit config` o define las envvars IBM_API_KEY / IBM_PROJECT_ID.",
+            "❌ Missing IBM Watsonx credentials: pass them with --watsonx-api-key/--watsonx-project-id, "
+            "or run `molkit config` or set the environment variables IBM_API_KEY / IBM_PROJECT_ID.",
             fg=typer.colors.RED,
             err=True
         )
@@ -81,17 +82,10 @@ def ingest(
         typer.secho("❌ No CIDs provided", err=True, fg=typer.colors.RED)
         raise typer.Exit(code=1)
 
-    creds = Credentials(api_key=api_key, url=ibm_url)
-    embed_service = Embeddings(
-        model_id=EMBED_MODEL_ID,
-        credentials=creds,
-        project_id=project_id,
-    )
-
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     logging.info("Starting ingest of %d CIDs...", len(cids))
     try:
-        asyncio.run(_run_workers(cids, raw_dir, parsed_dir, concurrency, embed_service))
+        asyncio.run(_run_workers(cids, raw_dir, parsed_dir, concurrency))
     except KeyboardInterrupt:
         typer.secho("⚠️ Ingest interrupted by user", err=True, fg=typer.colors.YELLOW)
         raise typer.Exit(code=1)
@@ -100,32 +94,32 @@ def ingest(
 
 @app.command("embed")
 def embed_command(
-    cids: list[int] = typer.Option(..., "--cids", "-c", help="Lista de CIDs a procesar."),
+    cids: list[int] = typer.Option(..., "--cids", "-c", help="List of CIDs to process."),
     model: str = typer.Option(
         "granite-embedding-278m-multilingual", "--model", "-m",
-        help="Modelo Granite a usar para embeddings."
+        help="Granite model to use for embeddings."
     ),
-    chunk_size: int = typer.Option(250, "--chunk-size", help="Tamaño de chunk en tokens."),
-    overlap: int = typer.Option(40, "--overlap", help="Tokens de superposición entre chunks."),
-    fast: bool = typer.Option(False, "--fast", help="Alias para usar granite-embedding-107m-multilingual."),
+    chunk_size: int = typer.Option(250, "--chunk-size", help="Token chunk size."),
+    overlap: int = typer.Option(40, "--overlap", help="Token overlap between chunks."),
+    fast: bool = typer.Option(False, "--fast", help="Alias for granite-embedding-107m-multilingual."),
     api_key: Optional[str] = typer.Option(
-        None, "--api-key", "-k", help="IBM API Key (override config/envvar)."
+        None, "--watsonx-api-key", "-k", help="IBM Watsonx API Key (override config/envvar)."
     ),
     project_id: Optional[str] = typer.Option(
-        None, "--project-id", "-j", help="IBM Project ID (override config/envvar)."
+        None, "--watsonx-project-id", "-j", help="IBM Watsonx Project ID (override config/envvar)."
     ),
     ibm_url: str = typer.Option(
-        "https://us-south.ml.cloud.ibm.com", "--ibm-url", help="IBM service URL."
+        DEFAULT_WATSONX_AI_URL, "--watsonx-url", help="IBM Watsonx service URL."
     ),
 ):
     """
-    Genera resúmenes y embeddings con watsonx.ai para los CIDs indicados.
+    Generate summaries and embeddings with Watsonx AI for the given CIDs.
     """
     api_key, project_id = load_credentials(api_key, project_id)
     if not api_key or not project_id:
         typer.secho(
-            "❌ Faltan credenciales IBM: pásalas con --api-key/--project-id, "
-            "o configura ~/.config/molkit/config.json",
+            "❌ Missing IBM Watsonx credentials: pass them with --watsonx-api-key/--watsonx-project-id, "
+            "or configure ~/.config/molkit/config.json",
             err=True,
             fg=typer.colors.RED
         )
@@ -134,7 +128,7 @@ def embed_command(
     if fast:
         model = "granite-embedding-107m-multilingual"
 
-    typer.echo(f"Usando modelo {model}, chunk_size={chunk_size}, overlap={overlap}")
+    typer.echo(f"Using model {model}, chunk_size={chunk_size}, overlap={overlap}")
     index = WatsonxIndex(
         api_key=api_key,
         project_id=project_id,
@@ -144,7 +138,7 @@ def embed_command(
         ibm_url=ibm_url
     )
     index.ingest_cids(cids)
-    typer.secho("✅ Embeddings generados y subidos a Watsonx Vector DB.", fg=typer.colors.GREEN)
+    typer.secho("✅ Embeddings generated and uploaded to Watsonx Vector DB.", fg=typer.colors.GREEN)
 
 
 def main() -> None:
@@ -153,4 +147,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

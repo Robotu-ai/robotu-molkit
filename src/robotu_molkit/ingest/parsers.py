@@ -1,13 +1,9 @@
 # ingest/parsers.py
-
-# ingest/parsers.py
-
 import logging
 import re
 import datetime
 from typing import Any, Dict, List, Optional, Tuple
 from pathlib import Path
-from ibm_watsonx_ai.foundation_models import Embeddings
 
 # RDKit availability
 try:
@@ -57,7 +53,6 @@ def build_parsed(
     synonyms: Optional[Dict[str, Any]],
     props: Optional[Dict[str, Any]],
     view: Optional[Dict[str, Any]],
-    embed_service: Optional[Embeddings],
     cid: int,
     raw_path: Path,
 ) -> Dict[str, Any]:
@@ -166,14 +161,6 @@ def build_parsed(
         except Exception as e:
             logging.warning("Fingerprint error: %s", e)
 
-    # --- Embeddings ---
-    struct_emb = None
-    if embed_service and smiles:
-        try:
-            struct_emb = embed_service.embed_documents(texts=[smiles])[0]
-        except Exception as e:
-            logging.warning("Embedding error: %s", e)
-
     # --- Assemble final JSON ---
     return {
         "structure": {"xyz": xyz, "atom_symbols": atom_symbols, "bond_orders": bond_orders,
@@ -187,7 +174,7 @@ def build_parsed(
         "solubility": {"logp": logp, "logs": logs, "pka": pka_vals},
         "search": {"cid": cid, "inchi": p.get("InChI"), "inchikey": p.get("InChIKey"),
                     "smiles": smiles, "ecfp": ecfp, "maccs": maccs,
-                    "embeddings": {"summary": None, "structure": struct_emb}},
+                    "embeddings": {"summary": None, "structure": None}},
         "names": {"preferred": preferred, "cas_like": cas_like,
                   "systematic": None, "traditional": None, "synonyms": syns},
         "meta": {"fetched": datetime.datetime.utcnow().isoformat() + "Z",

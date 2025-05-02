@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 
 from ibm_watsonx_ai import Credentials
 from ibm_watsonx_ai.foundation_models import Embeddings
+from robotu_molkit.constants import DEFAULT_EMBED_MODEL_ID, DEFAULT_WATSONX_AI_URL
 
 class WatsonxIndex:
     """
@@ -15,8 +16,8 @@ class WatsonxIndex:
         self,
         api_key: str,
         project_id: str,
-        ibm_url: str = "https://us-south.ml.cloud.ibm.com",
-        model: str = "granite-embedding-278m-multilingual",
+        ibm_url: str = DEFAULT_WATSONX_AI_URL,
+        model: str = DEFAULT_EMBED_MODEL_ID,
         chunk_size: int = 250,
         overlap: int = 40,
     ):

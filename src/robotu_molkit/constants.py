@@ -15,4 +15,5 @@ PROPERTIES_API = (
     "CanonicalSMILES,InChI,InChIKey,XLogP,Charge/JSON"
 )
 PUG_VIEW_API = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{cid}/JSON"
-EMBED_MODEL_ID = "ibm/slate-30m-english-rtrvr"
+DEFAULT_EMBED_MODEL_ID = "ibm/granite-embedding-278m-multilingual"
+DEFAULT_WATSONX_AI_URL = "https://us-south.ml.cloud.ibm.com"
