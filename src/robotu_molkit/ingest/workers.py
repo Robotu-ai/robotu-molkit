@@ -15,7 +15,7 @@ from ibm_watsonx_ai.foundation_models import Embeddings
 import re
 
 async def process_cid(
-    cid: str,
+    cid: int,
     session: aiohttp.ClientSession,
     raw_dir: Path,
     parsed_dir: Path,
@@ -60,7 +60,7 @@ async def worker(
             queue.task_done()
 
 async def run(
-    cids: List[str],
+    cids: List[int],
     raw_dir: Path,
     parsed_dir: Path,
     concurrency: int,
@@ -71,8 +71,7 @@ async def run(
 
     queue: asyncio.Queue = asyncio.Queue()
     for cid in cids:
-        if re.fullmatch(r"\d+", cid):
-            queue.put_nowait(cid)
+        queue.put_nowait(cid)
     for _ in range(concurrency):
         queue.put_nowait(None)
 

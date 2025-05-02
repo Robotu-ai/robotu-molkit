@@ -28,6 +28,7 @@ classifiers = [
 ]
 
 dependencies = [
+  "typer[all]>=0.12"
 ]
 
 [project.optional-dependencies]
@@ -62,4 +63,4 @@ allow_untyped_defs = true
 disable_error_code = "attr-defined"
 
 [project.scripts]
-robotu-molkit-ingest = "robotu_molkit.cli.ingest:main"
+molkit = "robotu_molkit.cli:app"
