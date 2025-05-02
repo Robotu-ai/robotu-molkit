@@ -115,7 +115,7 @@ def embed_command(
         overlap=overlap,
         ibm_url=ibm_url
     )
-    index.ingest_cids(cids)
+    index.ingest_cids(cids, DEFAULT_PARSED_DIR)
     typer.secho("✅ Embeddings generated and uploaded to Watsonx Vector DB.", fg=typer.colors.GREEN)
 
 

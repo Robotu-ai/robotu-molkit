@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+import logging
 
 from ibm_watsonx_ai import Credentials
 from ibm_watsonx_ai.foundation_models import Embeddings
@@ -44,7 +45,7 @@ class WatsonxIndex:
           4. (TODO) Sube cada vector con metadatos a Watsonx Vector DB.
         """
         for cid in cids:
-            path = Path(parsed_dir) / f"{cid}.json"
+            path = Path(parsed_dir) / f"pubchem_{cid}.json"
             if not path.exists():
                 raise FileNotFoundError(f"No se encontró el archivo para CID {cid}: {path}")
             data = json.loads(path.read_text())
@@ -83,9 +84,13 @@ class WatsonxIndex:
         """
         Llama al servicio de embeddings de Watsonx y devuelve la lista de vectores.
         """
-        response = self.embed_service.create(inputs=texts)
-        # Asumimos que `response.embeddings` es la lista de vectores devueltos
-        return [emb.vector for emb in response.embeddings]
+        vector = None
+        try:
+            vector = self.embed_service.embed_documents(texts=texts)[0]
+            print("Vector:", vector)
+        except Exception as e:
+            logging.warning("Embedding error: %s", e)
+        return vector
 
     def _iter_sections(self, data: Dict[str, Any]) -> List[Any]:
         """
