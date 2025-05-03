@@ -179,7 +179,9 @@ cython_debug/
 # Molecules Examples
 data/
 
-# Prompts given by user
-/src/robotu_molkit/vector/prompts/*            # ignora todo en vector/prompt
-!/src/robotu_molkit/vector/prompts/default/     # excepto la carpeta default
-!/src/robotu_molkit/vector/prompts/default/**   # y su contenido
+# Ignor All inside vector/prompts
+src/robotu_molkit/vector/prompts/*
+
+# but not ignore de file default in prompts
+!src/robotu_molkit/vector/prompts/default/
+!src/robotu_molkit/vector/prompts/default/**
