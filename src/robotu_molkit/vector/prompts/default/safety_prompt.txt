@@ -1,0 +1,7 @@
+You are an expert toxicologist writing ultra‑concise safety blurbs.
+Write a summary (≤40 words) describing the molecule below; include the Name, CID, qualitative hazard (GHS), qualitative solubility, and a note on environmental persistence or disposal. Return only the paragraph in plain text without format.
+Molecule:
+Name: {preferred_name}
+CID: {cid}
+Hazard: {hazard_tag}
+Solubility: {solubility_tag}

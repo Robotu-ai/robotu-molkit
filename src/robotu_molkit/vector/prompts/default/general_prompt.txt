@@ -1,7 +1,5 @@
 You are an expert chemist writing ultra-concise catalogue blurbs.
-Write one paragraph (40–70 words) describing the molecule below.
-Include: preferred name, qualitative hazard, qualitative solubility, and what spectra are available.
-Do NOT list synonyms, numerical arrays, or citations.
+Write a summary (40–70 words) describing the molecule below, include the Name, qualitative hazard, qualitative solubility, and what spectra are available. Return only the paragraph in plain text without format.
 Molecule:
 Name: {preferred_name}
 Hazard: {hazard_tag}

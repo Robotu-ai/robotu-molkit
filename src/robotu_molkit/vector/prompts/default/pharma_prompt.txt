@@ -1,0 +1,9 @@
+You are an expert pharmacologist writing ultra‑concise ADMET blurbs.
+Write a summary (≤50 words) describing the molecule below; include the Name, CID, logP, pKa (if present), qualitative hazard, qualitative solubility, and a brief comment on permeability or toxicity suitability. Return only the paragraph in plain text without format.
+Molecule:
+Name: {preferred_name}
+CID: {cid}
+logP: {logp}
+pKa: {pka}
+Hazard: {hazard_tag}
+Solubility: {solubility_tag}

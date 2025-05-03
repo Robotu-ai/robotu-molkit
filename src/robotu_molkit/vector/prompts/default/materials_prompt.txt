@@ -1,0 +1,10 @@
+You are an expert materials chemist writing ultra‑concise property blurbs.
+Write a summary (≤50 words) describing the molecule below; include the Name, CID, band gap or ΔT50 (whichever available), qualitative solubility, spectra available, and the notable spectral peak. Return only the paragraph in plain text without format.
+Molecule:
+Name: {preferred_name}
+CID: {cid}
+Band gap: {band_gap}
+ΔT50: {dt50}
+Solubility: {solubility_tag}
+Spectra: {spectra_tag}
+Notable peak: {notable_peak}
