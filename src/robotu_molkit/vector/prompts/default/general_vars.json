@@ -1,0 +1,13 @@
+{
+  "preferred_name": "Preferred IUPAC or common name of the molecule",
+  "alias_tag": "One or two common synonyms (comma‑separated, or 'n.a.')",
+  "cid": "PubChem CID (numeric string, reference only)",
+  "chem_tag": "Primary chemical / usage class (e.g. purine alkaloid, organophosphate)",
+  
+  "hazard_tag": "Qualitative hazard + GHS pictogram text (e.g. harmful if swallowed; pictogram: exclamation)",
+  "solubility_tag": "Qualitative solubility class derived from logS (e.g. very soluble, sparingly soluble)",
+  "logp": "Numeric logP value as string, or 'n.a.'",
+  
+  "spectra_tag": "Available spectra types (comma‑separated, e.g. 1D NMR, 2D NMR, MS, UV, IR, Raman)",
+  "notable_peak": "Key UV λmax or MS m/z peak (e.g. 274 nm or m/z 194)"
+}

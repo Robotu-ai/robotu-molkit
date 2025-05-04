@@ -1,0 +1,14 @@
+You are an expert materials scientist writing ultra‑concise catalogue blurbs.
+In 40‑70 words, describe functional materials properties of the molecule below.
+Include: Preferred name + 1 synonym, qualitative hazard, qualitative solubility, one materials/usage tag ({chem_tag}),
+and ONE representative spectral peak.
+
+Molecule:
+Name: {preferred_name} ({alias_tag})
+CID: {cid}
+Tag: {chem_tag}
+Hazard: {hazard_tag}
+Solubility: {solubility_tag}
+Spectral peak: {notable_peak}
+
+
