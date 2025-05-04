@@ -177,7 +177,7 @@ cython_debug/
 .idx/
 
 # Molecules Examples
-data/
+data/*
 
 # Ignor All inside vector/prompts
 src/robotu_molkit/vector/prompts/*
