@@ -246,9 +246,6 @@ class SummaryGenerator:
         logp_val = sol.get("logp")
         logp_str = f"{logp_val:.2f}" if isinstance(logp_val, (int, float)) else "n.a."
 
-        pka_vals = sol.get("pka", []) or []
-        pka_str  = ", ".join(map(str, pka_vals)) if pka_vals else "n.a."
-
         # ------------------------------------------------------------------
         # Espectros y pico característico
         # ------------------------------------------------------------------
@@ -289,7 +286,6 @@ class SummaryGenerator:
             "hazard_tag": hazard_tag,
             "solubility_tag": solubility_tag,
             "logp": logp_str,
-            "pka": pka_str,
             "spectra_tag": spectra_tag,
             "notable_peak": notable_peak,
             "band_gap": str(thermo.get("band_gap", "n.a.")),
