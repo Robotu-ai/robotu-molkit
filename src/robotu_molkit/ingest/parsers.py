@@ -29,6 +29,7 @@ import requests
 try:
     from rdkit import Chem
     from rdkit.Chem import AllChem, MACCSkeys, Descriptors
+    from rdkit.Chem import rdMolDescriptors as rdDesc
     RDKit_OK = True
 except Exception as e:
     logging.warning(
@@ -216,7 +217,7 @@ def extract_ontology_terms(view: Dict[str, Any]) -> List[str]:
                     t = _clean_term(raw)
                     if t and "trimethylxanthine" in t:
                         seen.add(t); terms.insert(0, t)
-    return terms
+    return list(dict.fromkeys(terms))
 
 
 def _derive_chem_tag(smiles: str, ontology: List[str]) -> str:
@@ -224,12 +225,27 @@ def _derive_chem_tag(smiles: str, ontology: List[str]) -> str:
     Derive a simple chemical classification tag.
 
     Priority:
-      1) First two ontology terms, if available.
+      1) First two ontology terms (split on 'and', strip articles, deduped).
       2) SMARTS-based heuristics for organophosphates, halogenated aromatics, hydrocarbons.
       3) 'unclassified compound'.
     """
     if ontology:
-        return ", ".join(ontology[:2])
+        # 1) de-dup and preserve order
+        unique = list(dict.fromkeys(ontology))
+
+        # 2) split multi-part tags on 'and', strip leading articles
+        parts: List[str] = []
+        for tag in unique:
+            for sub in tag.split(" and "):
+                # remove leading 'a ' or 'an '
+                clean = re.sub(r'^(?:a|an)\s+', "", sub.strip(), flags=re.I)
+                parts.append(clean)
+        # 3) re-dedupe
+        parts = list(dict.fromkeys(parts))
+
+        return ", ".join(parts[:2])
+
+    # fallback to SMARTS heuristics
     m = Chem.MolFromSmiles(smiles) if RDKit_OK else None
     if m:
         if m.HasSubstructMatch(Chem.MolFromSmarts("P(=O)(O)O")):
@@ -336,7 +352,7 @@ def build_parsed(
     # 3) Predict solubility (ESOL method via RDKit)
     # --------------------------------------------------
     logs = esol_logS(smiles) if RDKit_OK and smiles else None
-    
+
     # pKa prediction is disabled by default.
     # It's crucial for understanding ionization, solubility, and bioavailability,
     # but not yet included due to the lack of a reliable, open-source predictor.
@@ -362,7 +378,18 @@ def build_parsed(
 
     # 4-c) Spectral information
     spectral_sections = find_section(view_sections, "Spectral Information").get("Section", [])
-    spectra_raw = {sub.get("TOCHeading"): sub.get("Information", []) for sub in spectral_sections}
+    
+    _heading_map = {
+        "Raman spectra available": "Raman",
+        "Other spectra available": "Other available",
+    }
+
+    spectra_raw = {
+        # look up the TOCHeading in our map, default to itself if not found
+        _heading_map.get(sub.get("TOCHeading", ""), sub.get("TOCHeading", ""))  
+        : sub.get("Information", [])
+        for sub in spectral_sections
+    }
 
     # --------------------------------------------------
     # 5) Extract synonyms and preferred names
@@ -378,24 +405,65 @@ def build_parsed(
     if RDKit_OK and smiles:
         try:
             mol = Chem.MolFromSmiles(smiles)
-            try:
-                from rdkit.Chem.AllChem import MorganGenerator
-                fp = MorganGenerator(radius=2).GetFingerprint(mol)
-                ecfp = fp.ToBitString()
-            except Exception:
-                ecfp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048).ToBitString()
-            maccs = MACCSkeys.GenMACCSKeys(mol).ToBitString()
+            # Generate 1024-bit Morgan fingerprint and extract on-bit indices
+            bv = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=1024)
+            ecfp = list(bv.GetOnBits())
+            # Generate MACCS keys (166 bits) and extract on-bit indices
+            maccs_bv = MACCSkeys.GenMACCSKeys(mol)
+            maccs = list(maccs_bv.GetOnBits())
         except Exception as e:
             logging.warning("Fingerprint generation failed for CID %s: %s", cid, e)
 
     # --------------------------------------------------
-    # 7) Ontology term extraction and chemical tagging
+    # 7) Compute extra RDKit‐based descriptors for querying
+    # --------------------------------------------------
+    # Note: requires rdDesc and Descriptors imports
+    mw            = None
+    formula       = None
+    heavy_atom_ct = None
+    hbd           = None
+    hba           = None
+    rotors        = None
+    ring_cnt      = None
+    arom_ring_cnt = None
+    tpsa          = None
+    fsp3          = None
+    bertz_ct      = None
+
+    if RDKit_OK and smiles:
+        try:
+            mol = Chem.MolFromSmiles(smiles)
+            # molecular formula & weight
+            formula       = rdDesc.CalcMolFormula(mol)
+            mw            = Descriptors.MolWt(mol)
+            # heavy‐atom count
+            heavy_atom_ct = mol.GetNumHeavyAtoms()
+            # H‐bond donors/acceptors
+            hbd = rdDesc.CalcNumHBD(mol)
+            hba = rdDesc.CalcNumHBA(mol)
+            # rotatable bonds
+            rotors = Descriptors.NumRotatableBonds(mol)
+            # rings & aromatic ring count
+            ring_cnt      = rdDesc.CalcNumRings(mol)
+            arom_ring_cnt = sum(
+                1 for ring in mol.GetRingInfo().AtomRings()
+                if all(mol.GetAtomWithIdx(i).GetIsAromatic() for i in ring)
+            )
+            # TPSA, Fsp3 and Bertz complexity
+            tpsa     = rdDesc.CalcTPSA(mol)
+            fsp3     = rdDesc.CalcFractionCSP3(mol)
+            bertz_ct = Descriptors.BertzCT(mol)
+        except Exception as e:
+            logging.warning("Descriptor calculation failed for CID %s: %s", cid, e)
+
+    # --------------------------------------------------
+    # 8) Ontology term extraction and chemical tagging
     # --------------------------------------------------
     ontology_terms = extract_ontology_terms(view) if view else []
     chem_tag = _derive_chem_tag(smiles, ontology_terms)
 
     # --------------------------------------------------
-    # 8) Final assembly into Molecule JSON
+    # 9) Final assembly into Molecule JSON
     # --------------------------------------------------
     molecule = {
         "structure": {
@@ -427,9 +495,19 @@ def build_parsed(
             "inchi": props_entry.get("InChI"),
             "inchikey": props_entry.get("InChIKey"),
             "smiles": smiles,
+            "molecular_weight": mw,
+            "formula": formula,
+            "heavy_atom_count": heavy_atom_ct,
+            "hbond_donors": hbd,
+            "hbond_acceptors": hba,
+            "rotatable_bonds": rotors,
+            "ring_count": ring_cnt,
+            "aromatic_ring_count": arom_ring_cnt,
+            "tpsa": tpsa,
+            "fsp3": fsp3,
+            "bertz_ct": bertz_ct,
             "ecfp": ecfp,
             "maccs": maccs,
-            "embeddings": {"summary": None, "structure": None},
         },
         "names": {
             "preferred": preferred_name,
