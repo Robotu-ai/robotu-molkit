@@ -72,51 +72,63 @@ def ingest(
 
 @app.command("embed")
 def embed_command(
-    cids: list[int] = typer.Option(..., "--cids", "-c", help="List of CIDs to process."),
+    parsed_dir: Path = typer.Option(
+        "data/parsed", "--parsed-dir", "-p",
+        help="Folder with parsed PubChem JSON files (e.g. pubchem_*.json)."
+    ),
+    out_dir: Path = typer.Option(
+        "data/vectors", "--out-dir", "-o",
+        help="Destination folder for watsonx_vectors.jsonl."
+    ),
     model: str = typer.Option(
         DEFAULT_EMBED_MODEL_ID, "--model", "-m",
-        help="Granite model id to use for embeddings. Check https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models-embed.html?context=wx&audience=wdp#ibm-provided"
+        help="Granite embedding model id."
     ),
-    chunk_size: int = typer.Option(250, "--chunk-size", help="Token chunk size."),
-    overlap: int = typer.Option(40, "--overlap", help="Token overlap between chunks."),
-    fast: bool = typer.Option(False, "--fast", help="Alias for granite-embedding-107m-multilingual."),
+    fast: bool = typer.Option(
+        False, "--fast",
+        help="Shortcut for granite-embedding-107m-multilingual."
+    ),
     api_key: Optional[str] = typer.Option(
-        None, "--watsonx-api-key", "-k", help="IBM Watsonx API Key (override config/envvar)."
+        None, "--watsonx-api-key", "-k",
+        help="IBM Watsonx API Key (override config/env var)."
     ),
     project_id: Optional[str] = typer.Option(
-        None, "--watsonx-project-id", "-j", help="IBM Watsonx Project ID (override config/envvar)."
+        None, "--watsonx-project-id", "-j",
+        help="IBM Watsonx Project ID (override config/env var)."
     ),
     ibm_url: str = typer.Option(
-        DEFAULT_WATSONX_AI_URL, "--watsonx-url", help="IBM Watsonx service URL."
+        DEFAULT_WATSONX_AI_URL, "--watsonx-url",
+        help="IBM Watsonx inference URL."
     ),
 ):
     """
-    Generate summaries and embeddings with Watsonx AI for the given CIDs.
+    Generate a single “general” summary and embedding for **every** parsed
+    PubChem JSON in PARSED_DIR and save them to a JSONL file that can later be
+    bulk‑uploaded to Watsonx Vector DB.
     """
     api_key, project_id = load_credentials(api_key, project_id)
     if not api_key or not project_id:
         typer.secho(
-            "❌ Missing IBM Watsonx credentials: pass them with --watsonx-api-key/--watsonx-project-id, "
-            "or configure ~/.config/molkit/config.json",
+            "❌  Missing IBM Watsonx credentials.  Pass them via "
+            "--watsonx-api-key / --watsonx-project-id or run `molkit config`.",
+            fg=typer.colors.RED,
             err=True,
-            fg=typer.colors.RED
         )
-        raise typer.Exit(code=1)
+        raise typer.Exit(1)
 
     if fast:
         model = FAST_EMBED_MODEL_ID
 
-    typer.echo(f"Using model {model}, chunk_size={chunk_size}, overlap={overlap}")
-    index = WatsonxIndex(
+    typer.echo(f"Embedding model: {model}")
+    idx = WatsonxIndex(
         api_key=api_key,
         project_id=project_id,
         model=model,
-        chunk_size=chunk_size,
-        overlap=overlap,
-        ibm_url=ibm_url
+        ibm_url=ibm_url,
     )
-    index.ingest_cids(cids, DEFAULT_PARSED_DIR)
-    typer.secho("✅ Embeddings generated and uploaded to Watsonx Vector DB.", fg=typer.colors.GREEN)
+
+    jsonl_path = idx.ingest_folder(parsed_dir=parsed_dir, out_dir=out_dir)
+    typer.secho(f"✅  Embeddings written to {jsonl_path}", fg=typer.colors.GREEN)
 
 
 def main() -> None:

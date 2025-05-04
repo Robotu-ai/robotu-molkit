@@ -1,124 +1,172 @@
+
+# watsonx_index.py  –  streamlined, folder‑based ingestor
 import json
+import logging
+import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-import logging
 
 from ibm_watsonx_ai import Credentials
 from ibm_watsonx_ai.foundation_models import Embeddings
 from robotu_molkit.constants import DEFAULT_EMBED_MODEL_ID, DEFAULT_WATSONX_AI_URL
+from robotu_molkit.vector.summary_generator import SummaryGenerator
+
+CID_RE = re.compile(r"(\d+)")          # captures digits in “pubchem_2519.json”
+
 
 class WatsonxIndex:
     """
-    Class to manage embedding ingestion and search operations in Watsonx Vector DB.
+    Walk through a folder with parsed PubChem JSON files and create a
+    JSONL file containing: {"cid": …, "vector": […], "text": …} for each molecule.
     """
+
     def __init__(
         self,
         api_key: str,
         project_id: str,
         ibm_url: str = DEFAULT_WATSONX_AI_URL,
         model: str = DEFAULT_EMBED_MODEL_ID,
-        chunk_size: int = 250,
-        overlap: int = 40,
-    ):
-        # Credentials and embedding service
-        self.credentials = Credentials(api_key=api_key, url=ibm_url)
-        self.embed_service = Embeddings(
+    ) -> None:
+        # Watsonx embedding client
+        self.embedder = Embeddings(
             model_id=model,
-            credentials=self.credentials,
+            credentials=Credentials(api_key=api_key, url=ibm_url),
             project_id=project_id,
         )
-        self.chunk_size = chunk_size
-        self.overlap = overlap
+        # Generates the single “general” blurb; credentials auto‑loaded
+        self.sg = SummaryGenerator()
 
-    def ingest_cids(
+    # ------------------------------------------------------------------ #
+    # Folder ingestion                                                   #
+    # ------------------------------------------------------------------ #
+    def ingest_folder(
         self,
-        cids: List[int],
         parsed_dir: Path,
-    ) -> None:
+        out_dir: Path = Path("data/vectors"),
+        pattern: str = "pubchem_*.json",
+    ) -> Path:
         """
-        For each CID:
-          1. Load the parsed JSON (parsed_dir/{cid}.json).
-          2. Generate a global summary and its embedding.
-          3. Split each thematic section into chunks and generate embeddings.
-          4. (TODO) Upload each vector with metadata to Watsonx Vector DB.
+        • Scan `parsed_dir` for JSON files matching *pattern*.
+        • For each file:
+            1. Build a general summary.
+            2. Get its embedding vector.
+            3. Extract filterable metadata from the same parsed JSON.
+            4. Append one JSON line to <out_dir>/watsonx_vectors.jsonl
+        Returns the path to the resulting JSONL file.
         """
-        for cid in cids:
-            path = Path(parsed_dir) / f"pubchem_{cid}.json"
-            if not path.exists():
-                raise FileNotFoundError(f"File not found for CID {cid}: {path}")
-            data = json.loads(path.read_text())
+        files = list(parsed_dir.glob(pattern))
+        if not files:
+            raise FileNotFoundError(
+                f"No parsed JSON found in {parsed_dir} using pattern '{pattern}'"
+            )
 
-            # 1) Global summary
-            summary_text = self._generate_summary(data)
-            summary_emb = self._get_embeddings([summary_text])[0]
-            # TODO: upload summary_emb with metadata {"cid": cid, "section": "summary"}
+        out_dir.mkdir(parents=True, exist_ok=True)
+        jsonl_path = out_dir / "watsonx_vectors.jsonl"
 
-            # 2) Thematic sections
-            for section, text in self._iter_sections(data):
-                chunks = self._chunk_text(text)
-                embeddings = self._get_embeddings(chunks)
-                for chunk, emb in zip(chunks, embeddings):
-                    # TODO: upload emb with metadata {"cid": cid, "section": section}
-                    pass
+        with jsonl_path.open("w", encoding="utf-8") as sink:
+            for file_path in files:
+                cid = self._cid_from_filename(file_path)
+                if cid is None:
+                    logging.warning("Skipping file without CID in name: %s", file_path.name)
+                    continue
 
-    def search(
-        self,
-        query: str,
-        top_k: int = 10,
-        filters: Optional[Dict[str, Any]] = None,
-    ) -> List[Dict[str, Any]]:
+                data = json.loads(file_path.read_text())
+
+                # 1) Summary
+                summary = self.sg.generate_general_summary(data)
+                if not summary:
+                    logging.warning("Empty summary for CID %s – skipped", cid)
+                    continue
+
+                # 2) Embedding
+                vector = self._embed(summary)
+                if vector is None:
+                    continue
+
+                # 3) Metadata extraction
+                search  = data.get("search", {})
+                sol     = data.get("solubility", {})
+                safety  = data.get("safety", {})
+                thermo  = data.get("thermo", {})
+                meta    = data.get("meta", {})
+                spectra = data.get("spectra", {}).get("raw", {}) or {}
+                pka_vals = sol.get("pka", []) or []
+
+                # 4) Expectra interpretation 
+                spectra_tag, notable_peak = self.sg.format_spectra_info(spectra)
+
+                record: Dict[str, Any] = {
+                    # identifiers & summary/vector
+                    "cid":      cid,
+                    "summary":  summary,
+                    "vector":   vector,
+
+                    # search‐section fields
+                    "inchi":                search.get("inchi"),
+                    "inchikey":             search.get("inchikey"),
+                    "smiles":               search.get("smiles"),
+                    "molecular_weight":     search.get("molecular_weight"),
+                    "formula":              search.get("formula"),
+                    "heavy_atom_count":     search.get("heavy_atom_count"),
+                    "hbond_donors":         search.get("hbond_donors"),
+                    "hbond_acceptors":      search.get("hbond_acceptors"),
+                    "rotatable_bonds":      search.get("rotatable_bonds"),
+                    "ring_count":           search.get("ring_count"),
+                    "aromatic_ring_count":  search.get("aromatic_ring_count"),
+                    "tpsa":                 search.get("tpsa"),
+                    "fsp3":                 search.get("fsp3"),
+                    "bertz_ct":             search.get("bertz_ct"),
+
+                    # fingerprint arrays
+                    "ecfp":  search.get("ecfp", []),
+                    "maccs": search.get("maccs", []),
+
+                    # quantitative metadata
+                    "logp":      sol.get("logp"),
+                    "logS":      sol.get("logs"),
+
+                    # qualitative tags
+                    "hazard_tag":     self.sg._qualitative_hazard(safety.get("ghs_codes", [])),
+                    "solubility_tag": self.sg._qualitative_sol(sol.get("logs")),
+                    "spectra_tag":    data.get("spectra", {}).get("raw", {}) and 
+                                        ", ".join(k.replace(" Spectra", "") for k in data["spectra"]["raw"].keys()) 
+                                        + " spectra available" 
+                                    or "no spectra available",
+                    "chem_tag":    meta.get("chem_tag", []),
+                    "ghs_codes":   safety.get("ghs_codes", []),
+                }
+                sink.write(json.dumps(record) + "\n")
+
+        logging.info("Vector JSONL created → %s  (%d molecules)", jsonl_path, len(files))
+        return jsonl_path
+
+
+    # ------------------------------------------------------------------ #
+    # Search stub                                                        #
+    # ------------------------------------------------------------------ #
+    def search(self, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
         """
-        Executes an embedding search:
-          - Obtains the embedding for the query.
-          - Calls Watsonx Vector DB with any provided filters.
-          - Returns a list of hits grouped by CID.
+        Placeholder – integrate with Watsonx Vector DB later.
         """
-        q_emb = self._get_embeddings([query])[0]
-        # TODO: implement real call to the vector index:
-        # response = self.vector_db.query(...)
+        logging.info("Search('%s', top_k=%d) – not implemented yet.", query, top_k)
         return []
 
-    def _get_embeddings(self, texts: List[str]) -> List[List[float]]:
+    # ------------------------------------------------------------------ #
+    # Helpers                                                            #
+    # ------------------------------------------------------------------ #
+    @staticmethod
+    def _cid_from_filename(path: Path) -> Optional[int]:
+        """Extracts the CID from filenames like 'pubchem_2519.json'."""
+        m = CID_RE.search(path.stem)
+        return int(m.group(1)) if m else None
+
+    def _embed(self, text: str) -> Optional[List[float]]:
         """
-        Calls the Watsonx embedding service and returns the list of vectors.
+        Return the embedding vector for a single text string.
         """
-        vector = None
         try:
-            vector = self.embed_service.embed_documents(texts=texts)[0]
-            print("Vector:", vector)
-        except Exception as e:
-            logging.warning("Embedding error: %s", e)
-        return vector
-
-    def _iter_sections(self, data: Dict[str, Any]):
-        """
-        Generates (section, text) pairs for the molecule categories.
-        """
-        sections = ["structure", "safety", "spectra", "solubility", "search"]
-        for sec in sections:
-            text = json.dumps(data.get(sec, {}))
-            yield sec, text
-
-    def _chunk_text(self, text: str) -> List[str]:
-        """
-        Splits the text into chunks of `chunk_size` tokens with `overlap`.
-        """
-        tokens = text.split()
-        step = self.chunk_size - self.overlap
-        chunks: List[str] = []
-        for i in range(0, len(tokens), step):
-            chunk = " ".join(tokens[i : i + self.chunk_size])
-            chunks.append(chunk)
-            if i + self.chunk_size >= len(tokens):
-                break
-        return chunks
-
-    def _generate_summary(self, data: Dict[str, Any]) -> str:
-        """
-        Generates a global summary of the molecule (40–70 words).
-        Implement your own logic here or call a generative model.
-        """
-        name = data.get("names", {}).get("preferred", "Unknown")
-        cid = data.get("search", {}).get("cid")
-        return f"Molecule {name} (CID {cid}): summary placeholder."
-
+            # Watsonx expects a list of strings; take the first (and only) vector.
+            return self.embedder.embed_documents(texts=[text])[0]
+        except Exception as exc:          # pylint: disable=broad-except
+            logging.warning("Embedding error: %s", exc)
+            return None
