@@ -1,25 +1,53 @@
-# ingest/parsers.py
+"""
+ingest/parsers.py
+
+Parsers and utility functions for ingesting and processing PubChem PUG-REST and PUG-View JSON.
+
+Responsibilities:
+  • Locate and extract sections by TOC headings.
+  • Normalize numeric values from nested information blocks.
+  • Parse GHS hazard codes with filtering by notification percentage.
+  • Walk deep record trees to collect ontology terms and clean them.
+  • Derive a simple chemical tag based on ontology or SMARTS patterns.
+
+Requirements:
+  • Conform to PubChem request limits (≤ 5 requests/s, ≤ 400 requests/min).
+  • RDKit installed for descriptor and fingerprint support; falls back gracefully.
+  • Logging enabled for missing features or extraction failures.
+
+"""
 import logging
-import re, json
+import re
 import datetime
+import json
 from typing import Any, Dict, List, Optional, Tuple
 from pathlib import Path
 
-from collections import OrderedDict
 import requests
 
-# RDKit availability
+# RDKit availability flag and imports
 try:
     from rdkit import Chem
     from rdkit.Chem import AllChem, MACCSkeys, Descriptors
     RDKit_OK = True
 except Exception as e:
-    logging.warning("RDKit unavailable – chemical descriptors and fingerprints disabled (%s)", e)
+    logging.warning(
+        "RDKit unavailable: chemical descriptors and fingerprints disabled (%s)", e
+    )
     RDKit_OK = False
 
-# ESOL model for logS
+# ESOL solubility estimator: calculates logS from SMILES
 if RDKit_OK:
     def esol_logS(smiles: str) -> float:
+        """
+        Estimate aqueous solubility (logS) using the ESOL method:
+          logS = 0.16 - 0.63*logP - 0.0062*MW + 0.066*RB - 0.74*aromatic_fraction
+
+        Parameters:
+            smiles (str): Canonical SMILES string.
+        Returns:
+            float: Predicted log10(solubility) in mol/L.
+        """
         m = Chem.MolFromSmiles(smiles)
         logP = Descriptors.MolLogP(m)
         mw   = Descriptors.MolWt(m)
@@ -27,12 +55,20 @@ if RDKit_OK:
         ap   = sum(atom.GetIsAromatic() for atom in m.GetAtoms()) / m.GetNumHeavyAtoms()
         return 0.16 - 0.63*logP - 0.0062*mw + 0.066*rb - 0.74*ap
 
-# pKa predictor disabled – not available via pip
+# pKa predictions disabled (no supported model)
 PKA_OK = False
 
 
-
 def find_section(sections: List[Dict[str, Any]], heading: str) -> Dict[str, Any]:
+    """
+    Recursively search a list of PubChem 'Section' dicts for a TOCHeading.
+
+    Parameters:
+        sections (List[Dict[str, Any]]): List of section dictionaries.
+        heading (str): Exact TOCHeading text to locate.
+    Returns:
+        Dict[str, Any]: The matching section dict, or empty dict if not found.
+    """
     for sec in sections:
         if sec.get("TOCHeading") == heading:
             return sec
@@ -43,6 +79,15 @@ def find_section(sections: List[Dict[str, Any]], heading: str) -> Dict[str, Any]
 
 
 def _extract_number(info: List[Dict[str, Any]], key: str) -> Optional[float]:
+    """
+    Find a numeric value by its label in a PubChem 'Information' list.
+
+    Parameters:
+        info (List[Dict[str, Any]]): List of 'Information' entries.
+        key (str): The Name field to match.
+    Returns:
+        Optional[float]: Extracted number or None if missing.
+    """
     for entry in info:
         if entry.get("Name") == key:
             num = entry.get("Value", {}).get("Number")
@@ -50,143 +95,149 @@ def _extract_number(info: List[Dict[str, Any]], key: str) -> Optional[float]:
                 return num.get("Value")
     return None
 
-#–––  regex  ––––––––––––––––––––––––––––––––––––––––––
-# Hnnn followed by a required percentage, e.g. “H302 (98.9%)”
+# Regex for GHS hazard codes: Hnnn (percent %)
 _H_RX = re.compile(r"\b(H\d{3})(?!\+)\s*\((\d+(?:\.\d+)?)%\)")
 
-def extract_h_codes(view_secs: List[Dict[str, Any]], min_pct: float = 10.0) -> List[str]:
+def extract_h_codes(
+    view_secs: List[Dict[str, Any]],
+    min_pct: float = 10.0
+) -> List[str]:
     """
-    Return a sorted list of unique GHS H‑codes whose notification percentage
-    is >= min_pct.  P‑codes and other entries are ignored entirely.
+    Extract GHS H-codes with notification percentages above a threshold.
+
+    Parameters:
+        view_secs (List[Dict[str, Any]]): Sections from PUG-View 'Record'.
+        min_pct (float): Minimum percentage to include a code.
+    Returns:
+        List[str]: Sorted unique list of H-codes (e.g. ['H302', 'H314']).
     """
     ghs = find_section(view_secs, "GHS Classification")
     if not ghs:
         return []
 
-    hazard: set[str] = set()
-
+    codes: set[str] = set()
     for info in ghs.get("Information", []):
         if info.get("Name") != "GHS Hazard Statements":
             continue
-
         text = " ".join(
-            sm.get("String", "")
-            for sm in info.get("Value", {}).get("StringWithMarkup", [])
+            part.get("String", "")
+            for part in info.get("Value", {}).get("StringWithMarkup", [])
         )
-
         for h_code, pct in _H_RX.findall(text):
             if float(pct) >= min_pct:
-                hazard.add(h_code)
+                codes.add(h_code)
+    return sorted(codes)
 
-    return sorted(hazard)
 
-# ---------------------------------------------------
-# Ontoloty extraction
-# ---------------------------------------------------
 def _collect_strings(value: Dict[str, Any]) -> List[str]:
     """
-    Devuelve una lista con todos los textos que aparezcan en
-    Value → StringWithMarkup y/o String.
+    Aggregate all plaintext snippets from a PubChem Value block.
+
+    Handles both 'StringWithMarkup' lists and direct 'String' fields.
     """
     out: List[str] = []
-
-    # StringWithMarkup  (lista de dicts)
     for sm in value.get("StringWithMarkup", []):
         s = sm.get("String")
         if s:
             out.append(s)
-
-    # String  (puede ser str o lista[str])
     if "String" in value:
-        s = value["String"]
-        out.extend(s if isinstance(s, list) else [s])
-
+        raw = value["String"]
+        out.extend(raw if isinstance(raw, list) else [raw])
     return out
 
+
 def _clean_term(term: str) -> str:
+    """
+    Normalize an ontology term by removing extraneous clauses and punctuation.
+
+    Steps:
+      1) Lowercase and strip whitespace.
+      2) Drop content in parentheses and trailing connectors.
+      3) Truncate after 'that', 'which', 'with', 'in which'.
+    """
     term = term.lower().strip()
-
-    # 1) quita paréntesis y lo que hay después
     term = term.split('(')[0]
-
-    # 2) elimina la cláusula "in which …"
     term = re.split(r"\bin which\b", term)[0]
-
-    # 3) corta a la izquierda de " that ", " which ", " with "
     term = re.split(r"\b(?:that|which|with)\b", term)[0]
+    return re.sub(r"\b(and|or)$", "", term).strip(",;. ")
 
-    # 4) elimina conectores al final
-    term = re.sub(r"\b(and|or)$", "", term).strip(",; .")
 
-    return term
-
-def _walk_information(node):
-    """Generador recursivo que rinde todos los bloques 'Information'."""
+def _walk_information(node: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Generator that yields all 'Information' blocks in a nested section tree.
+    """
     if isinstance(node, dict):
-        if node.get("Information"):
+        if "Information" in node:
             for inf in node["Information"]:
                 yield inf
         for sub in node.get("Section", []):
             yield from _walk_information(sub)
 
-def extract_ontology_terms(view: dict) -> list[str]:
+
+def extract_ontology_terms(view: Dict[str, Any]) -> List[str]:
     """
-    Devuelve una lista ordenada y sin duplicados de términos de ontología.
-    1) Busca sección 'Ontology' (recursiva); si no existe, cae a 'Ontology Summary'.
+    Extract and clean ontology terms from PUG-View JSON.
+
+    1) Search 'Ontology' section for Value.Strings.
+    2) If empty, fallback to 'Record Description' → 'Ontology Summary'.
+    3) Deduplicate, preserve insertion order, filter noise.
+
+    Returns:
+        List[str]: Cleaned ontology terms.
     """
     secs = view.get("Record", {}).get("Section", [])
-    seen, terms = set(), []
+    seen: set[str] = set()
+    terms: List[str] = []
 
-    # –– 1) Sección 'Ontology' propiamente dicha ––––––––––––––––––
-    onto_sec = find_section(secs, "Ontology")
-    if onto_sec:
-        for inf in _walk_information(onto_sec):
-            for s in _collect_strings(inf.get("Value", {})):
-                t = _clean_term(s)
+    # Preferred 'Ontology' section
+    onto = find_section(secs, "Ontology")
+    if onto:
+        for info in _walk_information(onto):
+            for raw in _collect_strings(info.get("Value", {})): 
+                t = _clean_term(raw)
                 if t and t not in seen:
-                    seen.add(t);  terms.append(t)
+                    seen.add(t); terms.append(t)
 
-    # –– 2) Fallback 'Record Description' → 'Ontology Summary' ––––
+    # Fallback to descriptive summary
     if not terms:
-        rec_desc = find_section(secs, "Record Description")
-        for inf in rec_desc.get("Information", []):
-            if not str(inf.get("Description", "")).lower().startswith("ontology"):
-                continue
-            for blob in _collect_strings(inf.get("Value", {})):
-                # a/​an <algo> ,  an <algo> , …
-                for raw in re.findall(r"\b(?:a|an)\s+([^.,;]{1,60})", blob, flags=re.I):
-                    if "EC" in raw:           # descarta “EC 3.1.4.*”
-                        continue
+        desc = find_section(secs, "Record Description")
+        for info in desc.get("Information", []):
+            desc_txt = str(info.get("Description", "")).lower()
+            if not desc_txt.startswith("ontology"): continue
+            for blob in _collect_strings(info.get("Value", {})):
+                # Capture phrases after 'a/an'
+                for raw in re.findall(r"\b(?:a|an)\s+([^.,;]{1,60})", blob):
+                    if "ec" in raw.lower(): continue
                     t = _clean_term(raw)
-                    if t and t not in seen and 1 <= len(t.split()) <= 5 and re.search("[a-z]", t):
-                        seen.add(t);  terms.append(t)
-
-                # “is a trimethylxanthine …”  (captura la clase después de ‘is a’)
+                    if t and t not in seen and len(t.split())<=5:
+                        seen.add(t); terms.append(t)
+                # Capture 'is a <class>' patterns
                 for raw in re.findall(r"\bis a\s+([a-z][^.;]{1,40})", blob, flags=re.I):
                     t = _clean_term(raw)
-                    if t and t not in seen and "trimethylxanthine" in t:
-                        seen.add(t);  terms.insert(0, t)   # lo ponemos al principio
-
+                    if t and "trimethylxanthine" in t:
+                        seen.add(t); terms.insert(0, t)
     return terms
 
-# ---------------------------------------------------
-# tu función de etiquetado químico
-# ---------------------------------------------------
+
 def _derive_chem_tag(smiles: str, ontology: List[str]) -> str:
+    """
+    Derive a simple chemical classification tag.
+
+    Priority:
+      1) First two ontology terms, if available.
+      2) SMARTS-based heuristics for organophosphates, halogenated aromatics, hydrocarbons.
+      3) 'unclassified compound'.
+    """
     if ontology:
         return ", ".join(ontology[:2])
-
-    m = Chem.MolFromSmiles(smiles)
-    if m is None:
-        return "unclassified compound"
-
-    if m.HasSubstructMatch(Chem.MolFromSmarts("P(=O)(O)O")):
-        return "organophosphate"
-    if m.HasSubstructMatch(Chem.MolFromSmarts("c1ccccc1F")):
-        return "halogenated aromatic"
-    if all(at.GetAtomicNum() in (6, 1) for at in m.GetAtoms()):
-        return "hydrocarbon"
-
+    m = Chem.MolFromSmiles(smiles) if RDKit_OK else None
+    if m:
+        if m.HasSubstructMatch(Chem.MolFromSmarts("P(=O)(O)O")):
+            return "organophosphate"
+        if m.HasSubstructMatch(Chem.MolFromSmarts("c1ccccc1F")):
+            return "halogenated aromatic"
+        if all(atom.GetAtomicNum() in (6,1) for atom in m.GetAtoms()):
+            return "hydrocarbon"
     return "unclassified compound"
 
 
@@ -198,91 +249,130 @@ def build_parsed(
     cid: int,
     raw_path: Path,
 ) -> Dict[str, Any]:
+    """
+    Parse a PubChem compound record into a standardized Molecule JSON ready for downstream processing.
+
+    This function extracts structural coordinates, basic properties, solubility predictions, safety data,
+    spectral information, molecular fingerprints, ontology tags, and metadata from the raw PubChem outputs.
+
+    Parameters:
+        raw (Dict[str, Any]): The raw JSON from PubChem PUG-REST (PC_Compounds or PUG-View Record).
+        synonyms (Optional[Dict[str, Any]]): Synonym table from the PUG-View synonyms endpoint.
+        props (Optional[Dict[str, Any]]): PropertyTable section from PubChem PUG-REST properties endpoint.
+        view (Optional[Dict[str, Any]]): Full Record section from PUG-View for enriched annotations.
+        cid (int): PubChem Compound ID for this molecule.
+        raw_path (Path): Filesystem path to the cached raw JSON file.
+
+    Returns:
+        Dict[str, Any]: A dictionary conforming to the Molecule JSON schema, containing:
+            - structure: 3D coordinates, atom symbols, bond orders, formal charge, spin multiplicity
+            - quantum: placeholders for quantum outputs (initialized to None)
+            - thermo: standard enthalpy, entropy, heat capacity
+            - safety: GHS hazard codes, flash point, LD50
+            - spectra: raw spectral data
+            - solubility: logP, predicted logS, pKa values
+            - search: identifiers, structural keys, and empty embedding slots
+            - names: preferred, CAS-like, and synonym lists
+            - meta: fetch timestamp, source info, cache path, ontology vocab, chemical tag
+
+    Raises:
+        ValueError: If no structural coordinates can be extracted from the raw data.
+    """
     # --------------------------------------------------
-    # 1) Estructura 3D (igual que antes)
+    # 1) Extract 3D structure (coordinates, atom labels, bond orders)
     # --------------------------------------------------
     xyz: Optional[List[Tuple[float, float, float]]] = None
     atom_symbols: Optional[List[str]] = None
     bond_orders = None
 
+    # Handle PUG-View Record format
     if raw.get("Record"):
-        sects = {s.get("TOCHeading"): s for s in raw["Record"].get("Section", [])}
-        info3d = sects.get("3D Conformer", {}).get("Information", [])
+        sections = {sec.get("TOCHeading"): sec for sec in raw["Record"].get("Section", [])}
+        info3d = sections.get("3D Conformer", {}).get("Information", [])
         if info3d:
-            c3d = info3d[0]["Value"]["Conformer3D"]
-            xyz = [(c["X"], c["Y"], c["Z"]) for c in c3d.get("Coordinates", [])]
-            atom_symbols = c3d.get("Atoms")
+            conformer = info3d[0]["Value"]["Conformer3D"]
+            xyz = [(c["X"], c["Y"], c["Z"]) for c in conformer.get("Coordinates", [])]
+            atom_symbols = conformer.get("Atoms")
+    # Handle PUG-REST PC_Compounds format
     elif raw.get("PC_Compounds"):
-        comp = raw["PC_Compounds"][0]
-        elems = comp.get("atoms", {}).get("element", [])
-        coords_list = comp.get("coords", [])
+        compound = raw["PC_Compounds"][0]
+        elements = compound.get("atoms", {}).get("element", [])
+        coords_list = compound.get("coords", [])
         if coords_list:
-            first = coords_list[0]
-            confs = first.get("conformers", [])
-            if confs:
-                c = confs[0]
+            coords = coords_list[0].get("conformers", [])
+            if coords:
+                c = coords[0]
                 xs, ys, zs = c.get("x", []), c.get("y", []), c.get("z", [])
                 xyz = list(zip(xs, ys, zs))
+                # Derive atom symbols either via RDKit or fallback integers
                 if RDKit_OK:
                     try:
                         ptable = Chem.GetPeriodicTable()
-                        atom_symbols = [ptable.GetElementSymbol(n) for n in elems]
+                        atom_symbols = [ptable.GetElementSymbol(el) for el in elements]
                     except Exception:
-                        atom_symbols = [str(n) for n in elems]
+                        atom_symbols = [str(el) for el in elements]
                 else:
-                    atom_symbols = [str(n) for n in elems]
-        aid1 = comp.get("bonds", {}).get("aid1", [])
-        aid2 = comp.get("bonds", {}).get("aid2", [])
-        orders = comp.get("bonds", {}).get("order", [])
+                    atom_symbols = [str(el) for el in elements]
+        # Parse bond connectivity if available
+        aid1 = compound.get("bonds", {}).get("aid1", [])
+        aid2 = compound.get("bonds", {}).get("aid2", [])
+        orders = compound.get("bonds", {}).get("order", [])
         if aid1 and aid2 and orders:
             bond_orders = list(zip(aid1, aid2, orders))
 
-    # --------------------------------------------------
-    # 2) Propiedades básicas
-    # --------------------------------------------------
-    p = props.get("PropertyTable", {}).get("Properties", [{}])[0] if props else {}
-    smiles = p.get("CanonicalSMILES")
-    logp = p.get("XLogP")
-    formal_charge = p.get("Charge")
+    # Ensure we obtained at least coordinates
+    if xyz is None or atom_symbols is None:
+        raise ValueError(f"Failed to extract 3D structure for CID {cid}")
 
     # --------------------------------------------------
-    # 3) Solubilidad (RDKit)
+    # 2) Extract basic computed properties
     # --------------------------------------------------
-    logs = esol_logS(smiles) if RDKit_OK else None
-    pka_vals = None  # pKa predicción deshabilitada
-
-    # --------------------------------------------------
-    # 4) Helper PUG‑View
-    # --------------------------------------------------
-    view_secs = view.get("Record", {}).get("Section", []) if view else []
-    def info_fn(heading: str) -> List[Dict[str, Any]]:
-        return find_section(view_secs, heading).get("Information", [])
-
-    # 4‑a) Termodinámica
-    tinfo = info_fn("Thermodynamics")
-    delta_h       = _extract_number(tinfo, "Standard Enthalpy of Formation")
-    entropy       = _extract_number(tinfo, "Standard Molar Entropy")
-    heat_capacity = _extract_number(tinfo, "Heat Capacity")
-
-    # 4‑b) Seguridad (H‑codes)
-    ghs_codes = extract_h_codes(view_secs)
-
-    flash = _extract_number(info_fn("Physical Properties"), "Flash Point")
-    ld50  = _extract_number(info_fn("Toxicity"), "LD50")
-
-    # 4‑c) Espectros (sin cambios)
-    spec         = find_section(view_secs, "Spectral Information").get("Section", [])
-    spectra_raw  = {sub.get("TOCHeading"): sub.get("Information", []) for sub in spec}
+    props_entry = props.get("PropertyTable", {}).get("Properties", [{}])[0] if props else {}
+    smiles = props_entry.get("CanonicalSMILES")
+    logp = props_entry.get("XLogP")
+    formal_charge = props_entry.get("Charge")
 
     # --------------------------------------------------
-    # 5) Sinónimos
+    # 3) Predict solubility (ESOL method via RDKit)
     # --------------------------------------------------
-    syns       = synonyms.get("InformationList", {}).get("Information", [{}])[0].get("Synonym", []) if synonyms else []
-    preferred  = syns[0] if syns else None
-    cas_like   = next((s for s in syns if re.fullmatch(r"\d+-\d+-\d+", s)), None)
+    logs = esol_logS(smiles) if RDKit_OK and smiles else None
+    
+    # pKa prediction is disabled by default.
+    # It's crucial for understanding ionization, solubility, and bioavailability,
+    # but not yet included due to the lack of a reliable, open-source predictor.
+    # Future versions of Molkit may support pKa via ML or QM-based tools (e.g., openpka or DelFTa).
+    pka_vals = None
+    # --------------------------------------------------
+    # 4) Helper to query PUG-View sections
+    # --------------------------------------------------
+    view_sections = view.get("Record", {}).get("Section", []) if view else []
+    def get_info(heading: str) -> List[Dict[str, Any]]:
+        return find_section(view_sections, heading).get("Information", [])
+
+    # 4-a) Thermodynamic properties
+    thermo_info = get_info("Thermodynamics")
+    delta_h = _extract_number(thermo_info, "Standard Enthalpy of Formation")
+    entropy = _extract_number(thermo_info, "Standard Molar Entropy")
+    heat_capacity = _extract_number(get_info("Heat Capacity"), "Heat Capacity")
+
+    # 4-b) Safety data (GHS codes, flash point, LD50)
+    ghs_codes = extract_h_codes(view_sections)
+    flash = _extract_number(get_info("Physical Properties"), "Flash Point")
+    ld50 = _extract_number(get_info("Toxicity"), "LD50")
+
+    # 4-c) Spectral information
+    spectral_sections = find_section(view_sections, "Spectral Information").get("Section", [])
+    spectra_raw = {sub.get("TOCHeading"): sub.get("Information", []) for sub in spectral_sections}
 
     # --------------------------------------------------
-    # 6) Huellas moleculares
+    # 5) Extract synonyms and preferred names
+    # --------------------------------------------------
+    raw_syns = synonyms.get("InformationList", {}).get("Information", [{}])[0].get("Synonym", []) if synonyms else []
+    preferred_name = raw_syns[0] if raw_syns else None
+    cas_like = next((s for s in raw_syns if re.fullmatch(r"\d+-\d+-\d+", s)), None)
+
+    # --------------------------------------------------
+    # 6) Generate molecular fingerprints
     # --------------------------------------------------
     ecfp = maccs = None
     if RDKit_OK and smiles:
@@ -290,24 +380,24 @@ def build_parsed(
             mol = Chem.MolFromSmiles(smiles)
             try:
                 from rdkit.Chem.AllChem import MorganGenerator
-                mg   = MorganGenerator(radius=2)
-                ecfp = mg.GetFingerprint(mol).ToBitString()
+                fp = MorganGenerator(radius=2).GetFingerprint(mol)
+                ecfp = fp.ToBitString()
             except Exception:
                 ecfp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048).ToBitString()
             maccs = MACCSkeys.GenMACCSKeys(mol).ToBitString()
         except Exception as e:
-            logging.warning("Fingerprint error: %s", e)
+            logging.warning("Fingerprint generation failed for CID %s: %s", cid, e)
 
     # --------------------------------------------------
-    # 7) Ontología + etiqueta química
+    # 7) Ontology term extraction and chemical tagging
     # --------------------------------------------------
     ontology_terms = extract_ontology_terms(view) if view else []
-    chem_tag       = _derive_chem_tag(smiles, ontology_terms)
+    chem_tag = _derive_chem_tag(smiles, ontology_terms)
 
     # --------------------------------------------------
-    # 8) Ensamblaje final
+    # 8) Final assembly into Molecule JSON
     # --------------------------------------------------
-    return {
+    molecule = {
         "structure": {
             "xyz": xyz,
             "atom_symbols": atom_symbols,
@@ -330,29 +420,23 @@ def build_parsed(
             "flash_point": flash,
             "ld50": ld50,
         },
-        "spectra": {
-            "raw": spectra_raw,
-        },
-        "solubility": {
-            "logp": logp,
-            "logs": logs,
-            "pka": pka_vals,
-        },
+        "spectra": {"raw": spectra_raw},
+        "solubility": {"logp": logp, "logs": logs, "pka": pka_vals},
         "search": {
             "cid": cid,
-            "inchi": p.get("InChI"),
-            "inchikey": p.get("InChIKey"),
+            "inchi": props_entry.get("InChI"),
+            "inchikey": props_entry.get("InChIKey"),
             "smiles": smiles,
             "ecfp": ecfp,
             "maccs": maccs,
             "embeddings": {"summary": None, "structure": None},
         },
         "names": {
-            "preferred": preferred,
+            "preferred": preferred_name,
             "cas_like": cas_like,
             "systematic": None,
             "traditional": None,
-            "synonyms": syns,
+            "synonyms": raw_syns,
         },
         "meta": {
             "fetched": datetime.datetime.utcnow().isoformat() + "Z",
@@ -363,3 +447,5 @@ def build_parsed(
             "chem_tag": chem_tag,
         },
     }
+
+    return molecule
