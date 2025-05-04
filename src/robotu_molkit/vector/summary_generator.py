@@ -84,7 +84,7 @@ class SummaryGenerator:
         self.prompts = PromptManager()
 
     # ------------------------------------------------------------------
-    # Public API
+    # Public API --- calling Granite model to generate summary 
     # ------------------------------------------------------------------
     def generate_summary(self, data: Dict[str, Any], summary_type: str = "general") -> str:
         if summary_type not in self.SUMMARY_TYPES:
@@ -211,6 +211,16 @@ class SummaryGenerator:
         else:
             return "insoluble"
 
+    def format_spectra_info(self, spectra):
+        spectra_keys = [k.replace(" Spectra", "") for k in spectra.keys()]
+        spectra_tag = (
+            ", ".join(spectra_keys) + " spectra available"
+            if spectra_keys
+            else "no spectra available"
+        )
+        notable_peak = self._extract_peak(spectra)
+        return spectra_tag, notable_peak
+
     # ---------------------------------------------------------------------
     # Construcción de atributos para el prompt de Granite
     # ---------------------------------------------------------------------
@@ -249,13 +259,7 @@ class SummaryGenerator:
         # ------------------------------------------------------------------
         # Espectros y pico característico
         # ------------------------------------------------------------------
-        spectra_keys = [k.replace(" Spectra", "") for k in spectra.keys()]
-        spectra_tag  = (
-            ", ".join(spectra_keys) + " spectra available"
-            if spectra_keys
-            else "no spectra available"
-        )
-        notable_peak = self._extract_peak(spectra)
+        spectra_tag, notable_peak = self.format_spectra_info(spectra)
 
         # ------------------------------------------------------------------
         # Alias (sin duplicar nombre preferido ni CAS parciales)
@@ -288,8 +292,6 @@ class SummaryGenerator:
             "logp": logp_str,
             "spectra_tag": spectra_tag,
             "notable_peak": notable_peak,
-            "band_gap": str(thermo.get("band_gap", "n.a.")),
-            "dt50":     str(thermo.get("thermal_stability", "n.a.")),
             "alias_tag": alias_tag,
             "chem_tag":  chem_tag,
         }
