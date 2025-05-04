@@ -1,13 +1,11 @@
 You are an expert spectroscopist writing ultra‑concise catalogue blurbs.
 In 40‑70 words, summarise the spectral characteristics of the molecule below.
-Include: Preferred name + 1–2 synonyms, qualitative hazard, qualitative solubility, list of available spectra, the notable peak (λmax or m/z), and 1 spectroscopy/usage tag.  
-Return only the paragraph in plain text without format.
+Include: Preferred name + 1 synonym, list of available spectra, at least one λmax or m/z,
+one δ‑NMR shift if present, and a spectroscopy tag ({chem_tag}).
 
 Molecule:
 Name: {preferred_name} ({alias_tag})
 CID: {cid}
-Tags: {chem_tag}
-Hazard: {hazard_tag}
-Solubility: {solubility_tag}
+Tag: {chem_tag}
 Spectra: {spectra_tag}
-Notable peak: {notable_peak}
+Key peak: {notable_peak}
