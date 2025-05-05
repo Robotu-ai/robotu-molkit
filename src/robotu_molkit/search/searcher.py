@@ -21,35 +21,34 @@ from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 class QueryRefiner:
     """Utilities for scaffold inference and result post-processing."""
 
+    def extract_json_list(txt: str, key: str) -> List[str]:
+        """Extract list from the first JSON object containing the given key."""
+        json_match = re.search(r"\{[^{}]*?\"" + re.escape(key) + r"\"[^{}]*?\}", txt, flags=re.S)
+        if json_match:
+            block = json_match.group(0)
+            try:
+                obj = json.loads(block)
+                if isinstance(obj, dict) and key in obj and isinstance(obj[key], list):
+                    return [s.strip() for s in obj[key] if isinstance(s, str) and s.strip()]
+            except json.JSONDecodeError:
+                try:
+                    obj = json.loads(block.replace("'", '"'))
+                    return [s.strip() for s in obj.get(key, []) if isinstance(s, str) and s.strip()]
+                except Exception:
+                    pass
+        return []
+
     @staticmethod
-    def extract_scaffolds_with_granite(model: ModelInference, query_text: str) -> List[str]:
+    def extract_scaffolds_with_granite(model: ModelInference, query: str) -> List[str]:
         prompt = (
-            "You are a molecular search assistant.\n"
-            "Extract only the canonical names of up to three well-known molecules that structurally represent the query, "
-            f"using common trivial names. Query: '{query_text}'.\n"
-            "Return only this JSON exactly with no extra text:\n"
-            "{\n  \"canonical_names\": [\"...\"]\n}"
+            f"You are a molecular search assistant."
+            f"Extract only the canonical names of up to three well-known molecules that structurally represent the query:"
+            f"\"{query}\""
+            f"Return only this response Format:{{\"canonical_names\": [\"...\"]}}"
         )
         response = model.generate_text(prompt=prompt)
-        # attempt to parse JSON at start
-        try:
-            obj, _ = json.JSONDecoder().raw_decode(response)
-            names = obj.get("canonical_names", [])
-            if isinstance(names, list):
-                return [n.strip() for n in names if isinstance(n, str) and n.strip()]
-        except Exception:
-            pass
-        # fallback regex
-        match = re.search(r"\{[^{}]*?\"canonical_names\"[^{}]*?\}", response, flags=re.S)
-        if match:
-            try:
-                obj = json.loads(match.group(0))
-                names = obj.get("canonical_names", [])
-                if isinstance(names, list):
-                    return [n.strip() for n in names if isinstance(n, str) and n.strip()]
-            except Exception:
-                pass
-        return []
+        
+        return QueryRefiner.extract_json_list(response, "canonical_names")
 
     @staticmethod
     def resolve_scaffolds_to_bitvectors(scaffold_names: List[str], searcher: 'LocalSearch') -> List[np.ndarray]:
@@ -75,7 +74,7 @@ class QueryRefiner:
         return vectors
 
     # Utility functions for ECFP and Tanimoto
-
+    @staticmethod
     def ecfp_bits_from_meta(meta: Dict[str, Any]) -> np.ndarray:
         """Convert stored ECFP indices into a 1024-bit numpy array."""
         arr = np.zeros(1024, dtype=int)
@@ -83,7 +82,7 @@ class QueryRefiner:
             if 0 <= i < 1024:
                 arr[i] = 1
         return arr
-
+    @staticmethod
     def tanimoto_bits(a: np.ndarray, b: np.ndarray) -> float:
         """Compute Tanimoto similarity between two binary numpy arrays."""
         common = np.bitwise_and(a, b).sum()
@@ -161,8 +160,8 @@ class LocalSearch:
         # Step 5: Filter by Tanimoto
         results: List[Tuple[Dict[str, Any], float, float]] = []
         for meta, score in raw:
-            mol_vec = ecfp_bits_from_meta(meta)
-            sims = [tanimoto_bits(mol_vec, ref) for ref in ref_vecs]
+            mol_vec = QueryRefiner.ecfp_bits_from_meta(meta)
+            sims = [QueryRefiner.tanimoto_bits(mol_vec, ref) for ref in ref_vecs]
             max_sim = max(sims) if sims else 0.0
             print(f"→ CID {meta.get('cid')} Tanimoto: {max_sim:.2f}")
             if max_sim >= sim_threshold:
