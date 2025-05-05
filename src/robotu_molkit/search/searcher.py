@@ -51,10 +51,10 @@ class QueryRefiner:
         return QueryRefiner.extract_json_list(response, "canonical_names")
 
     @staticmethod
-    def resolve_scaffolds_to_bitvectors(scaffold_names: List[str], searcher: 'LocalSearch') -> List[np.ndarray]:
-        """
-        Resolve scaffold names via PubChem, fetch metadata, and build ECFP numpy bit arrays.
-        """
+    def resolve_scaffolds_to_bitvectors(
+        scaffold_names: List[str], searcher: "LocalSearch"
+    ) -> List[np.ndarray]:
+        """Fetch scaffold metadata and return their ECFP vectors (1 024‑long 0/1)."""
         vectors: List[np.ndarray] = []
         for name in scaffold_names:
             try:
@@ -63,11 +63,7 @@ class QueryRefiner:
                     continue
                 cid = compounds[0].cid
                 meta = searcher.get(cid)
-                arr = np.zeros(1024, dtype=int)
-                for i in meta.get("ecfp", []):
-                    if 0 <= i < 1024:
-                        arr[i] = 1
-                vectors.append(arr)
+                vectors.append(np.array(meta["ecfp"], dtype=int))
                 print(f"✅ CID {cid} for '{name}' → ECFP vector loaded")
             except Exception as e:
                 print(f"⚠️ Failed to resolve scaffold '{name}': {e}")
@@ -76,12 +72,10 @@ class QueryRefiner:
     # Utility functions for ECFP and Tanimoto
     @staticmethod
     def ecfp_bits_from_meta(meta: Dict[str, Any]) -> np.ndarray:
-        """Convert stored ECFP indices into a 1024-bit numpy array."""
-        arr = np.zeros(1024, dtype=int)
-        for i in meta.get("ecfp", []):
-            if 0 <= i < 1024:
-                arr[i] = 1
-        return arr
+        """Return the 1 024‑bit ECFP vector stored in the metadata."""
+        #  ❌  NO conviertas índices a bits: el jsonl ya trae el vector completo
+        return np.array(meta["ecfp"], dtype=int)
+
     @staticmethod
     def tanimoto_bits(a: np.ndarray, b: np.ndarray) -> float:
         """Compute Tanimoto similarity between two binary numpy arrays."""
