@@ -36,7 +36,15 @@ def main():
     }
 
     # Perform structural+semantic search with Tanimoto refinement
-    results = searcher.query_with_tanimoto(
+    results1 = searcher.search_by_semantics(
+        query_text=query_text,
+        top_k=TOP_K,
+        faiss_k=FAISS_K,
+        filters=filters,
+    )
+
+    # Perform structural+semantic search with Tanimoto refinement
+    results = searcher.search_by_semantics_and_structure(
         query_text=query_text,
         top_k=TOP_K,
         faiss_k=FAISS_K,

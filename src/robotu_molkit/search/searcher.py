@@ -112,9 +112,9 @@ class LocalSearch:
                 return meta
         raise KeyError(f"CID {cid} not found in index.")
 
-    def query(self, text: str, top_k: int = 10, filters: Optional[Dict[str, Any]] = None,
+    def search_by_semantics(self, query_text: str, top_k: int = 10, filters: Optional[Dict[str, Any]] = None,
               faiss_k: int = 100) -> List[Tuple[Dict[str, Any], float]]:
-        qvec = self.embed_client.embed(text)
+        qvec = self.embed_client.embed(query_text)
         if qvec is None:
             return []
         qarr = np.array(qvec, dtype="float32")
@@ -136,7 +136,7 @@ class LocalSearch:
             return True
         return [(m, s) for m, s in hits if passes(m)][:top_k]
 
-    def query_with_tanimoto(self, query_text: str, top_k: int = 20,
+    def search_by_semantics_and_structure(self, query_text: str, top_k: int = 20,
                             faiss_k: int = 300, filters: Optional[Dict[str, Any]] = None,
                             sim_threshold: float = 0.7) -> List[Tuple[Dict[str, Any], float, float]]:
         # Step 1: Setup Granite
@@ -149,7 +149,7 @@ class LocalSearch:
         # Step 3: Build reference ECFP vectors
         ref_vecs = QueryRefiner.resolve_scaffolds_to_bitvectors(scaffold_names, self)
         # Step 4: Raw semantic search
-        raw = self.query(text=query_text, top_k=faiss_k, filters=filters, faiss_k=faiss_k)
+        raw = self.search_by_semantics(query_text=query_text, top_k=faiss_k, filters=filters, faiss_k=faiss_k)
         # Step 5: Filter by Tanimoto
         results: List[Tuple[Dict[str, Any], float, float]] = []
         for meta, score in raw:
