@@ -73,7 +73,6 @@ class QueryRefiner:
     @staticmethod
     def ecfp_bits_from_meta(meta: Dict[str, Any]) -> np.ndarray:
         """Return the 1 024‑bit ECFP vector stored in the metadata."""
-        #  ❌  NO conviertas índices a bits: el jsonl ya trae el vector completo
         return np.array(meta["ecfp"], dtype=int)
 
     @staticmethod
