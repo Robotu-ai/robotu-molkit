@@ -75,6 +75,7 @@ def extract_scaffold_names_via_granite(model: ModelInference, query: str) -> Lis
     return _extract_json_list(response, "canonical_names")
 
 def main():
+    # ------------------------------------------------------------------------
     creds = Credentials(api_key=API_KEY, url=DEFAULT_WATSONX_AI_URL)
     model = ModelInference(
         model_id=GRANITE_MODEL_ID,
@@ -85,6 +86,7 @@ def main():
 
     searcher = LocalSearch(jsonl_path=JSONL_PATH)
 
+    # ------------------------------------------------------------------------
     full_query = (
         "methylxanthine derivatives with central nervous system stimulant activity"
     )
@@ -93,26 +95,23 @@ def main():
         "solubility_tag": "soluble"
     }
 
+    # ------------------------------------------------------------------------
     scaffold_names = extract_scaffold_names_via_granite(model, full_query)
     print("🔍 Inferred scaffolds:", scaffold_names)
 
     ref_bits_list = []
-    print("🔍 Resolving scaffolds in PubChem...")
     for name in scaffold_names:
-        print(f"  ⏳ Resolving scaffold name: '{name}'")
         try:
             compound = get_compounds(name, "name", listkey_count=1)
             if compound:
-                print(f"  ✅ Found CID {compound[0].cid} for '{name}'")
                 cid = compound[0].cid
-                meta = searcher.get(cid=cid)
-                print(f"     ↪ Extracted ECFP with {len(meta['ecfp'])} bits")
+                meta = searcher.get_metadata(cid=cid)
                 bits = ecfp_bits_from_meta(meta)
                 ref_bits_list.append(bits)
-        except Exception as e:
-            print(f"  ⚠️  Failed to resolve '{name}': {e}")
+        except Exception:
             continue
 
+    # ------------------------------------------------------------------------
     raw_results = searcher.query(
         text=full_query,
         top_k=FAISS_K,
@@ -120,18 +119,16 @@ def main():
         faiss_k=FAISS_K
     )
 
-    if not ref_bits_list:
-        print("⚠️  No valid scaffolds retrieved. Skipping Tanimoto filtering — no ECFP references loaded.")
-        return
-
     filtered_results: List[Tuple[Dict[str, Any], float, float]] = []
     for meta, score in raw_results:
         mol_bits = ecfp_bits_from_meta(meta)
-        if any(tanimoto_bits(mol_bits, ref) >= SIM_THRESHOLD for ref in ref_bits_list):
-            sim_scores = [tanimoto_bits(mol_bits, ref) for ref in ref_bits_list]
-            sim = max(sim_scores)
-            print(f"→ CID {meta.get('cid')} Tanimoto scores: {sim_scores} → max: {sim:.2f}")
-            filtered_results.append((meta, score, sim))
+        if ref_bits_list:
+            if any(tanimoto_bits(mol_bits, ref) >= SIM_THRESHOLD for ref in ref_bits_list):
+                sim = max(tanimoto_bits(mol_bits, ref) for ref in ref_bits_list)
+                filtered_results.append((meta, score, sim))
+        if not ref_bits_list:
+            print("⚠️  No valid scaffolds retrieved. Skipping Tanimoto filtering.")
+            return
 
     filtered_results.sort(key=lambda x: x[1], reverse=True)
     results = filtered_results[:TOP_K]
