@@ -3,74 +3,27 @@
 > 🚧 **This project is under active development.** Expect frequent changes as we build the foundation for quantum-ready molecular discovery.
 
 **Quantum-ready molecular toolkit.**  
-An open-source Python library that pulls PubChem records, structures them into Molecule objects with rich property sets, and enriches each with IBM Granite summaries and embeddings—ready for quantum simulations, AI pipelines, and scientific research.
+robotu-molkit is the first library to enrich PubChem molecules with AI-native context: each molecule is converted into a simulation-ready `Molecule` object and annotated using IBM Granite models to generate both human-readable summaries and high-dimensional embeddings—bridging chemistry, AI, and quantum workflows.
 
 ---
 
 ## 🔍 About
 
-**robotu-molkit** is part of the **RobotU Quantum** ecosystem.  
-Its mission is straightforward:
+**robotu-molkit** is part of the **RobotU Quantum** ecosystem, and it's the first open-source toolkit to unify molecular data curation, AI enrichment, and semantic search—designed from the ground up for quantum and AI workflows.
 
-> **Turn PubChem molecular records into a quantum-ready dataset—complete with AI-generated summaries and vector embeddings.**
+Unlike traditional cheminformatics libraries, robotu-molkit goes beyond parsing: it integrates **IBM watsonx Granite models** to generate natural-language summaries and high-dimensional vector embeddings for each molecule. These AI-generated fingerprints capture not just structure, but meaning—enabling search queries like *"low-toxicity CNS stimulants under 250 Da"* to return relevant results instantly.
 
-The library fetches molecular data directly from PubChem, extracts more than ten property categories (geometry, thermodynamics, electronic, spectroscopic, safety, …), and converts each record into a clean `Molecule` object that drops straight into **Qiskit**, classical MD, or any AI pipeline.  
-IBM Granite models enrich every molecule with human-readable metadata and high-dimensional embeddings, enabling semantic similarity search out of the box.
+robotu-molkit ingests records from **PubChem**, standardizes >10 property categories (geometry, quantum, spectra, safety, solubility, etc.), and outputs clean `Molecule` objects with embedded context-aware vectors. Molecules can be searched semantically, compared structurally, or exported into simulation pipelines—making it ideal for researchers in quantum chemistry, drug discovery, and AI-accelerated science.
 
----
+It’s the first library to:
+- Embed both summaries and molecular sections using **Granite Embedding**
+- Enable similarity search powered by **local FAISS** (Milvus vector database throug watsonx, comming soon).
+- Support hybrid semantic + structure-based filtering via **Tanimoto + AI vectors**
 
-## ✅ Key Features
-
-| Capability | What it does |
-|------------|--------------|
-| ⚛️ **Quantum-ready exporters** | `mol.to_qiskit(basis="sto3g")` (and similar) generate qubit-mappable data for VQE or CCSD workflows. |
-| 🔗 **Seamless PubChem access** | Pulls molecular records via official APIs or PubChemPy—no manual downloads required. |
-| 🧠 **Granite-powered enrichment** | Granite produces structured Python objects, natural-language summaries, and embeddings for each molecule. |
-| 🧬 **Rich property coverage** | >10 property blocks automatically normalized: geometries, thermodynamics, quantum/electronic properties, spectroscopy, solubility, safety, etc. |
-| 🔍 **Vector similarity search** | Built-in FAISS index lets you query *“low-toxicity aromatic amines”* or *“molecules similar to caffeine”*. |
-| 🔁 **Batch-friendly helper** | `dataset.build_from_query("alkaloid", limit=5000)` fetches and caches large sets with one line. |
-| 📦 **Cloud-free & open-source** | Runs locally; no vendor lock-in. Just `pip install robotu-molkit` and you’re ready. |
-
----
-
-*RobotU Molkit turns molecular data into simulation-ready fuel—so researchers focus on discovery, not data wrangling.*
-
-## 🧪 Preliminary Example
-
-```python
-from robotu_molkit import molecule
-
-# Retrieve comprehensive molecular data for caffeine
-mol = molecule.get("caffeine")
-
-# Extract structured properties
-xyz = mol.to_xyz()
-thermo = mol.thermodynamic_properties
-quantum = mol.quantum_properties
-
-# Iterate over a list of molecules
-for compound in ['caffeine', 'aspirin', 'benzene']:
-    data = molecule.get(compound)
-    xyz = data.to_xyz()
-    # Run simulations or analysis...
-```
-
----
-
-## 🔬 Ideal For
-
-- Quantum chemists and simulation developers  
-- AI researchers in drug discovery and material science  
-- Educators and students in quantum chemistry or computational science  
-- Open science and reproducibility advocates
-
----
+In short: robotu-molkit turns raw chemical records into **simulation-ready, AI-searchable molecules**.
 
 ## 📦 Installation
 
-> **Coming soon:** `pip install robotu-molkit`
-
-For now, clone the repo:
 ```bash
 git clone https://github.com/robotu-ai/robotu-molkit.git
 cd robotu-molkit
@@ -79,34 +32,185 @@ pip install -e .
 
 ---
 
+## 🛠️ CLI Usage
+
+robotu‑molkit ships with a single entry‑point, **`molkit`**, that orchestrates each pipeline stage.
+
+> ℹ️ Run `molkit --help` or `molkit <command> --help` for full option details.
+
+### 0. Configure (one‑time)
+
+```bash
+molkit config --watsonx-api-key $WATSONX_API_KEY --watsonx-project-id $WATSONX_PROJECT_ID
+```
+
+### 1. Ingest — download & parse PubChem records
+
+```bash
+molkit ingest 2244 1983 3675
+molkit ingest --file path/to/cids.txt
+molkit ingest 2244 1983 --concurrency 8
+```
+
+### 2. Embed — enrich with Granite summaries & vectors
+
+```bash
+molkit embed
+molkit embed --fast
+```
+
+### 3. Upload — *not yet implemented*
+
+Currently stops after generating `watsonx_vectors.jsonl`.
+
+---
+
+## 🧬 Available Fields
+
+### 🧾 Identifiers and Names
+- `name`, `inchi`, `inchikey`, `smiles`, `cid`, `formula`, `molecular_weight`
+
+### ⚛️ Structure and Geometry
+- `xyz`, `heavy_atom_count`, `ring_count`, `aromatic_ring_count`, `rotatable_bonds`, `fsp3`, `bertz_ct`
+
+### 🧪 Properties
+- `hbond_donors`, `hbond_acceptors`, `tpsa`, `logp`, `logs`, `ghs_codes`, `hazard_tag`, `solubility_tag`, `spectra_tag`, `chem_tag`
+
+### 🧠 Embeddings and Metadata
+- `summary`, `structure`, `ecfp`, `maccs`
+
+**Possible `solubility_tag` values and their thresholds:**
+
+- `unknown solubility`  
+  - When log‐solubility (`logs`) is `None`.
+
+- `very soluble`  
+  - `logs > -0.5`
+
+- `soluble`  
+  - `-1.5 < logs ≤ -0.5`
+
+- `moderately soluble`  
+  - `-3.0 < logs ≤ -1.5`
+
+- `sparingly soluble`  
+  - `-4.0 < logs ≤ -3.0`
+
+- `insoluble`  
+  - `logs ≤ -4.0`
+
+---
+
+## 💡 Search Examples
+
+```python
+from robotu_molkit.credentials_manager import CredentialsManager
+from robotu_molkit.search.searcher import LocalSearch
+from robotu_molkit.constants import DEFAULT_JSONL_FILE_ROUTE
+
+WATSON_API_KEY = ""
+WATSON_PROJECT_ID = ""
+CredentialsManager.set_api_key(WATSON_API_KEY)
+CredentialsManager.set_project_id(WATSON_PROJECT_ID)
+
+searcher = LocalSearch(jsonl_path=DEFAULT_JSONL_FILE_ROUTE)
+query_text = "methylxanthine derivatives with central nervous system stimulant activity"
+filters = {"molecular_weight": (0, 250), "solubility_tag": "soluble"}
+
+results1 = searcher.search_by_semantics(
+    query_text=query_text, top_k=20, faiss_k=300, filters=filters
+)
+
+entries = [f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} Sol:{m.get('solubility_tag','')} Score:{s:.3f}" for m,s in results1]
+print(f"Top {len(entries)} hits:\n" + "\n".join(entries))
+
+results2 = searcher.search_by_semantics_and_structure(
+    query_text=query_text, top_k=20, faiss_k=300, filters=filters, sim_threshold=0.70
+)
+
+entries = [f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} Sol:{m.get('solubility_tag','')} Score:{s:.3f} Tanimoto:{sim:.2f}" for m,s,sim in results2]
+print(f"Top {len(entries)} hits (Granite scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n" + "\n".join(entries))
+
+```
+
+## Parameter `filters`
+
+The `filters` parameter of `search_by_semantics` and `search_by_semantics_and_structure` allows you to refine results based on metadata. It’s a Python `dict` mapping field names to conditions:
+
+`python
+filters: Dict[str, Any] = {
+    'field': condition,
+    # …
+}
+`
+
+### Condition types
+
+- **Single value** (equality)  
+  `python
+  filters = { 'solubility_tag': 'High' }
+  `  
+  Only entries where `meta['solubility_tag'] == 'High'` pass.
+
+- **Range** (`tuple`)  
+  `python
+  filters = { 'molecular_weight': (100, 500) }
+  `  
+  Only entries where `100 <= meta['molecular_weight'] <= 500` pass.
+
+- **List** (membership)  
+  `python
+  filters = { 'cid': [123, 456, 789] }
+  `  
+  Only entries where `meta['cid']` is in the list pass.
+
+---
+
+Internally, filtering is done like this:
+
+```python
+def passes(m: Dict[str, Any]) -> bool:
+    for k, cond in filters.items():
+        v = m.get(k)
+        if isinstance(cond, tuple):
+            if v is None or not (cond[0] <= v <= cond[1]):
+                return False
+        elif isinstance(cond, list):
+            if v not in cond:
+                return False
+        else:
+            if v != cond:
+                return False
+    return True
+
+filtered = [(m, s) for m, s in hits if passes(m)][:top_k]
+```
+
+### Example usage
+
+```python
+my_filters = {
+    'solubility_tag': 'soluble',
+    'molecular_weight': (150, 450),
+}
+
+results = client.search_by_semantics(
+    query_text="kinase inhibitor",
+    top_k=20,
+    filters=my_filters
+)
+```
+
+
+---
+
 ## 📄 License
 
-This project is licensed under the **Apache 2.0 License**. See the [LICENSE](./LICENSE) file for details.
-
----
-
-## 🧠 Powered By
-
-- [PubChem](https://pubchem.ncbi.nlm.nih.gov/) – public chemical compound data  
-- [IBM Granite](https://www.ibm.com/granite) – used for AI-powered data parsing, structuring, and metadata enrichment   
-- [Qiskit](https://qiskit.org/) – quantum simulation framework
-
----
-
-## 🤝 Contribute
-
-We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) (coming soon) or open an issue to suggest improvements or new features.
-
----
-
-## 🌐 Contact
-
-Questions? Feedback? Collaborations?  
-📧 tech@robotu.ai  
-🔬 [robotu.ai](https://robotu.ai) (coming soon)
+Apache 2.0 License — see LICENSE file.
 
 ---
 
 **RobotU Quantum — accelerating discovery through open, AI-enhanced, quantum-ready data.**
+
 
 
