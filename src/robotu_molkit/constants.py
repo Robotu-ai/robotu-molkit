@@ -18,4 +18,5 @@ PUG_VIEW_API = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{ci
 DEFAULT_EMBED_MODEL_ID = "ibm/granite-embedding-278m-multilingual"
 FAST_EMBED_MODEL_ID = "ibm/granite-embedding-107m-multilingual"
 DEFAULT_WATSONX_AI_URL = "https://us-south.ml.cloud.ibm.com"
-DEFAULT_WATSONX_GENERATIVE_MODEL="ibm/granite-3-8b-instruct"
+DEFAULT_WATSONX_GENERATIVE_MODEL = "ibm/granite-3-8b-instruct"
+DEFAULT_JSONL_FILE_ROUTE = "data/vectors/watsonx_vectors.jsonl"

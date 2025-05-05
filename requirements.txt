@@ -65,7 +65,6 @@ requests==2.32.2
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==14.0.0
--e git+https://github.com/Robotu-ai/robotu-molkit.git@6c9ee90cf83bd3e6a1420c25dea26525fd2e8daa#egg=robotu_molkit
 SecretStorage==3.3.3
 shellingham==1.5.4
 six==1.17.0
@@ -85,3 +84,4 @@ tzdata==2025.2
 urllib3==2.4.0
 yarl==1.20.0
 zipp==3.21.0
+faiss-cpu==1.11.0

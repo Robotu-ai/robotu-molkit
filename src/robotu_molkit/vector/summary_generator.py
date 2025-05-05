@@ -77,7 +77,7 @@ class SummaryGenerator:
         creds = Credentials(api_key=self.api_key, url=url)
         self.model = ModelInference(
             model_id=model_id,
-            params=params or {GenParams.MAX_NEW_TOKENS: 500, GenParams.TEMPERATURE: 0.7},
+            params=params or {GenParams.MAX_NEW_TOKENS: 1200, GenParams.TEMPERATURE: 0.2},
             credentials=creds,
             project_id=self.project_id,
         )
@@ -93,15 +93,19 @@ class SummaryGenerator:
         attrs = self._build_attrs(data)
         base_prompt = self.prompts.load_template(summary_type).format(**attrs)
         prompt_text = base_prompt + self._RESPONSE_BLOCK
-        
+
         try:
             rsp = self.model.generate_text(prompt=prompt_text)
-            
         except Exception as exc:  # pylint: disable=broad-except
             logging.warning("Granite generation error (%s): %s", summary_type, exc)
             return ""
 
-        return self._extract_json_summary(rsp)
+        # Append metadata block to the model output
+        summary_text = self._extract_json_summary(rsp)
+        metadata = attrs.get("metadata_block", "")
+
+        return summary_text.strip() + "\n\n" + metadata.strip() if metadata else summary_text.strip()
+
 
     def generate_general_summary(self, data: Dict[str, Any]) -> str:  # noqa: D401
         return self.generate_summary(data, "general")
@@ -225,12 +229,15 @@ class SummaryGenerator:
     # Construcción de atributos para el prompt de Granite
     # ---------------------------------------------------------------------
     def _build_attrs(self, data: Dict[str, Any]) -> Dict[str, str]:
+        from typing import Optional, Any, Dict
+        import re
+
         names   = data.get("names", {})
         safety  = data.get("safety", {})
         sol     = data.get("solubility", {})
         spectra = data.get("spectra", {}).get("raw", {}) or {}
-        thermo  = data.get("thermo", {})
         meta    = data.get("meta", {})
+        search  = data.get("search", {})
 
         preferred = (
             names.get("preferred")
@@ -238,52 +245,55 @@ class SummaryGenerator:
             or names.get("systematic")
             or "Unknown"
         )
-        cid = str(data.get("search", {}).get("cid", ""))
+        cid = str(search.get("cid", ""))
 
-        # ------------------------------------------------------------------
-        # Hazard y solubilidad
-        # ------------------------------------------------------------------
+        # Hazard tag
         hazard_tag = self._qualitative_hazard(safety.get("ghs_codes", []))
 
+        # Qualitative solubility
         logs_val: Optional[float] = sol.get("logs")
         if logs_val is None and (lp := sol.get("logp")) is not None:
             logs_val = -0.4 * lp - 0.23
         solubility_tag = self._qualitative_sol(logs_val)
 
-        # ------------------------------------------------------------------
-        # Valores numéricos auxiliares
-        # ------------------------------------------------------------------
+        # Numeric logP string
         logp_val = sol.get("logp")
         logp_str = f"{logp_val:.2f}" if isinstance(logp_val, (int, float)) else "n.a."
 
-        # ------------------------------------------------------------------
-        # Espectros y pico característico
-        # ------------------------------------------------------------------
+        # Spectra info
         spectra_tag, notable_peak = self.format_spectra_info(spectra)
 
-        # ------------------------------------------------------------------
-        # Alias (sin duplicar nombre preferido ni CAS parciales)
-        # ------------------------------------------------------------------
+        # Alias tag
         synonyms = [
             s for s in names.get("synonyms", [])
-            if not re.fullmatch(r"\d{2,7}-\d{2}-\d", s)      # descarta CAS
+            if not re.fullmatch(r"\d{2,7}-\d{2}-\d", s)
             and s.lower() != preferred.lower()
         ]
-        unique_syn = list(dict.fromkeys(synonyms))          # conserva orden, elimina duplicados
-        if unique_syn:
-            alias_tag = ", ".join(unique_syn[:2])           # máximo 2 sinónimos
-        else:
-            alias_tag = names.get("cas_like") or "n.a."     # fallback genérico
+        unique_syn = list(dict.fromkeys(synonyms))
+        alias_tag = ", ".join(unique_syn[:10]) if unique_syn else (names.get("cas_like") or "n.a.")
 
-        # ------------------------------------------------------------------
-        # Etiqueta química: ya viene en meta["ontology"]
-        # ------------------------------------------------------------------
+        # Chemical ontology tag
         onto = meta.get("ontology", [])
-        chem_tag = ", ".join(onto[:2]) if onto else "unclassified compound"
+        chem_tag = ", ".join(onto[:5]) if onto else "unclassified compound"
 
-        # ------------------------------------------------------------------
-        # Ensamblar dict final
-        # ------------------------------------------------------------------
+        # Extracted fields
+        smiles = search.get("smiles", "n.a.")
+        formula = search.get("formula", "n.a.")
+        molecular_weight = str(search.get("molecular_weight", "n.a."))
+        ghs_codes = ", ".join(safety.get("ghs_codes", []))
+        ring_count = str(search.get("ring_count", "n.a."))
+        aromatic_ring_count = str(search.get("aromatic_ring_count", "n.a."))
+        rotatable_bonds = str(search.get("rotatable_bonds", "n.a."))
+
+        metadata_block = f"""
+            SMILES: {smiles}
+            Formula: {formula}
+            MW: {molecular_weight}
+            logP: {logp_str}
+            GHS codes: {ghs_codes}
+            Rings: {ring_count}, Aromatic: {aromatic_ring_count}, Rotatable: {rotatable_bonds}
+            """.strip()
+
         return {
             "preferred_name": preferred,
             "cid": cid,
@@ -293,8 +303,17 @@ class SummaryGenerator:
             "spectra_tag": spectra_tag,
             "notable_peak": notable_peak,
             "alias_tag": alias_tag,
-            "chem_tag":  chem_tag,
+            "chem_tag": chem_tag,
+            "smiles": smiles,
+            "formula": formula,
+            "molecular_weight": molecular_weight,
+            "ghs_codes": ghs_codes,
+            "ring_count": ring_count,
+            "aromatic_ring_count": aromatic_ring_count,
+            "rotatable_bonds": rotatable_bonds,
+            "metadata_block": metadata_block,
         }
+
 
     def _extract_peak(self, spectra_raw: Dict[str, Any]) -> str:
         """Devuelve un pico representativo (λmax o m/z) de los datos espectrales."""

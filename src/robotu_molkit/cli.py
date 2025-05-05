@@ -3,10 +3,7 @@ import json
 import asyncio
 import logging
 from pathlib import Path
-from typing import Optional
-
-from ibm_watsonx_ai import Credentials
-from ibm_watsonx_ai.foundation_models import Embeddings
+from typing import Optional, List
 
 from robotu_molkit.constants import (
     DEFAULT_RAW_DIR,
@@ -43,16 +40,16 @@ def config(
 
 @app.command("ingest")
 def ingest(
-    cids: list[int] = typer.Argument(..., help="CID(s) to fetch"),
+    cids: Optional[List[int]] = typer.Argument(None, help="CID(s) to fetch"),
     file: Path = typer.Option(None, "--file", "-f", help="File with one CID per line"),
     raw_dir: Path = typer.Option(DEFAULT_RAW_DIR, "--raw-dir", "-r", help="Directory to save raw JSON files"),
     parsed_dir: Path = typer.Option(DEFAULT_PARSED_DIR, "--parsed-dir", "-p", help="Directory to save parsed payloads"),
     concurrency: int = typer.Option(DEFAULT_CONCURRENCY, "--concurrency", "-c", help="Number of concurrent workers"),
-):
+  ):
     """
     Fetch CID(s) from PubChem, save raw JSON and parsed Molecule payloads.
     """
-
+    cids = cids or []
     if file:
         file_cids = [int(line.strip()) for line in file.read_text().splitlines() if line.strip()]
         cids = file_cids + cids

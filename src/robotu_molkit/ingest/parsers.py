@@ -22,12 +22,13 @@ import datetime
 import json
 from typing import Any, Dict, List, Optional, Tuple
 from pathlib import Path
+import numpy as np
 
 import requests
 
 # RDKit availability flag and imports
 try:
-    from rdkit import Chem
+    from rdkit import Chem, DataStructs
     from rdkit.Chem import AllChem, MACCSkeys, Descriptors
     from rdkit.Chem import rdMolDescriptors as rdDesc
     RDKit_OK = True
@@ -405,10 +406,13 @@ def build_parsed(
     if RDKit_OK and smiles:
         try:
             mol = Chem.MolFromSmiles(smiles)
-            # Generate 1024-bit Morgan fingerprint and extract on-bit indices
+            # ECFP: 1024-bit binary fingerprint
             bv = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=1024)
-            ecfp = list(bv.GetOnBits())
-            # Generate MACCS keys (166 bits) and extract on-bit indices
+            ecfp_array = np.zeros((1024,), dtype=int)
+            DataStructs.ConvertToNumpyArray(bv, ecfp_array)
+            ecfp = ecfp_array.tolist()
+
+            # MACCS: optional, keep as on-bit indices
             maccs_bv = MACCSkeys.GenMACCSKeys(mol)
             maccs = list(maccs_bv.GetOnBits())
         except Exception as e:
