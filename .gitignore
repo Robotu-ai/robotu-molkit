@@ -172,3 +172,16 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Code editor
+.idx/
+
+# Molecules Examples
+data/*
+
+# Ignor All inside vector/prompts
+src/robotu_molkit/vector/prompts/*
+
+# but not ignore de file default in prompts
+!src/robotu_molkit/vector/prompts/default/
+!src/robotu_molkit/vector/prompts/default/**

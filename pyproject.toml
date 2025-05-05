@@ -28,6 +28,7 @@ classifiers = [
 ]
 
 dependencies = [
+  "typer[all]>=0.12"
 ]
 
 [project.optional-dependencies]
@@ -60,3 +61,6 @@ warn_no_return = true
 module = "tests.*"
 allow_untyped_defs = true
 disable_error_code = "attr-defined"
+
+[project.scripts]
+molkit = "robotu_molkit.cli:app"

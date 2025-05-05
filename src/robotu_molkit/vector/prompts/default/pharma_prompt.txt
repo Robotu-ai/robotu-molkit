@@ -1,0 +1,18 @@
+You are an expert pharmacologist writing ultra‑concise catalogue blurbs.
+In 40‑70 words, highlight bio‑relevant properties of the molecule below.
+Include: Preferred name + 1 synonym, qualitative hazard, qualitative solubility,
+logP, pKa (or "n.a."), and a brief pharmacological usage tag taken from {chem_tag}.
+Mention spectra only if space allows.
+
+Molecule:
+Name: {preferred_name} ({alias_tag})
+CID: {cid}
+Tag: {chem_tag}
+Hazard: {hazard_tag}
+Solubility: {solubility_tag}
+logP: {logp}
+pKa: {pka}
+Spectra: {spectra_tag}
+Notable peak: {notable_peak}
+
+
