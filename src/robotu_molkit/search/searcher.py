@@ -47,6 +47,16 @@ class LocalSearch:
         self.index = FAISSIndexManager(dim)
         self.index.load_jsonl(path)
 
+    def get(self, cid: int) -> Dict[str, Any]:
+        """
+        Returns the metadata for a given PubChem CID if it exists in the loaded index.
+        Raises KeyError if not found.
+        """
+        for meta in self.index.metadata:
+            if meta.get("cid") == cid:
+                return meta
+        raise KeyError(f"CID {cid} not found in index.")
+
     def query(
         self,
         text: str,
