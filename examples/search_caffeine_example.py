@@ -35,7 +35,7 @@ def main():
     print(f"Top {len(results)} results for '{query_text}':\n")
     for meta, score in results:
         cid = meta.get('cid')
-        name = meta.get('names', {}).get('preferred_name', '<unknown>')
+        name = meta.get('name', '<unknown>')
         mw = meta.get('molecular_weight')
         print(f"CID {cid} | {name} | MW={mw} | score={score:.3f}")
 

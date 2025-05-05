@@ -84,6 +84,7 @@ class WatsonxIndex:
                     continue
 
                 # 3) Metadata extraction
+                names  = data.get("names", {})
                 search  = data.get("search", {})
                 sol     = data.get("solubility", {})
                 safety  = data.get("safety", {})
@@ -100,6 +101,7 @@ class WatsonxIndex:
                     "cid":      cid,
                     "summary":  summary,
                     "vector":   vector,
+                    "name": names.get("preferred", None),
 
                     # search‐section fields
                     "inchi":                search.get("inchi"),
