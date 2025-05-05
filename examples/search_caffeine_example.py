@@ -7,10 +7,10 @@ from robotu_molkit.search.searcher import LocalSearch
 from robotu_molkit.constants import DEFAULT_JSONL_FILE_ROUTE
 
 # --------------------------------------------------------------------------- #
-# Configuration                                                              #
+# Configuration WATSONX CREDENTIALS                                                             #
 # --------------------------------------------------------------------------- #
-API_KEY    = "WBLC6RY7mWwVGdVqWY2GVPfJ_yQjM_HzQJH5GVlFoXUp"
-PROJECT_ID = "13d1284a-8dae-4a88-b776-3b890b249f2d"
+API_KEY    = ""
+PROJECT_ID = ""
 
 # Persist credentials for all LocalSearch calls
 CredentialsManager.set_api_key(API_KEY)
