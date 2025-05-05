@@ -51,7 +51,8 @@ class LocalSearch:
         self,
         text: str,
         top_k: int = 10,
-        filters: Optional[Dict[str, Any]] = None
+        filters: Optional[Dict[str, Any]] = None,
+        faiss_k: int = 100
     ) -> List[Tuple[Dict[str, Any], float]]:
         # Embed the query text
         qvec = self.embed_client.embed(text)
@@ -59,12 +60,12 @@ class LocalSearch:
             return []
         qarr = np.array(qvec, dtype="float32")
 
-        # Perform FAISS search
-        hits = self.index.search(qarr, top_k)
+        # Perform broader FAISS search
+        hits = self.index.search(qarr, faiss_k)
 
         # Apply metadata filters if any
         if not filters:
-            return hits
+            return hits[:top_k]
 
         def passes(meta: Dict[str, Any]) -> bool:
             for key, cond in filters.items():
