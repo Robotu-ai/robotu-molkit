@@ -28,7 +28,7 @@ def main():
 
     # Define query and metadata filters
     query_text = (
-        "Compounds similar to ibuprofen but with improved bioavailability"
+        "Methylxanthine derivatives with central nervous system stimulant activity"
     )
     filters = {
         "molecular_weight": (0, 250),
