@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robotu-molkit"
-version = "0.1.0"
+version = "0.1.0a1"
 description = "Quantum-ready molecular toolkit. An open-source Python library that pulls PubChem records, structures them into Molecule objects with rich property sets, and enriches each with IBM Granite summaries and embeddings—ready for quantum simulations, AI pipelines, and scientific research."
 readme = "README.md"
 requires-python = ">=3.11"
