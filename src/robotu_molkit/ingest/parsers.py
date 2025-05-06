@@ -31,6 +31,8 @@ try:
     from rdkit import Chem, DataStructs
     from rdkit.Chem import AllChem, MACCSkeys, Descriptors
     from rdkit.Chem import rdMolDescriptors as rdDesc
+    from rdkit import RDLogger
+    RDLogger.DisableLog('rdApp.*')
     RDKit_OK = True
 except Exception as e:
     logging.warning(
@@ -529,5 +531,6 @@ def build_parsed(
             "chem_tag": chem_tag,
         },
     }
+    print(f"Procesado registro CID {cid}")
 
     return molecule
