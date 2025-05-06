@@ -4,20 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robotu-molkit"
-version = "version = "0.1.0""
+version = "0.1.0"
 description = "Quantum-ready molecular toolkit. An open-source Python library that pulls PubChem records, structures them into Molecule objects with rich property sets, and enriches each with IBM Granite summaries and embeddings—ready for quantum simulations, AI pipelines, and scientific research."
 readme = "README.md"
 requires-python = ">=3.11"
 
 authors = [
-  {name = "Robotu", email = "tech@robotu.ai"}
+  { name = "Robotu", email = "tech@robotu.ai" }
 ]
 
 maintainers = [
-  {name = "Carlos Murillo", email = "tech@robotu.ai"}
+  { name = "Carlos Murillo", email = "tech@robotu.ai" }
 ]
 
-license = {text = "Apache-2.0"}
+license = { text = "Apache-2.0" }
 
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -56,19 +56,21 @@ dev = [
 ]
 
 [project.urls]
-homepage = "https://robotu.ai"
-bugs = "https://github.com/carlosamurillo/robotu_molkit/issues"
-changelog = "https://github.com/carlosamurillo/robotu_molkit/blob/main/HISTORY.rst"
+Homepage = "https://robotu.ai"
+Issues = "https://github.com/carlosamurillo/robotu_molkit/issues"
+Changelog = "https://github.com/carlosamurillo/robotu_molkit/blob/main/HISTORY.rst"
+
+[project.scripts]
+molkit = "robotu_molkit.cli:app"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = { "" = "src" }
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
 
 [tool.mypy]
 files = "."
-
 strict = true
 warn_unreachable = true
 warn_no_return = true
@@ -78,5 +80,3 @@ module = "tests.*"
 allow_untyped_defs = true
 disable_error_code = "attr-defined"
 
-[project.scripts]
-molkit = "robotu_molkit.cli:app"
