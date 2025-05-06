@@ -56,7 +56,7 @@ dev = [
 ]
 
 [project.urls]
-homepage = "https://github.com/carlosamurillo/robotu_molkit"
+homepage = "https://robotu.ai"
 bugs = "https://github.com/carlosamurillo/robotu_molkit/issues"
 changelog = "https://github.com/carlosamurillo/robotu_molkit/blob/main/HISTORY.rst"
 
