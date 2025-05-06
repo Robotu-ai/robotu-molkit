@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to RobotU Molkit &#8212; My sample book</title>
+    <title>Introduction to RobotU Molkit &#8212; Robotu Molkit - Jupyter Book</title>
   
   
   
@@ -152,8 +152,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Robotu Molkit - Jupyter Book - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Robotu Molkit - Jupyter Book - Home"/>`);</script>
   
   
 </a></div>
@@ -466,95 +466,9 @@ document.write(`
 <div><p>⚙️ Before running the examples, make sure to install the package using:<br />
 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">robotu-molkit</span></code></p>
 </div></blockquote>
-<div class="cell docutils container">
+<div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>robotu-molkit
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: robotu-molkit in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (0.1.2)
-Requirement already satisfied: aiohttp==3.11.18 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (3.11.18)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: aiolimiter==1.2.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.2.1)
-Requirement already satisfied: faiss-cpu==1.11.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.11.0)
-Requirement already satisfied: ibm_watsonx_ai==1.3.13 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.3.13)
-Requirement already satisfied: numpy==2.2.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2.2.5)
-Requirement already satisfied: pubchempy==1.0.4 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.0.4)
-Requirement already satisfied: pydantic==2.11.4 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2.11.4)
-Requirement already satisfied: rdkit==2024.9.6 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2024.9.6)
-Requirement already satisfied: requests==2.32.3 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2.32.3)
-Requirement already satisfied: typer==0.15.3 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (0.15.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: aiohappyeyeballs&gt;=2.3.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (2.6.1)
-Requirement already satisfied: aiosignal&gt;=1.1.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (1.3.2)
-Requirement already satisfied: attrs&gt;=17.3.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (25.3.0)
-Requirement already satisfied: frozenlist&gt;=1.1.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (1.6.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (6.4.3)
-Requirement already satisfied: propcache&gt;=0.2.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (0.3.1)
-Requirement already satisfied: yarl&lt;2.0,&gt;=1.17.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (1.20.0)
-Requirement already satisfied: packaging in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from faiss-cpu==1.11.0-&gt;robotu-molkit) (25.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: httpx&lt;0.29,&gt;=0.27 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.28.1)
-Requirement already satisfied: urllib3 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.1.0)
-Requirement already satisfied: pandas&lt;2.3.0,&gt;=0.24.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.2.3)
-Requirement already satisfied: certifi in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2025.4.26)
-Requirement already satisfied: lomond in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.3.3)
-Requirement already satisfied: tabulate in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.9.0)
-Requirement already satisfied: ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.13.5)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: annotated-types&gt;=0.6.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (0.7.0)
-Requirement already satisfied: pydantic-core==2.33.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (2.33.2)
-Requirement already satisfied: typing-extensions&gt;=4.12.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (4.13.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: typing-inspection&gt;=0.4.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (0.4.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: Pillow in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from rdkit==2024.9.6-&gt;robotu-molkit) (11.2.1)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from requests==2.32.3-&gt;robotu-molkit) (3.4.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from requests==2.32.3-&gt;robotu-molkit) (3.10)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: click&gt;=8.0.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from typer==0.15.3-&gt;robotu-molkit) (8.1.8)
-Requirement already satisfied: shellingham&gt;=1.3.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from typer==0.15.3-&gt;robotu-molkit) (1.5.4)
-Requirement already satisfied: rich&gt;=10.11.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from typer==0.15.3-&gt;robotu-molkit) (14.0.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: anyio in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (4.9.0)
-Requirement already satisfied: httpcore==1.* in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.0.9)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: h11&gt;=0.16 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from httpcore==1.*-&gt;httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.16.0)
-Requirement already satisfied: ibm-cos-sdk-core==2.13.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.13.5)
-Requirement already satisfied: ibm-cos-sdk-s3transfer==2.13.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.13.5)
-Requirement already satisfied: jmespath&lt;=1.0.1,&gt;=0.10.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.0.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&lt;3.0.0,&gt;=2.9.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk-core==2.13.5-&gt;ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.9.0.post0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pandas&lt;2.3.0,&gt;=0.24.2-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2025.2)
-Requirement already satisfied: tzdata&gt;=2022.7 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pandas&lt;2.3.0,&gt;=0.24.2-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2025.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from python-dateutil&lt;3.0.0,&gt;=2.9.0-&gt;ibm-cos-sdk-core==2.13.5-&gt;ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.17.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from rich&gt;=10.11.0-&gt;typer==0.15.3-&gt;robotu-molkit) (3.0.0)
-Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from rich&gt;=10.11.0-&gt;typer==0.15.3-&gt;robotu-molkit) (2.19.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mdurl~=0.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=10.11.0-&gt;typer==0.15.3-&gt;robotu-molkit) (0.1.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sniffio&gt;=1.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from anyio-&gt;httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.3.1)
 </pre></div>
 </div>
 </div>
@@ -629,279 +543,97 @@ Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/user/robot
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Starting ingest of 91 CIDs...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2519
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5429
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2153
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4534
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4744
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3758
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 89594
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 8378
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 7028
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5816
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 118943
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 439260
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6041
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4236
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2244
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3672
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1983
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 156391
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3033
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2662
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3825
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3715
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 54676228
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3306
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3394
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4781
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4055
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4485
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4783
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4044
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5345
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5120
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3826
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 681
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5202
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 774
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 119
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 33032
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 187
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 896
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1123
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 239
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6047
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1001
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6057
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1150
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1030
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5901
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 865
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 439203
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 612
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 311
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 176
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 284
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 243
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1110
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 338
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 971
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 107735
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 525
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 54670067
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5950
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 750
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6137
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5957
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5961
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 232
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 247
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1176
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 586
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2236
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5288826
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5184
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5284371
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 245005
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6167
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2353
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 8549
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5280953
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5770
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4727
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 969516
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 445154
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5280343
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5280961
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 9064
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1548943
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6989
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1183
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3314
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5281515
+Procesado registro CID 2519
+Procesado registro CID 5429
+Procesado registro CID 2153
+Procesado registro CID 4534
+Procesado registro CID 4744
+Procesado registro CID 3758
+Procesado registro CID 89594
+Procesado registro CID 8378
+Procesado registro CID 7028
+Procesado registro CID 118943
+Procesado registro CID 5816
+Procesado registro CID 439260
+Procesado registro CID 6041
+Procesado registro CID 4236
+Procesado registro CID 2244
+Procesado registro CID 3672
+Procesado registro CID 1983
+Procesado registro CID 156391
+Procesado registro CID 3033
+Procesado registro CID 3825
+Procesado registro CID 3715
+Procesado registro CID 2662
+Procesado registro CID 54676228
+Procesado registro CID 3306
+Procesado registro CID 3394
+Procesado registro CID 4781
+Procesado registro CID 4055
+Procesado registro CID 4485
+Procesado registro CID 4783
+Procesado registro CID 4044
+Procesado registro CID 5345
+Procesado registro CID 5120
+Procesado registro CID 3826
+Procesado registro CID 681
+Procesado registro CID 5202
+Procesado registro CID 774
+Procesado registro CID 119
+Procesado registro CID 33032
+Procesado registro CID 187
+Procesado registro CID 896
+Procesado registro CID 1123
+Procesado registro CID 239
+Procesado registro CID 6047
+Procesado registro CID 1001
+Procesado registro CID 6057
+Procesado registro CID 1150
+Procesado registro CID 5901
+Procesado registro CID 1030
+Procesado registro CID 865
+Procesado registro CID 439203
+Procesado registro CID 612
+Procesado registro CID 311
+Procesado registro CID 176
+Procesado registro CID 284
+Procesado registro CID 243
+Procesado registro CID 338
+Procesado registro CID 1110
+Procesado registro CID 971
+Procesado registro CID 107735
+Procesado registro CID 525
+Procesado registro CID 54670067
+Procesado registro CID 750
+Procesado registro CID 5950
+Procesado registro CID 6137
+Procesado registro CID 5957
+Procesado registro CID 5961
+Procesado registro CID 232
+Procesado registro CID 247
+Procesado registro CID 1176
+Procesado registro CID 586
+Procesado registro CID 2236
+Procesado registro CID 5184
+Procesado registro CID 5288826
+Procesado registro CID 5284371
+Procesado registro CID 245005
+Procesado registro CID 6167
+Procesado registro CID 2353
+Procesado registro CID 8549
+Procesado registro CID 5280953
+Procesado registro CID 5770
+Procesado registro CID 4727
+Procesado registro CID 969516
+Procesado registro CID 445154
+Procesado registro CID 5280343
+Procesado registro CID 5280961
+Procesado registro CID 9064
+Procesado registro CID 1548943
+Procesado registro CID 6989
+Procesado registro CID 3314
+Procesado registro CID 1183
+Procesado registro CID 5281515
 INFO: Done! Raw → data/downloaded_data | Parsed → data/parsed
 </pre></div>
 </div>
@@ -1072,184 +804,7 @@ INFO: Done! Raw → data/downloaded_data | Parsed → data/parsed
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Embedding model: ibm/granite-embedding-278m-multilingual
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error getting IAM Token.
-Reason: &lt;Response [400]&gt;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">╭───────────────────── </span><span class=" -Color -Color-Bold -Color-Bold-Red">Traceback </span><span class=" -Color -Color-Bold -Color-Bold-Faint -Color-Bold-Faint-Red">(most recent call last)</span><span class=" -Color -Color-Red"> ──────────────────────╮</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/src/robotu_molkit/</span><span class=" -Color -Color-Bold">cli.py</span>:120 in embed_command       <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">117 │   │   </span>model = FAST_EMBED_MODEL_ID                                    <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">118 │   </span>                                                                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">119 │   </span>typer.echo(<span class=" -Color -Color-Yellow">f&quot;Embedding model: {</span>model<span class=" -Color -Color-Yellow">}&quot;</span>)                            <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span>120 <span class=" -Color -Color-Faint">│   </span>idx = <span class=" -Color -Color-Bold">WatsonxIndex(</span>                                                <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">121 │   │   </span><span class=" -Color -Color-Bold">api_key=api_key,</span>                                               <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">122 │   │   </span><span class=" -Color -Color-Bold">project_id=project_id,</span>                                         <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">123 │   │   </span><span class=" -Color -Color-Bold">model=model,</span>                                                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭──────────────────────── locals ────────────────────────╮</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">api_key</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;WATSONX_API_KEY&#39;</span>                         <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>       <span class=" -Color -Color-Yellow">fast</span><span class=" -Color -Color-Red"> =</span> False                                     <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">ibm_url</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;https://us-south.ml.cloud.ibm.com&#39;</span>       <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>      <span class=" -Color -Color-Yellow">model</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;ibm/granite-embedding-278m-multilingual&#39;</span> <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">out_dir</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold -Color-Bold-Magenta">PosixPath</span><span class=" -Color -Color-Bold">(</span><span class=" -Color -Color-Green">&#39;data/vectors&#39;</span><span class=" -Color -Color-Bold">)</span>                 <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">parsed_dir</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold -Color-Bold-Magenta">PosixPath</span><span class=" -Color -Color-Bold">(</span><span class=" -Color -Color-Green">&#39;data/parsed&#39;</span><span class=" -Color -Color-Bold">)</span>                  <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">project_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;WATSONX_PROJECT_ID&#39;</span>                      <span class=" -Color -Color-Blue">│</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰────────────────────────────────────────────────────────╯</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/src/robotu_molkit/vector/</span><span class=" -Color -Color-Bold">watsonx_index.py</span>:31 in     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> __init__                                                                     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint"> 28 │   │   </span>model: str = DEFAULT_EMBED_MODEL_ID,                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint"> 29 │   </span>) -&gt; None:                                                         <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint"> 30 │   │   # Watsonx embedding client</span>                                     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span> 31 <span class=" -Color -Color-Faint">│   │   </span>self.embedder = <span class=" -Color -Color-Bold">Embeddings(</span>                                    <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint"> 32 │   │   │   </span><span class=" -Color -Color-Bold">model_id=model,</span>                                            <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint"> 33 │   │   │   </span><span class=" -Color -Color-Bold">credentials=Credentials(api_key=api_key, url=ibm_url),</span>     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint"> 34 │   │   │   </span><span class=" -Color -Color-Bold">project_id=project_id,</span>                                     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭───────────────────────────────── locals ─────────────────────────────────╮</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">api_key</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;WATSONX_API_KEY&#39;</span>                                           <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">ibm_url</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;https://us-south.ml.cloud.ibm.com&#39;</span>                         <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>      <span class=" -Color -Color-Yellow">model</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;ibm/granite-embedding-278m-multilingual&#39;</span>                   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">project_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;WATSONX_PROJECT_ID&#39;</span>                                        <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>       <span class=" -Color -Color-Yellow">self</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;robotu_molkit.vector.watsonx_index.WatsonxIndex</span> object at  <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>              <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe49d79290</span><span class=" -Color -Color-Bold">&gt;</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰──────────────────────────────────────────────────────────────────────────╯</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/f</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">oundation_models/embeddings/</span><span class=" -Color -Color-Bold">embeddings.py</span>:180 in __init__                    <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">177 │   │   </span>if credentials:                                                <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">178 │   │   │   </span>from ibm_watsonx_ai import APIClient                       <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">179 │   │   │   </span>                                                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span>180 <span class=" -Color -Color-Faint">│   │   │   </span>self._client = <span class=" -Color -Color-Bold">APIClient(credentials, verify=verify)</span>       <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">181 │   │   </span>elif api_client:                                               <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">182 │   │   │   </span>self._client = api_client                                  <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">183 │   │   </span>else:                                                          <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭───────────────────────────────── locals ─────────────────────────────────╮</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Yellow">api_client</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Yellow">batch_size</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold -Color-Bold-Cyan">1000</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>     <span class=" -Color -Color-Yellow">concurrency_limit</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold -Color-Bold-Cyan">5</span>                                                <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>           <span class=" -Color -Color-Yellow">credentials</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.credentials.Credentials</span> object   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                         at <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4910a410</span><span class=" -Color -Color-Bold">&gt;</span>                               <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Yellow">delay_time</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>           <span class=" -Color -Color-Yellow">max_retries</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>              <span class=" -Color -Color-Yellow">model_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;ibm/granite-embedding-278m-multilingual&#39;</span>        <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                <span class=" -Color -Color-Yellow">params</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">persistent_connection</span><span class=" -Color -Color-Red"> =</span> True                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Yellow">project_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;WATSONX_PROJECT_ID&#39;</span>                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">retry_status_codes</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                  <span class=" -Color -Color-Yellow">self</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.foundation_models.embeddings.em…</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                         object at <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4db57610</span><span class=" -Color -Color-Bold">&gt;</span>                        <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>              <span class=" -Color -Color-Yellow">space_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                <span class=" -Color -Color-Yellow">verify</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰──────────────────────────────────────────────────────────────────────────╯</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/</span><span class=" -Color -Color-Bold">c</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Bold">lient.py</span>:464 in __init__                                                     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">461 │   │   │   │   </span>self.CPD_version &gt;= 5.0                                <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">462 │   │   │   </span>)                                                          <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">463 │   │   │   </span>                                                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span>464 <span class=" -Color -Color-Faint">│   │   │   </span>self._auth_method = <span class=" -Color -Color-Bold">get_auth_method(self)</span>                  <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">465 │   │   │   </span>self._auth_method.get_token()                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">466 │   │   │   </span>                                                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">467 │   │   │   # For cloud, service_instance.details will be set during s</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭───────────────────────────────── locals ─────────────────────────────────╮</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">async_httpx_client</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold -Color-Bold-Magenta">HttpClientConfig</span><span class=" -Color -Color-Bold">(</span>                                   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Faint -Color-Faint-Green">│   </span><span class=" -Color -Color-Yellow">timeout</span>=<span class=" -Color -Color-Bold -Color-Bold-Magenta">Timeout</span><span class=" -Color -Color-Bold">(</span><span class=" -Color -Color-Yellow">connect</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">10</span>, <span class=" -Color -Color-Yellow">read</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">1800</span>,          <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Yellow">write</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">1800</span>, <span class=" -Color -Color-Yellow">pool</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">1800</span><span class=" -Color -Color-Bold">)</span>,                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Faint -Color-Faint-Green">│   </span><span class=" -Color -Color-Yellow">limits</span>=<span class=" -Color -Color-Bold -Color-Bold-Magenta">Limits</span><span class=" -Color -Color-Bold">(</span><span class=" -Color -Color-Yellow">max_connections</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">10</span>,               <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Yellow">max_keepalive_connections</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">10</span>, <span class=" -Color -Color-Yellow">keepalive_expiry</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">5</span><span class=" -Color -Color-Bold">)</span>   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Bold">)</span>                                                   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>        <span class=" -Color -Color-Yellow">credentials</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.credentials.Credentials</span> object at   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4910a410</span><span class=" -Color -Color-Bold">&gt;</span>                                     <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>       <span class=" -Color -Color-Yellow">httpx_client</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold -Color-Bold-Magenta">HttpClientConfig</span><span class=" -Color -Color-Bold">(</span>                                   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Faint -Color-Faint-Green">│   </span><span class=" -Color -Color-Yellow">timeout</span>=<span class=" -Color -Color-Bold -Color-Bold-Magenta">Timeout</span><span class=" -Color -Color-Bold">(</span><span class=" -Color -Color-Yellow">connect</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">10</span>, <span class=" -Color -Color-Yellow">read</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">1800</span>,          <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Yellow">write</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">1800</span>, <span class=" -Color -Color-Yellow">pool</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">1800</span><span class=" -Color -Color-Bold">)</span>,                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Faint -Color-Faint-Green">│   </span><span class=" -Color -Color-Yellow">limits</span>=<span class=" -Color -Color-Bold -Color-Bold-Magenta">Limits</span><span class=" -Color -Color-Bold">(</span><span class=" -Color -Color-Yellow">max_connections</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">10</span>,               <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Yellow">max_keepalive_connections</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">10</span>, <span class=" -Color -Color-Yellow">keepalive_expiry</span>=<span class=" -Color -Color-Bold -Color-Bold-Cyan">5</span><span class=" -Color -Color-Bold">)</span>   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Bold">)</span>                                                   <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>             <span class=" -Color -Color-Yellow">kwargs</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">{}</span>                                                  <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>         <span class=" -Color -Color-Yellow">project_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>           <span class=" -Color -Color-Yellow">requests</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;module</span> <span class=" -Color -Color-Green">&#39;ibm_watsonx_ai._wrappers.requests&#39;</span> from    <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Green">&#39;/home/user/robotu-molkit/.venv/lib/python3.11/sit…</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>               <span class=" -Color -Color-Yellow">self</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.client.APIClient</span> object at          <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                      <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4c4d0d50</span><span class=" -Color -Color-Bold">&gt;</span>                                     <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>           <span class=" -Color -Color-Yellow">space_id</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>             <span class=" -Color -Color-Yellow">verify</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">wml_credentials</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>   <span class=" -Color -Color-Yellow">wml_full_version</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;&#39;</span>                                                  <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰──────────────────────────────────────────────────────────────────────────╯</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/u</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">tils/auth/</span><span class=" -Color -Color-Bold">base_auth.py</span>:260 in get_auth_method                                <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">257 │   │   </span>elif api_client.CLOUD_PLATFORM_SPACES:                         <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">258 │   │   │   </span>from ibm_watsonx_ai.utils.auth.iam_auth import IAMTokenAut <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">259 │   │   │   </span>                                                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span>260 <span class=" -Color -Color-Faint">│   │   │   </span>return <span class=" -Color -Color-Bold">IAMTokenAuth(</span>                                       <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">261 │   │   │   │   </span><span class=" -Color -Color-Bold">api_client,</span>                                            <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">262 │   │   │   │   </span><span class=" -Color -Color-Bold">on_token_creation=on_token_creation,</span>                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">263 │   │   │   │   </span><span class=" -Color -Color-Bold">on_token_refresh=on_token_refresh,</span>                     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭───────────────────────────────── locals ─────────────────────────────────╮</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>        <span class=" -Color -Color-Yellow">api_client</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.client.APIClient</span> object at           <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                     <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4c4d0d50</span><span class=" -Color -Color-Bold">&gt;</span>                                      <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>             <span class=" -Color -Color-Yellow">creds</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.credentials.Credentials</span> object at    <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                     <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4dbd9590</span><span class=" -Color -Color-Bold">&gt;</span>                                      <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">on_token_creation</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                 <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>  <span class=" -Color -Color-Yellow">on_token_refresh</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                 <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>      <span class=" -Color -Color-Yellow">on_token_set</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                 <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰──────────────────────────────────────────────────────────────────────────╯</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/u</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">tils/auth/</span><span class=" -Color -Color-Bold">iam_auth.py</span>:44 in __init__                                         <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">41 │   │   │   │   </span><span class=" -Color -Color-Yellow">&quot;api_key for IAM token is not provided in credentials f</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">42 │   │   │   </span>)                                                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">43 │   │   </span>                                                                <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span>44 <span class=" -Color -Color-Faint">│   │   </span>self._save_token_data(<span class=" -Color -Color-Bold">self._generate_token()</span>)                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">45 │   │   </span>if self._on_token_creation:                                     <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">46 │   │   │   </span>self._on_token_creation()                                   <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">47 </span>                                                                        <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭───────────────────────────────── locals ─────────────────────────────────╮</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>        <span class=" -Color -Color-Yellow">api_client</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.client.APIClient</span> object at           <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                     <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4c4d0d50</span><span class=" -Color -Color-Bold">&gt;</span>                                      <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">on_token_creation</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                 <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>  <span class=" -Color -Color-Yellow">on_token_refresh</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Magenta">None</span>                                                 <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>              <span class=" -Color -Color-Yellow">self</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.utils.auth.iam_auth.IAMTokenAuth</span>     <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>                     object at <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4910b010</span><span class=" -Color -Color-Bold">&gt;</span>                            <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰──────────────────────────────────────────────────────────────────────────╯</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/u</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Faint">tils/auth/</span><span class=" -Color -Color-Bold">iam_auth.py</span>:73 in _generate_token                                  <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">70 │   │   </span>if response.status_code == 200:                                 <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">71 │   │   │   </span>return TokenInfo(response.json().get(<span class=" -Color -Color-Yellow">&quot;access_token&quot;</span>))       <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">72 │   │   </span>else:                                                           <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Red">❱ </span>73 <span class=" -Color -Color-Faint">│   │   │   </span><span class=" -Color -Color-Bold">raise WMLClientError(</span><span class=" -Color -Color-Bold -Color-Bold-Yellow">&quot;Error getting IAM Token.&quot;</span><span class=" -Color -Color-Bold">, response)</span>  <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>   <span class=" -Color -Color-Faint">74 </span>                                                                        <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span>                                                                              <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╭───────────────────────────────── locals ─────────────────────────────────╮</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>  <span class=" -Color -Color-Yellow">headers</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">{</span>                                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Faint -Color-Faint-Green">│   </span><span class=" -Color -Color-Green">&#39;Content-Type&#39;</span>: <span class=" -Color -Color-Green">&#39;application/x-www-form-urlencoded&#39;</span>,      <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Faint -Color-Faint-Green">│   </span><span class=" -Color -Color-Green">&#39;Authorization&#39;</span>: <span class=" -Color -Color-Green">&#39;Basic Yng6Yng=&#39;</span>                         <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Bold">}</span>                                                             <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>    <span class=" -Color -Color-Yellow">mystr</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Green">&#39;apikey=WATSONX_API_KEY&amp;grant_type=urn%3Aibm%3Aparams%3Aoaut…</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Yellow">response</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;Response</span> <span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Bold -Color-Bold-Cyan">400</span><span class=" -Color -Color-Bold">]&gt;</span>                                              <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>     <span class=" -Color -Color-Yellow">self</span><span class=" -Color -Color-Red"> =</span> <span class=" -Color -Color-Bold">&lt;ibm_watsonx_ai.utils.auth.iam_auth.IAMTokenAuth</span> object at    <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">│</span>            <span class=" -Color -Color-Bold -Color-Bold-Cyan">0x7fbe4910b010</span><span class=" -Color -Color-Bold">&gt;</span>                                               <span class=" -Color -Color-Blue">│</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">│</span> <span class=" -Color -Color-Blue">╰──────────────────────────────────────────────────────────────────────────╯</span> <span class=" -Color -Color-Red">│</span>
-<span class=" -Color -Color-Red">╰──────────────────────────────────────────────────────────────────────────────╯</span>
-<span class=" -Color -Color-Bold">WMLClientError: </span>Error getting IAM Token.
-Reason: <span class=" -Color -Color-Bold">&lt;Response</span> <span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Bold -Color-Bold-Cyan">400</span><span class=" -Color -Color-Bold">]&gt;</span>
+<span class=" -Color -Color-Green">✅  Embeddings written to data/vectors/watsonx_vectors.jsonl</span>
 </pre></div>
 </div>
 </div>
@@ -1290,88 +845,6 @@ Reason: <span class=" -Color -Color-Bold">&lt;Response</span> <span class=" -Col
 
 <span class="c1"># Initialize searcher</span>
 <span class="n">searcher</span> <span class="o">=</span> <span class="n">LocalSearch</span><span class="p">(</span><span class="n">jsonl_path</span><span class="o">=</span><span class="n">JSONL_PATH</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error getting IAM Token.
-Reason: &lt;Response [400]&gt;
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">WMLClientError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">15</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">FAISS_K</span>       <span class="o">=</span> <span class="mi">300</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># --------------------------------------------------------------------------- #</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> 
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># Initialize searcher</span>
-<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">searcher</span> <span class="o">=</span> <span class="n">LocalSearch</span><span class="p">(</span><span class="n">jsonl_path</span><span class="o">=</span><span class="n">JSONL_PATH</span><span class="p">)</span>
-
-<span class="nn">File ~/robotu-molkit/src/robotu_molkit/search/searcher.py:101,</span> in <span class="ni">LocalSearch.__init__</span><span class="nt">(self, jsonl_path, override_api_key, override_project_id, ibm_url, embed_model_id)</span>
-<span class="g g-Whitespace">     </span><span class="mi">99</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
-<span class="g g-Whitespace">    </span><span class="mi">100</span> <span class="bp">self</span><span class="o">.</span><span class="n">ibm_url</span> <span class="o">=</span> <span class="n">ibm_url</span>
-<span class="ne">--&gt; </span><span class="mi">101</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_client</span> <span class="o">=</span> <span class="n">WatsonxEmbeddingClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">102</span>                                            <span class="n">ibm_url</span><span class="o">=</span><span class="n">ibm_url</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">embed_model_id</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">103</span> <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">jsonl_path</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="n">first</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="nn">File ~/robotu-molkit/src/robotu_molkit/search/embedding_client.py:20,</span> in <span class="ni">WatsonxEmbeddingClient.__init__</span><span class="nt">(self, api_key, project_id, ibm_url, model)</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="bp">self</span><span class="o">.</span><span class="n">ibm_url</span> <span class="o">=</span> <span class="n">ibm_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">20</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedder</span> <span class="o">=</span> <span class="n">Embeddings</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="n">model_id</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">credentials</span><span class="o">=</span><span class="n">Credentials</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ibm_url</span><span class="p">),</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="n">project_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="p">)</span>
-
-<span class="nn">File ~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/foundation_models/embeddings/embeddings.py:180,</span> in <span class="ni">Embeddings.__init__</span><span class="nt">(self, model_id, params, credentials, project_id, space_id, api_client, verify, persistent_connection, batch_size, concurrency_limit, max_retries, delay_time, retry_status_codes)</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIClient</span>
-<span class="ne">--&gt; </span><span class="mi">180</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span> <span class="k">elif</span> <span class="n">api_client</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">182</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">api_client</span>
-
-<span class="nn">File ~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/client.py:464,</span> in <span class="ni">APIClient.__init__</span><span class="nt">(self, credentials, project_id, space_id, verify, httpx_client, async_httpx_client, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">454</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_fm_ga_api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">455</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fm_ga_api_available</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">456</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;=</span> <span class="mf">4.8</span>
-<span class="g g-Whitespace">    </span><span class="mi">457</span>     <span class="k">else</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">458</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">460</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_pta_ga_api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">461</span>     <span class="bp">self</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">5.0</span>
-<span class="g g-Whitespace">    </span><span class="mi">462</span> <span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">464</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auth_method</span> <span class="o">=</span> <span class="n">get_auth_method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">465</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auth_method</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">467</span> <span class="c1"># For cloud, service_instance.details will be set during space creation( if instance is associated ) or</span>
-<span class="g g-Whitespace">    </span><span class="mi">468</span> <span class="c1"># while patching a space with an instance</span>
-
-<span class="nn">File ~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/utils/auth/base_auth.py:260,</span> in <span class="ni">get_auth_method</span><span class="nt">(api_client, on_token_set, on_token_creation, on_token_refresh)</span>
-<span class="g g-Whitespace">    </span><span class="mi">257</span> <span class="k">elif</span> <span class="n">api_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">258</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai.utils.auth.iam_auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">IAMTokenAuth</span>
-<span class="ne">--&gt; </span><span class="mi">260</span>     <span class="k">return</span> <span class="n">IAMTokenAuth</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">261</span>         <span class="n">api_client</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">262</span>         <span class="n">on_token_creation</span><span class="o">=</span><span class="n">on_token_creation</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">263</span>         <span class="n">on_token_refresh</span><span class="o">=</span><span class="n">on_token_refresh</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">264</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">266</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai.utils.auth.icp_auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">ICPAuth</span>
-
-<span class="nn">File ~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/utils/auth/iam_auth.py:44,</span> in <span class="ni">IAMTokenAuth.__init__</span><span class="nt">(self, api_client, on_token_creation, on_token_refresh)</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">api_client</span><span class="o">.</span><span class="n">_is_IAM</span><span class="p">():</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span>     <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span>         <span class="s2">&quot;api_key for IAM token is not provided in credentials for the client.&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span>     <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">44</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_token_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_token</span><span class="p">())</span>
-<span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_token_creation</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">46</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_on_token_creation</span><span class="p">()</span>
-
-<span class="nn">File ~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/utils/auth/iam_auth.py:73,</span> in <span class="ni">IAMTokenAuth._generate_token</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span>     <span class="k">return</span> <span class="n">TokenInfo</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;access_token&quot;</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">73</span>     <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Error getting IAM Token.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-
-<span class="ne">WMLClientError</span>: Error getting IAM Token.
-<span class="ne">Reason</span>: &lt;Response [400]&gt;
 </pre></div>
 </div>
 </div>
@@ -2112,7 +1585,7 @@ An IBM Granite model designed to generate and execute code in response to natura
   <div class="footer-item">
     
 <p class="component-author">
-By The Jupyter Book Community
+By Robotu
 </p>
 
   </div>
