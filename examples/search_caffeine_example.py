@@ -35,13 +35,25 @@ def main():
         "solubility_tag": "soluble"
     }
 
+    # Perform semantic + structural search
     results = searcher.search_by_semantics_and_structure(
         query_text=query_text, top_k=20, faiss_k=300, filters=filters, sim_threshold=0.70
     )
 
-    entries = [f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} Sol:{m.get('solubility_tag','')} Score:{s:.3f} Tanimoto:{sim:.2f}" for m,s,sim in results]
-    print(f"Top {len(entries)} hits (Granite scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n" + "\n".join(entries))
+    # Format and display results
+    entries = [
+        f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} "
+        f"Sol:{m.get('solubility_tag','')} Score:{s:.3f} Tanimoto:{sim:.2f}"
+        for m, s, sim in results
+    ]
 
+    print(
+        f"Results for query: \"{query_text}\"\n"
+        f"Top {len(entries)} hits (Granite-inferred scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n"
+        + "\n".join(entries)
+        + "\n\nNote: Scaffold inference was performed using IBM's granite-3-8b-instruct model. "
+          "Semantic and structural similarity search was powered by granite-embedding-278m-multilingual."
+    )
 
 
 if __name__ == "__main__":

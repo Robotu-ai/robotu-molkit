@@ -156,7 +156,7 @@ class LocalSearch:
             mol_vec = QueryRefiner.ecfp_bits_from_meta(meta)
             sims = [QueryRefiner.tanimoto_bits(mol_vec, ref) for ref in ref_vecs]
             max_sim = max(sims) if sims else 0.0
-            print(f"→ CID {meta.get('cid')} Tanimoto: {max_sim:.2f}")
+            print(f"→ CID {meta.get('cid')} Name:{meta.get('name','<unknown>')} Tanimoto: {max_sim:.2f}")
             if max_sim >= sim_threshold:
                 results.append((meta, score, max_sim))
         results.sort(key=lambda x: x[1], reverse=True)
