@@ -185,3 +185,6 @@ src/robotu_molkit/vector/prompts/*
 # but not ignore de file default in prompts
 !src/robotu_molkit/vector/prompts/default/
 !src/robotu_molkit/vector/prompts/default/**
+
+# notebook examples build
+examples/book/_build/
