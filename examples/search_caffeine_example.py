@@ -52,7 +52,7 @@ def main():
         f"Top {len(entries)} hits (Granite-inferred scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n"
         + "\n".join(entries)
         + "\n\nNote: Scaffold inference was performed using IBM's granite-3-8b-instruct model. "
-          "Semantic and structural similarity search was powered by granite-embedding-278m-multilingual."
+        "Semantic and structural similarity search was powered by granite-embedding-278m-multilingual."
     )
 
 

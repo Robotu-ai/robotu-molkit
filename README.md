@@ -111,23 +111,37 @@ WATSON_PROJECT_ID = ""
 CredentialsManager.set_api_key(WATSON_API_KEY)
 CredentialsManager.set_project_id(WATSON_PROJECT_ID)
 
-searcher = LocalSearch(jsonl_path=DEFAULT_JSONL_FILE_ROUTE)
-query_text = "methylxanthine derivatives with central nervous system stimulant activity"
-filters = {"molecular_weight": (0, 250), "solubility_tag": "soluble"}
+# Initialize searcher
+searcher = LocalSearch(jsonl_path=JSONL_PATH)
 
-results1 = searcher.search_by_semantics(
-    query_text=query_text, top_k=20, faiss_k=300, filters=filters
+# Define query and metadata filters
+query_text = (
+    "Methylxanthine derivatives with central nervous system stimulant activity"
 )
+filters = {
+    "molecular_weight": (0, 250),
+    "solubility_tag": "soluble"
+}
 
-entries = [f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} Sol:{m.get('solubility_tag','')} Score:{s:.3f}" for m,s in results1]
-print(f"Top {len(entries)} hits:\n" + "\n".join(entries))
-
-results2 = searcher.search_by_semantics_and_structure(
+# Perform semantic + structural search
+results = searcher.search_by_semantics_and_structure(
     query_text=query_text, top_k=20, faiss_k=300, filters=filters, sim_threshold=0.70
 )
 
-entries = [f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} Sol:{m.get('solubility_tag','')} Score:{s:.3f} Tanimoto:{sim:.2f}" for m,s,sim in results2]
-print(f"Top {len(entries)} hits (Granite scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n" + "\n".join(entries))
+# Format and display results
+entries = [
+    f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} "
+    f"Sol:{m.get('solubility_tag','')} Score:{s:.3f} Tanimoto:{sim:.2f}"
+    for m, s, sim in results
+]
+
+print(
+    f"Results for query: \"{query_text}\"\n"
+    f"Top {len(entries)} hits (Granite-inferred scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n"
+    + "\n".join(entries)
+    + "\n\nNote: Scaffold inference was performed using IBM's granite-3-8b-instruct model. "
+      "Semantic and structural similarity search was powered by granite-embedding-278m-multilingual."
+)
 
 ```
 
@@ -158,7 +172,7 @@ filters: Dict[str, Any] = {
 
 - **List** (membership)  
   `python
-  filters = { 'cid': [123, 456, 789] }
+  filters = { 'cid': [119, 971, 1123] }
   `  
   Only entries where `meta['cid']` is in the list pass.
 
@@ -189,11 +203,11 @@ filtered = [(m, s) for m, s in hits if passes(m)][:top_k]
 ```python
 my_filters = {
     'solubility_tag': 'soluble',
-    'molecular_weight': (150, 450),
+    'molecular_weight': (100, 250),
 }
 
-results = client.search_by_semantics(
-    query_text="kinase inhibitor",
+results = searcher.search_by_semantics(
+    query_text="molecules structurally or functionally similar to caffeine",
     top_k=20,
     filters=my_filters
 )
