@@ -92,6 +92,7 @@ class WatsonxIndex:
                 meta    = data.get("meta", {})
                 spectra = data.get("spectra", {}).get("raw", {}) or {}
                 pka_vals = sol.get("pka", []) or []
+                structure = data.get("structure", []) or []
 
                 # 4) Expectra interpretation 
                 spectra_tag, notable_peak = self.sg.format_spectra_info(spectra)
@@ -136,6 +137,7 @@ class WatsonxIndex:
                                     or "no spectra available",
                     "chem_tag":    meta.get("chem_tag", []),
                     "ghs_codes":   safety.get("ghs_codes", []),
+                    "xyz": structure.get("xyz", []),
                 }
                 sink.write(json.dumps(record) + "\n")
 
