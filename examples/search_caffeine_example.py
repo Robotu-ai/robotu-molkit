@@ -9,8 +9,8 @@ from robotu_molkit.constants import DEFAULT_JSONL_FILE_ROUTE
 # --------------------------------------------------------------------------- #
 # Configuration WATSONX CREDENTIALS                                          #
 # --------------------------------------------------------------------------- #
-API_KEY    = ""
-PROJECT_ID = ""
+API_KEY    = "WBLC6RY7mWwVGdVqWY2GVPfJ_yQjM_HzQJH5GVlFoXUp"
+PROJECT_ID = "13d1284a-8dae-4a88-b776-3b890b249f2d"
 
 # Persist credentials for all LocalSearch calls
 CredentialsManager.set_api_key(API_KEY)
@@ -28,52 +28,21 @@ def main():
 
     # Define query and metadata filters
     query_text = (
-        "methylxanthine derivatives with central nervous system stimulant activity"
+        "Compounds similar to ibuprofen but with improved bioavailability"
     )
     filters = {
         "molecular_weight": (0, 250),
         "solubility_tag": "soluble"
     }
 
-    # Perform semantic search only
-    results1 = searcher.search_by_semantics(
-        query_text=query_text,
-        top_k=TOP_K,
-        faiss_k=FAISS_K,
-        filters=filters,
-    )
-
-    print(f"\nTop {len(results1)} hits from semantic-only search:")
-    print(f"▼ (Unfiltered by structure)\n")
-    for meta, score in results1:
-        print(
-            f"CID {meta['cid']:<6} "
-            f"Name: {meta.get('name','<unknown>'):<25} "
-            f"MW: {meta.get('molecular_weight',0):<6.1f} "
-            f"Solubility: {meta.get('solubility_tag',''):<10} "
-            f"Score: {score:.3f}"
-        )
-
-    # Perform structural+semantic search with Tanimoto refinement
     results = searcher.search_by_semantics_and_structure(
-        query_text=query_text,
-        top_k=TOP_K,
-        faiss_k=FAISS_K,
-        filters=filters,
-        sim_threshold=SIM_THRESHOLD
+        query_text=query_text, top_k=20, faiss_k=300, filters=filters, sim_threshold=0.70
     )
 
-    print(f"\nTop {len(results)} hits after semantic+structural filtering:")
-    print(f"▼ (Granite scaffolds, Tanimoto ≥ {SIM_THRESHOLD})\n")
-    for meta, score, sim in results:
-        print(
-            f"CID {meta['cid']:<6} "
-            f"Name: {meta.get('name','<unknown>'):<25} "
-            f"MW: {meta.get('molecular_weight',0):<6.1f} "
-            f"Solubility: {meta.get('solubility_tag',''):<10} "
-            f"Score: {score:.3f} "
-            f"Tanimoto: {sim:.2f}"
-        )
+    entries = [f"CID {m['cid']} Name:{m.get('name','<unknown>')} MW:{m.get('molecular_weight',0):.1f} Sol:{m.get('solubility_tag','')} Score:{s:.3f} Tanimoto:{sim:.2f}" for m,s,sim in results]
+    print(f"Top {len(entries)} hits (Granite scaffolds, Tanimoto ≥ {SIM_THRESHOLD}):\n" + "\n".join(entries))
+
+
 
 if __name__ == "__main__":
     main()
