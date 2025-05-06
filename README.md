@@ -17,7 +17,7 @@ robotu-molkit ingests records from **PubChem**, standardizes >10 property catego
 
 It’s the first library to:
 - Embed both summaries and molecular sections using **Granite Embedding**
-- Enable similarity search powered by **local FAISS** (Milvus vector database throug watsonx, comming soon).
+- Enable similarity search powered by **local FAISS** (Milvus vector database through watsonx, comming soon).
 - Support hybrid semantic + structure-based filtering via **Tanimoto + AI vectors**
 
 In short: robotu-molkit turns raw chemical records into **simulation-ready, AI-searchable molecules**.
