@@ -1,17 +1,4 @@
 Traceback (most recent call last):
-  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 782, in _async_poll_for_reply
-    msg = await ensure_async(self.kc.shell_channel.get_msg(timeout=new_timeout))
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 198, in ensure_async
-    result = await obj
-             ^^^^^^^^^
-  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/jupyter_client/channels.py", line 313, in get_msg
-    raise Empty
-_queue.Empty
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
   File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
   File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 1319, in execute
@@ -25,18 +12,106 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^
   File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 1005, in async_execute_cell
-    exec_reply = await self.task_poll_for_reply
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 806, in _async_poll_for_reply
-    error_on_timeout_execute_reply = await self._async_handle_timeout(timeout, cell)
-                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 856, in _async_handle_timeout
-    raise CellTimeoutError.error_from_timeout_and_cell(
-nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
-The message was: Cell execution timed out.
-Here is a preview of the cell contents:
--------------------
-!molkit ingest --file "molecule_cids.txt" --concurrency 2
--------------------
+  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/user/robotu-molkit/.venv/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# Path to the JSONL file with precomputed embeddings and metadata
+JSONL_PATH    = DEFAULT_JSONL_FILE_ROUTE  # e.g. "data/vectors/watsonx_vectors.jsonl"
+
+# Minimum similarity score (cosine) to consider a hit relevant
+SIM_THRESHOLD = 0.70
+
+# After filtering by SIM_THRESHOLD, return this many top results
+TOP_K         = 20
+
+# Number of nearest neighbors to fetch from FAISS before filtering
+FAISS_K       = 300
+# --------------------------------------------------------------------------- #
+
+# Initialize searcher
+searcher = LocalSearch(jsonl_path=JSONL_PATH)
+------------------
+
+----- stderr -----
+Error getting IAM Token.
+Reason: <Response [400]>
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mWMLClientError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[6], line 15[0m
+[1;32m     11[0m FAISS_K       [38;5;241m=[39m [38;5;241m300[39m
+[1;32m     12[0m [38;5;66;03m# --------------------------------------------------------------------------- #[39;00m
+[1;32m     13[0m 
+[1;32m     14[0m [38;5;66;03m# Initialize searcher[39;00m
+[0;32m---> 15[0m searcher [38;5;241m=[39m [43mLocalSearch[49m[43m([49m[43mjsonl_path[49m[38;5;241;43m=[39;49m[43mJSONL_PATH[49m[43m)[49m
+
+File [0;32m~/robotu-molkit/src/robotu_molkit/search/searcher.py:101[0m, in [0;36mLocalSearch.__init__[0;34m(self, jsonl_path, override_api_key, override_project_id, ibm_url, embed_model_id)[0m
+[1;32m     99[0m [38;5;28mself[39m[38;5;241m.[39mproject_id [38;5;241m=[39m project_id
+[1;32m    100[0m [38;5;28mself[39m[38;5;241m.[39mibm_url [38;5;241m=[39m ibm_url
+[0;32m--> 101[0m [38;5;28mself[39m[38;5;241m.[39membed_client [38;5;241m=[39m [43mWatsonxEmbeddingClient[49m[43m([49m[43mapi_key[49m[38;5;241;43m=[39;49m[43mapi_key[49m[43m,[49m[43m [49m[43mproject_id[49m[38;5;241;43m=[39;49m[43mproject_id[49m[43m,[49m
+[1;32m    102[0m [43m                                           [49m[43mibm_url[49m[38;5;241;43m=[39;49m[43mibm_url[49m[43m,[49m[43m [49m[43mmodel[49m[38;5;241;43m=[39;49m[43membed_model_id[49m[43m)[49m
+[1;32m    103[0m path [38;5;241m=[39m Path(jsonl_path)
+[1;32m    104[0m first [38;5;241m=[39m json[38;5;241m.[39mloads(path[38;5;241m.[39mopen()[38;5;241m.[39mread()[38;5;241m.[39msplitlines()[[38;5;241m0[39m])
+
+File [0;32m~/robotu-molkit/src/robotu_molkit/search/embedding_client.py:20[0m, in [0;36mWatsonxEmbeddingClient.__init__[0;34m(self, api_key, project_id, ibm_url, model)[0m
+[1;32m     18[0m [38;5;28mself[39m[38;5;241m.[39mproject_id [38;5;241m=[39m project_id
+[1;32m     19[0m [38;5;28mself[39m[38;5;241m.[39mibm_url [38;5;241m=[39m ibm_url[38;5;241m.[39mrstrip([38;5;124m'[39m[38;5;124m/[39m[38;5;124m'[39m)
+[0;32m---> 20[0m [38;5;28mself[39m[38;5;241m.[39membedder [38;5;241m=[39m [43mEmbeddings[49m[43m([49m
+[1;32m     21[0m [43m    [49m[43mmodel_id[49m[38;5;241;43m=[39;49m[43mmodel[49m[43m,[49m
+[1;32m     22[0m [43m    [49m[43mcredentials[49m[38;5;241;43m=[39;49m[43mCredentials[49m[43m([49m[43mapi_key[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mapi_key[49m[43m,[49m[43m [49m[43murl[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mibm_url[49m[43m)[49m[43m,[49m
+[1;32m     23[0m [43m    [49m[43mproject_id[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mproject_id[49m[43m,[49m
+[1;32m     24[0m [43m[49m[43m)[49m
+
+File [0;32m~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/foundation_models/embeddings/embeddings.py:180[0m, in [0;36mEmbeddings.__init__[0;34m(self, model_id, params, credentials, project_id, space_id, api_client, verify, persistent_connection, batch_size, concurrency_limit, max_retries, delay_time, retry_status_codes)[0m
+[1;32m    177[0m [38;5;28;01mif[39;00m credentials:
+[1;32m    178[0m     [38;5;28;01mfrom[39;00m[38;5;250m [39m[38;5;21;01mibm_watsonx_ai[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m APIClient
+[0;32m--> 180[0m     [38;5;28mself[39m[38;5;241m.[39m_client [38;5;241m=[39m [43mAPIClient[49m[43m([49m[43mcredentials[49m[43m,[49m[43m [49m[43mverify[49m[38;5;241;43m=[39;49m[43mverify[49m[43m)[49m
+[1;32m    181[0m [38;5;28;01melif[39;00m api_client:
+[1;32m    182[0m     [38;5;28mself[39m[38;5;241m.[39m_client [38;5;241m=[39m api_client
+
+File [0;32m~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/client.py:464[0m, in [0;36mAPIClient.__init__[0;34m(self, credentials, project_id, space_id, verify, httpx_client, async_httpx_client, **kwargs)[0m
+[1;32m    454[0m [38;5;28mself[39m[38;5;241m.[39m_use_fm_ga_api [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mCLOUD_PLATFORM_SPACES [38;5;129;01mor[39;00m (
+[1;32m    455[0m     [38;5;28mself[39m[38;5;241m.[39m_check_if_fm_ga_api_available()
+[1;32m    456[0m     [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mCPD_version [38;5;241m<[39m[38;5;241m=[39m [38;5;241m4.8[39m
+[1;32m    457[0m     [38;5;28;01melse[39;00m [38;5;28;01mTrue[39;00m
+[1;32m    458[0m )
+[1;32m    460[0m [38;5;28mself[39m[38;5;241m.[39m_use_pta_ga_api [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mCLOUD_PLATFORM_SPACES [38;5;129;01mor[39;00m (
+[1;32m    461[0m     [38;5;28mself[39m[38;5;241m.[39mCPD_version [38;5;241m>[39m[38;5;241m=[39m [38;5;241m5.0[39m
+[1;32m    462[0m )
+[0;32m--> 464[0m [38;5;28mself[39m[38;5;241m.[39m_auth_method [38;5;241m=[39m [43mget_auth_method[49m[43m([49m[38;5;28;43mself[39;49m[43m)[49m
+[1;32m    465[0m [38;5;28mself[39m[38;5;241m.[39m_auth_method[38;5;241m.[39mget_token()
+[1;32m    467[0m [38;5;66;03m# For cloud, service_instance.details will be set during space creation( if instance is associated ) or[39;00m
+[1;32m    468[0m [38;5;66;03m# while patching a space with an instance[39;00m
+
+File [0;32m~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/utils/auth/base_auth.py:260[0m, in [0;36mget_auth_method[0;34m(api_client, on_token_set, on_token_creation, on_token_refresh)[0m
+[1;32m    257[0m [38;5;28;01melif[39;00m api_client[38;5;241m.[39mCLOUD_PLATFORM_SPACES:
+[1;32m    258[0m     [38;5;28;01mfrom[39;00m[38;5;250m [39m[38;5;21;01mibm_watsonx_ai[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mauth[39;00m[38;5;21;01m.[39;00m[38;5;21;01miam_auth[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m IAMTokenAuth
+[0;32m--> 260[0m     [38;5;28;01mreturn[39;00m [43mIAMTokenAuth[49m[43m([49m
+[1;32m    261[0m [43m        [49m[43mapi_client[49m[43m,[49m
+[1;32m    262[0m [43m        [49m[43mon_token_creation[49m[38;5;241;43m=[39;49m[43mon_token_creation[49m[43m,[49m
+[1;32m    263[0m [43m        [49m[43mon_token_refresh[49m[38;5;241;43m=[39;49m[43mon_token_refresh[49m[43m,[49m
+[1;32m    264[0m [43m    [49m[43m)[49m
+[1;32m    265[0m [38;5;28;01melse[39;00m:
+[1;32m    266[0m     [38;5;28;01mfrom[39;00m[38;5;250m [39m[38;5;21;01mibm_watsonx_ai[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mauth[39;00m[38;5;21;01m.[39;00m[38;5;21;01micp_auth[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m ICPAuth
+
+File [0;32m~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/utils/auth/iam_auth.py:44[0m, in [0;36mIAMTokenAuth.__init__[0;34m(self, api_client, on_token_creation, on_token_refresh)[0m
+[1;32m     39[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m api_client[38;5;241m.[39m_is_IAM():
+[1;32m     40[0m     [38;5;28;01mraise[39;00m WMLClientError(
+[1;32m     41[0m         [38;5;124m"[39m[38;5;124mapi_key for IAM token is not provided in credentials for the client.[39m[38;5;124m"[39m
+[1;32m     42[0m     )
+[0;32m---> 44[0m [38;5;28mself[39m[38;5;241m.[39m_save_token_data([38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_generate_token[49m[43m([49m[43m)[49m)
+[1;32m     45[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39m_on_token_creation:
+[1;32m     46[0m     [38;5;28mself[39m[38;5;241m.[39m_on_token_creation()
+
+File [0;32m~/robotu-molkit/.venv/lib/python3.11/site-packages/ibm_watsonx_ai/utils/auth/iam_auth.py:73[0m, in [0;36mIAMTokenAuth._generate_token[0;34m(self)[0m
+[1;32m     71[0m     [38;5;28;01mreturn[39;00m TokenInfo(response[38;5;241m.[39mjson()[38;5;241m.[39mget([38;5;124m"[39m[38;5;124maccess_token[39m[38;5;124m"[39m))
+[1;32m     72[0m [38;5;28;01melse[39;00m:
+[0;32m---> 73[0m     [38;5;28;01mraise[39;00m WMLClientError([38;5;124m"[39m[38;5;124mError getting IAM Token.[39m[38;5;124m"[39m, response)
+
+[0;31mWMLClientError[0m: Error getting IAM Token.
+Reason: <Response [400]>
 
