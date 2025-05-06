@@ -6,5 +6,5 @@ numpy==2.2.5
 pubchempy==1.0.4
 pydantic==2.11.4
 rdkit==2024.9.6
-Requests==2.32.3
+requests==2.32.3
 typer==0.15.3
