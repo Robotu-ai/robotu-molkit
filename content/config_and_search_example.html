@@ -1,0 +1,1705 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction to RobotU Molkit &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/config_and_search_example';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to your Jupyter Book" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fcontent/config_and_search_example.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/content/config_and_search_example.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to RobotU Molkit</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-ingest-91-molecules-from-pubchem">Step 1 – Ingest 91 Molecules from PubChem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-does">🔍 What This Does</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-options">🛠️ Available Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-with-direct-cids">Example with Direct CIDs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-limits-and-reliability">Rate Limits and Reliability</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-watsonx-credentials">🔐 Configuring Watsonx Credentials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-credential-resolution">🧠 Runtime Credential Resolution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-guide-credentialsmanager">✅ Usage Guide – <code class="docutils literal notranslate"><span class="pre">CredentialsManager</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-semantic-embeddings-with-ibm-watsonx">Step 2 – Generate Semantic Embeddings with IBM Watsonx</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-during-embedding">🔍 What Happens During Embedding?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-options-for-molkit-embed">🛠️ CLI Options for <code class="docutils literal notranslate"><span class="pre">molkit</span> <span class="pre">embed</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-model">🎯 Choosing the Right Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-mode-ibm-granite-embedding-278m-multilingual">✅ Default Mode (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-278m-multilingual</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-mode-ibm-granite-embedding-107m-multilingual">⚡ FAST Mode (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-107m-multilingual</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-commands">🖥️ Example Commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whats-next">🧠 What’s Next?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-semantic-search">🔎 Local Semantic Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-semantic-search-example">🔎 Simple Semantic Search Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#displaying-results-as-a-table">🔎 Displaying Results as a Table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result-analysis-semantic-query-central-nervous-system-stimulants">🧠 Result Analysis: Semantic Query – “Central Nervous System Stimulants”</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observations">🔬 Observations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-tells-us">✅ What This Tells Us</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-semantic-structural-search">🧬 Combined Semantic + Structural Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-does">What It Does</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-it">Why Use It?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result-analysis-combined-semantic-structural-search-tanimoto-0-45">🧬 Result Analysis: Combined Semantic + Structural Search (Tanimoto ≥ 0.45)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inferred-scaffolds">✅ Inferred Scaffolds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-hits-tanimoto-0-45">🔍 Top Hits (Tanimoto ≥ 0.45)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">🧠 Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-semantic-search-with-metadata">🧪 Filtering Semantic Search with Metadata</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-filters-work">🧩 How Filters Work</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-query-anti-inflammatory-agents">💊 Example Query: “Anti-inflammatory agents”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtered-semantic-search-anti-inflammatory-agents">🧪 Filtered Semantic Search – Anti-inflammatory Agents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-hits-filtered">✅ Top Hits (Filtered)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">🧠 Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whats-next-for-robotu-molkit">🔮 What’s Next for <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coming-soon-natural-languagedriven-code-generation">🚀 Coming Soon: Natural Language–Driven Code Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-future-behavior">🗣️ Example (Future Behavior)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-matters">✨ Why It Matters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robotus-vision">🚀 RobotU’s Vision</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-robotu-molkit">
+<h1>Introduction to RobotU Molkit<a class="headerlink" href="#introduction-to-robotu-molkit" title="Link to this heading">#</a></h1>
+<p>Welcome to this notebook demonstrating the initial use of <strong>RobotU Molkit</strong>, a Python toolkit designed to streamline chemical data processing by integrating AI-powered enrichment and similarity search capabilities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code> connects directly to PubChem to fetch and structure raw compound data, then leverages <strong>IBM Granite models</strong> for advanced semantic processing. This includes:</p>
+<ul class="simple">
+<li><p>🧪 <strong>Molecule Summarization</strong>: Automatically generate clear, concise natural-language summaries of chemical compounds.</p></li>
+<li><p>🧠 <strong>Semantic Embedding Generation</strong>: Transform structured chemical data into high-dimensional embeddings optimized for similarity search.</p></li>
+<li><p>🔍 <strong>Canonical Query Interpretation</strong>: Understand and standardize natural-language queries, enabling smarter search workflows.</p></li>
+<li><p>🔗 <strong>Similarity Search</strong>: Perform deep similarity analysis using both semantic embeddings and structural metrics (e.g., Tanimoto similarity).</p></li>
+<li><p>⚡ <strong>Optional FAST Mode</strong>: Use lightweight embeddings for speed-critical tasks or when computational resources are limited.</p></li>
+</ul>
+<p>This notebook will walk through the core functionalities of the library, from ingesting molecular records to performing semantic embedding and search. Whether you’re building a searchable compound database, analyzing structure–activity relationships, or simply exploring AI-enhanced cheminformatics, RobotU Molkit offers a modular and powerful foundation.</p>
+<blockquote>
+<div><p>⚙️ Before running the examples, make sure to install the package using:<br />
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">robotu-molkit</span></code></p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>robotu-molkit
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: robotu-molkit in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (0.1.2)
+Requirement already satisfied: aiohttp==3.11.18 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (3.11.18)
+Requirement already satisfied: aiolimiter==1.2.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.2.1)
+Requirement already satisfied: faiss-cpu==1.11.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.11.0)
+Requirement already satisfied: ibm_watsonx_ai==1.3.13 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.3.13)
+Requirement already satisfied: numpy==2.2.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2.2.5)
+Requirement already satisfied: pubchempy==1.0.4 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (1.0.4)
+Requirement already satisfied: pydantic==2.11.4 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2.11.4)
+Requirement already satisfied: rdkit==2024.9.6 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2024.9.6)
+Requirement already satisfied: requests==2.32.3 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (2.32.3)
+Requirement already satisfied: typer==0.15.3 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from robotu-molkit) (0.15.3)
+Requirement already satisfied: aiohappyeyeballs&gt;=2.3.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (2.6.1)
+Requirement already satisfied: aiosignal&gt;=1.1.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (1.3.2)
+Requirement already satisfied: attrs&gt;=17.3.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (25.3.0)
+Requirement already satisfied: frozenlist&gt;=1.1.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (1.6.0)
+Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (6.4.3)
+Requirement already satisfied: propcache&gt;=0.2.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (0.3.1)
+Requirement already satisfied: yarl&lt;2.0,&gt;=1.17.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from aiohttp==3.11.18-&gt;robotu-molkit) (1.20.0)
+Requirement already satisfied: packaging in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from faiss-cpu==1.11.0-&gt;robotu-molkit) (25.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: httpx&lt;0.29,&gt;=0.27 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.28.1)
+Requirement already satisfied: urllib3 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.1.0)
+Requirement already satisfied: pandas&lt;2.3.0,&gt;=0.24.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.2.3)
+Requirement already satisfied: certifi in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2025.4.26)
+Requirement already satisfied: lomond in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.3.3)
+Requirement already satisfied: tabulate in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.9.0)
+Requirement already satisfied: ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.13.5)
+Requirement already satisfied: annotated-types&gt;=0.6.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (0.7.0)
+Requirement already satisfied: pydantic-core==2.33.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (2.33.2)
+Requirement already satisfied: typing-extensions&gt;=4.12.2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (4.13.2)
+Requirement already satisfied: typing-inspection&gt;=0.4.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pydantic==2.11.4-&gt;robotu-molkit) (0.4.0)
+Requirement already satisfied: Pillow in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from rdkit==2024.9.6-&gt;robotu-molkit) (11.2.1)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from requests==2.32.3-&gt;robotu-molkit) (3.4.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from requests==2.32.3-&gt;robotu-molkit) (3.10)
+Requirement already satisfied: click&gt;=8.0.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from typer==0.15.3-&gt;robotu-molkit) (8.1.8)
+Requirement already satisfied: shellingham&gt;=1.3.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from typer==0.15.3-&gt;robotu-molkit) (1.5.4)
+Requirement already satisfied: rich&gt;=10.11.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from typer==0.15.3-&gt;robotu-molkit) (14.0.0)
+Requirement already satisfied: anyio in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (4.9.0)
+Requirement already satisfied: httpcore==1.* in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.0.9)
+Requirement already satisfied: h11&gt;=0.16 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from httpcore==1.*-&gt;httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (0.16.0)
+Requirement already satisfied: ibm-cos-sdk-core==2.13.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.13.5)
+Requirement already satisfied: ibm-cos-sdk-s3transfer==2.13.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.13.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jmespath&lt;=1.0.1,&gt;=0.10.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.0.1)
+Requirement already satisfied: python-dateutil&lt;3.0.0,&gt;=2.9.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from ibm-cos-sdk-core==2.13.5-&gt;ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pandas&lt;2.3.0,&gt;=0.24.2-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from pandas&lt;2.3.0,&gt;=0.24.2-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (2025.2)
+Requirement already satisfied: six&gt;=1.5 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from python-dateutil&lt;3.0.0,&gt;=2.9.0-&gt;ibm-cos-sdk-core==2.13.5-&gt;ibm-cos-sdk&lt;2.15.0,&gt;=2.12.0-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.17.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from rich&gt;=10.11.0-&gt;typer==0.15.3-&gt;robotu-molkit) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from rich&gt;=10.11.0-&gt;typer==0.15.3-&gt;robotu-molkit) (2.19.1)
+Requirement already satisfied: mdurl~=0.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=10.11.0-&gt;typer==0.15.3-&gt;robotu-molkit) (0.1.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sniffio&gt;=1.1 in /home/user/robotu-molkit/.venv/lib/python3.11/site-packages (from anyio-&gt;httpx&lt;0.29,&gt;=0.27-&gt;ibm_watsonx_ai==1.3.13-&gt;robotu-molkit) (1.3.1)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="step-1-ingest-91-molecules-from-pubchem">
+<h2>Step 1 – Ingest 91 Molecules from PubChem<a class="headerlink" href="#step-1-ingest-91-molecules-from-pubchem" title="Link to this heading">#</a></h2>
+<p>The command below uses the <code class="docutils literal notranslate"><span class="pre">molkit</span> <span class="pre">ingest</span></code> subcommand to fetch compound records from <strong>PubChem</strong> by CID (Compound ID), and parse them into structured Molecule JSON files ready for enrichment and analysis. The molecules_cids.txt has 91 CID of molecules. You can find their names in molecules_cids_with_names.csv file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!molkit<span class="w"> </span>ingest<span class="w"> </span>--file<span class="w"> </span><span class="s2">&quot;molecule_cids.txt&quot;</span><span class="w"> </span>--concurrency<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<section id="what-this-does">
+<h3>🔍 What This Does<a class="headerlink" href="#what-this-does" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Downloads</strong> raw 3D compound records from PubChem using the PUG-REST API.</p></li>
+<li><p><strong>Parses</strong> each record into a Molecule JSON object (with schema-compliant fields).</p></li>
+<li><p><strong>Stores</strong> both raw and parsed data in designated folders under <code class="docutils literal notranslate"><span class="pre">data/</span></code>.</p></li>
+</ul>
+</section>
+<section id="available-options">
+<h3>🛠️ Available Options<a class="headerlink" href="#available-options" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--file</span></code>, <code class="docutils literal notranslate"><span class="pre">-f</span></code></p></td>
+<td><p>Path to a text file with <strong>one CID per line</strong>. Useful for bulk ingestion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--concurrency</span></code>, <code class="docutils literal notranslate"><span class="pre">-c</span></code></p></td>
+<td><p>Number of parallel workers fetching data (default: <code class="docutils literal notranslate"><span class="pre">5</span></code>). You may reduce this to avoid hitting PubChem’s rate limits (max 5 requests/sec, 400/min).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--raw-dir</span></code>, <code class="docutils literal notranslate"><span class="pre">-r</span></code></p></td>
+<td><p>Directory to store raw JSON files from PubChem (default: <code class="docutils literal notranslate"><span class="pre">data/downloaded_data</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--parsed-dir</span></code>, <code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
+<td><p>Directory to store parsed Molecule JSON payloads (default: <code class="docutils literal notranslate"><span class="pre">data/parsed</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CID(s)</span></code> (positional)</p></td>
+<td><p>You can also pass one or more CIDs directly as arguments instead of using <code class="docutils literal notranslate"><span class="pre">--file</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p>⚠️ Note: Either <code class="docutils literal notranslate"><span class="pre">--file</span></code> or positional CID(s) must be provided. If none are supplied, the CLI will exit with an error.</p>
+</div></blockquote>
+</section>
+<section id="example-with-direct-cids">
+<h3>Example with Direct CIDs<a class="headerlink" href="#example-with-direct-cids" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!molkit<span class="w"> </span>ingest<span class="w"> </span><span class="m">2244</span><span class="w"> </span><span class="m">5957</span><span class="w"> </span><span class="m">2519</span><span class="w"> </span>--concurrency<span class="w"> </span><span class="m">3</span>
+</pre></div>
+</div>
+</section>
+<section id="rate-limits-and-reliability">
+<h3>Rate Limits and Reliability<a class="headerlink" href="#rate-limits-and-reliability" title="Link to this heading">#</a></h3>
+<p>To respect PubChem’s API limits:</p>
+<ul class="simple">
+<li><p>Maximum <strong>5 requests per second</strong></p></li>
+<li><p>Maximum <strong>400 requests per minute</strong></p></li>
+<li><p>Each request has a timeout of <strong>30 seconds</strong></p></li>
+</ul>
+<p>Using <code class="docutils literal notranslate"><span class="pre">--concurrency</span> <span class="pre">2</span></code> is a safe option that balances performance and reliability, especially when fetching a large number of compounds.</p>
+<hr class="docutils" />
+<p>In the next step, we’ll enrich these molecules with natural-language summaries and semantic embeddings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>molkit<span class="w"> </span>ingest<span class="w"> </span>--file<span class="w"> </span><span class="s2">&quot;molecule_cids.txt&quot;</span><span class="w"> </span>--concurrency<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Starting ingest of 91 CIDs...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5429
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2519
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2153
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4534
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4744
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3758
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 89594
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 8378
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 7028
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 118943
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5816
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 439260
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 6041
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4236
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2244
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3672
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 1983
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 156391
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3033
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3825
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 2662
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3715
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 54676228
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3306
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3394
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4781
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4055
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4485
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4783
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 4044
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5345
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5120
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 3826
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 681
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 5202
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Procesado registro CID 774
+^C
+<span class=" -Color -Color-Yellow">⚠️ Ingest interrupted by user</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="configuring-watsonx-credentials">
+<h2>🔐 Configuring Watsonx Credentials<a class="headerlink" href="#configuring-watsonx-credentials" title="Link to this heading">#</a></h2>
+<p>Store your IBM Watsonx credentials locally using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!molkit<span class="w"> </span>config<span class="w"> </span>--watsonx-api-key<span class="w"> </span><span class="s2">&quot;your-api-key&quot;</span><span class="w"> </span>--watsonx-project-id<span class="w"> </span><span class="s2">&quot;your-project-id&quot;</span>
+</pre></div>
+</div>
+<p>Credentials are stored at:
+<code class="docutils literal notranslate"><span class="pre">~/.config/molkit/config.json</span></code></p>
+<p>These credentials are then globally available to all <code class="docutils literal notranslate"><span class="pre">molkit</span></code> commands in your environment.</p>
+</section>
+<hr class="docutils" />
+<section id="runtime-credential-resolution">
+<h2>🧠 Runtime Credential Resolution<a class="headerlink" href="#runtime-credential-resolution" title="Link to this heading">#</a></h2>
+<p>If you need to resolve credentials dynamically (e.g. inside a script or notebook), use the <code class="docutils literal notranslate"><span class="pre">CredentialsManager</span></code> utility. It checks in the following order:</p>
+<ol class="arabic simple">
+<li><p><strong>CLI overrides</strong></p></li>
+<li><p><strong>Environment variables</strong> (<code class="docutils literal notranslate"><span class="pre">IBM_API_KEY</span></code>, <code class="docutils literal notranslate"><span class="pre">IBM_PROJECT_ID</span></code>, <code class="docutils literal notranslate"><span class="pre">WATSONX_URL</span></code>)</p></li>
+<li><p><strong>Local config file</strong> (<code class="docutils literal notranslate"><span class="pre">~/.config/molkit/config.json</span></code>)</p></li>
+</ol>
+<hr class="docutils" />
+<section id="usage-guide-credentialsmanager">
+<h3>✅ Usage Guide – <code class="docutils literal notranslate"><span class="pre">CredentialsManager</span></code><a class="headerlink" href="#usage-guide-credentialsmanager" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">molkit.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">CredentialsManager</span>
+
+<span class="c1"># Load credentials</span>
+<span class="n">api_key</span><span class="p">,</span> <span class="n">project_id</span> <span class="o">=</span> <span class="n">CredentialsManager</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="c1"># Load Watsonx service URL</span>
+<span class="n">watsonx_url</span> <span class="o">=</span> <span class="n">CredentialsManager</span><span class="o">.</span><span class="n">get_watsonx_url</span><span class="p">()</span>
+
+<span class="c1"># Set or update values in ~/.config/molkit/config.json</span>
+<span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_api_key</span><span class="p">(</span><span class="s2">&quot;your-api-key&quot;</span><span class="p">)</span>
+<span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_project_id</span><span class="p">(</span><span class="s2">&quot;your-project-id&quot;</span><span class="p">)</span>
+<span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_watsonx_url</span><span class="p">(</span><span class="s2">&quot;https://your.custom.url&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the preferred way to <strong>inject or retrieve credentials programmatically</strong> during embedding or search workflows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>molkit<span class="w"> </span>config<span class="w">   </span>--watsonx-api-key<span class="w"> </span>WATSONX_API_KEY<span class="w">   </span>--watsonx-project-id<span class="w"> </span>WATSONX_PROJECT_ID
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Credentials saved to /home/user/.config/molkit/config.json</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-2-generate-semantic-embeddings-with-ibm-watsonx">
+<h2>Step 2 – Generate Semantic Embeddings with IBM Watsonx<a class="headerlink" href="#step-2-generate-semantic-embeddings-with-ibm-watsonx" title="Link to this heading">#</a></h2>
+<p>Once the molecules are parsed from PubChem, the next step is enriching each entry using advanced semantic embedding models provided by <strong>IBM Granite</strong>. The <code class="docutils literal notranslate"><span class="pre">molkit</span> <span class="pre">embed</span></code> command generates concise natural-language summaries and semantic embeddings for each parsed molecule.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!molkit<span class="w"> </span>embed<span class="w"> </span>--parsed-dir<span class="w"> </span><span class="s2">&quot;data/parsed&quot;</span><span class="w"> </span>--out-dir<span class="w"> </span><span class="s2">&quot;data/vectors&quot;</span><span class="w"> </span>--fast
+</pre></div>
+</div>
+<section id="what-happens-during-embedding">
+<h3>🔍 What Happens During Embedding?<a class="headerlink" href="#what-happens-during-embedding" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Reads</strong> each structured Molecule JSON from the <code class="docutils literal notranslate"><span class="pre">parsed-dir</span></code> folder.</p></li>
+<li><p><strong>Generates</strong>:</p>
+<ul>
+<li><p>A concise natural-language summary using the Granite Instruct model (<code class="docutils literal notranslate"><span class="pre">ibm/granite-3-8b-instruct</span></code>).</p></li>
+<li><p>High-dimensional semantic embeddings to support similarity searches.</p></li>
+</ul>
+</li>
+<li><p><strong>Stores</strong> these embeddings in a JSONL file (by default at <code class="docutils literal notranslate"><span class="pre">data/vectors/watsonx_vectors.jsonl</span></code>).</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="cli-options-for-molkit-embed">
+<h2>🛠️ CLI Options for <code class="docutils literal notranslate"><span class="pre">molkit</span> <span class="pre">embed</span></code><a class="headerlink" href="#cli-options-for-molkit-embed" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--parsed-dir</span></code>, <code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
+<td><p>Directory containing parsed molecule JSON files (<strong>default</strong>: <code class="docutils literal notranslate"><span class="pre">data/parsed</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--out-dir</span></code>, <code class="docutils literal notranslate"><span class="pre">-o</span></code></p></td>
+<td><p>Directory to store the generated embeddings (<strong>default</strong>: <code class="docutils literal notranslate"><span class="pre">data/vectors</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--model</span></code>, <code class="docutils literal notranslate"><span class="pre">-m</span></code></p></td>
+<td><p>Embedding model ID. (<strong>default</strong>: <code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-278m-multilingual</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--fast</span></code></p></td>
+<td><p>Use the faster, smaller model (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-107m-multilingual</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--watsonx-api-key</span></code>, <code class="docutils literal notranslate"><span class="pre">-k</span></code></p></td>
+<td><p>IBM Watsonx API key (overrides environment or configuration settings).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--watsonx-project-id</span></code>, <code class="docutils literal notranslate"><span class="pre">-j</span></code></p></td>
+<td><p>IBM Watsonx Project ID (overrides environment or configuration settings).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--watsonx-url</span></code></p></td>
+<td><p>Watsonx API endpoint URL (<strong>default</strong>: <code class="docutils literal notranslate"><span class="pre">https://us-south.ml.cloud.ibm.com</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p>⚠️ <strong>Important</strong>: IBM credentials are required and must be provided through the configuration file, environment variables, or explicitly via the <code class="docutils literal notranslate"><span class="pre">--watsonx-api-key</span></code> and <code class="docutils literal notranslate"><span class="pre">--watsonx-project-id</span></code> flags.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="choosing-the-right-model">
+<h2>🎯 Choosing the Right Model<a class="headerlink" href="#choosing-the-right-model" title="Link to this heading">#</a></h2>
+<section id="default-mode-ibm-granite-embedding-278m-multilingual">
+<h3>✅ Default Mode (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-278m-multilingual</span></code>)<a class="headerlink" href="#default-mode-ibm-granite-embedding-278m-multilingual" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Embedding dimensions:</strong> 1024</p></li>
+<li><p><strong>Advantages:</strong></p>
+<ul>
+<li><p>Higher precision and greater semantic accuracy.</p></li>
+<li><p>Ideal for detailed chemical analysis, precise molecular similarity searches, drug discovery, and predictive modeling tasks.</p></li>
+</ul>
+</li>
+<li><p><strong>Recommended for chemists</strong> who require detailed semantic insights and maximum embedding quality.</p></li>
+</ul>
+</section>
+<section id="fast-mode-ibm-granite-embedding-107m-multilingual">
+<h3>⚡ FAST Mode (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-107m-multilingual</span></code>)<a class="headerlink" href="#fast-mode-ibm-granite-embedding-107m-multilingual" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Embedding dimensions:</strong> 768</p></li>
+<li><p><strong>Advantages:</strong></p>
+<ul>
+<li><p>Lower computational cost and faster execution times.</p></li>
+<li><p>Best suited for quick exploratory analyses, high-throughput scenarios, or resource-constrained environments.</p></li>
+</ul>
+</li>
+<li><p><strong>Recommended for initial testing or prototyping</strong>.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="example-commands">
+<h2>🖥️ Example Commands<a class="headerlink" href="#example-commands" title="Link to this heading">#</a></h2>
+<p><strong>Default model usage (recommended for accuracy):</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!molkit<span class="w"> </span>embed
+</pre></div>
+</div>
+<p><strong>FAST model usage (recommended for speed):</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!molkit<span class="w"> </span>embed<span class="w"> </span>--fast
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="whats-next">
+<h2>🧠 What’s Next?<a class="headerlink" href="#whats-next" title="Link to this heading">#</a></h2>
+<p>The resulting <code class="docutils literal notranslate"><span class="pre">watsonx_vectors.jsonl</span></code> file contains a summary and a high-dimensional embedding for each molecule, ready for <strong>local vector search</strong> using <code class="docutils literal notranslate"><span class="pre">faiss-cpu</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>molkit<span class="w"> </span>embed<span class="w"> </span>--watsonx-url<span class="o">=</span><span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Embedding model: ibm/granite-embedding-278m-multilingual
+<span class=" -Color -Color-Green">✅  Embeddings written to data/vectors/watsonx_vectors.jsonl</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="local-semantic-search">
+<h2>🔎 Local Semantic Search<a class="headerlink" href="#local-semantic-search" title="Link to this heading">#</a></h2>
+<p>With your molecule embeddings in place, you can now run semantic queries entirely offline using <code class="docutils literal notranslate"><span class="pre">faiss-cpu</span></code>.</p>
+<p>We’ll leverage the <code class="docutils literal notranslate"><span class="pre">LocalSearch</span></code> class to:</p>
+<ul class="simple">
+<li><p>Enrich your natural-language query via Granite Instruct</p></li>
+<li><p>Generate a matching embedding with the same model used earlier</p></li>
+<li><p>Perform a similarity search against the FAISS index</p></li>
+</ul>
+<p>Let’s execute our first query.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">robotu_molkit.search.searcher</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalSearch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">robotu_molkit.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_JSONL_FILE_ROUTE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to the JSONL file with precomputed embeddings and metadata</span>
+<span class="n">JSONL_PATH</span>    <span class="o">=</span> <span class="n">DEFAULT_JSONL_FILE_ROUTE</span>  <span class="c1"># e.g. &quot;data/vectors/watsonx_vectors.jsonl&quot;</span>
+
+<span class="c1"># Minimum similarity score (cosine) to consider a hit relevant</span>
+<span class="n">SIM_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.70</span>
+
+<span class="c1"># After filtering by SIM_THRESHOLD, return this many top results</span>
+<span class="n">TOP_K</span>         <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># Number of nearest neighbors to fetch from FAISS before filtering</span>
+<span class="n">FAISS_K</span>       <span class="o">=</span> <span class="mi">300</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+<span class="c1"># Initialize searcher</span>
+<span class="n">searcher</span> <span class="o">=</span> <span class="n">LocalSearch</span><span class="p">(</span><span class="n">jsonl_path</span><span class="o">=</span><span class="n">JSONL_PATH</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="simple-semantic-search-example">
+<h3>🔎 Simple Semantic Search Example<a class="headerlink" href="#simple-semantic-search-example" title="Link to this heading">#</a></h3>
+<p>In this example, we’ll run a purely semantic query against our local FAISS index of 91 compounds, focusing on central nervous system stimulants.</p>
+<p><strong>Query:</strong></p>
+<blockquote>
+<div><p>“central nervous system stimulants”</p>
+</div></blockquote>
+<p>Expected top hits include methylxanthine derivatives like caffeine, theobromine, and theophylline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define query and metadata filters</span>
+<span class="n">query_text</span> <span class="o">=</span> <span class="s2">&quot;central nervous system stimulants&quot;</span>
+
+<span class="c1"># Perform semantic + structural search</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search_by_semantics</span><span class="p">(</span>
+    <span class="n">query_text</span><span class="o">=</span><span class="n">query_text</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">faiss_k</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="displaying-results-as-a-table">
+<h4>🔎 Displaying Results as a Table<a class="headerlink" href="#displaying-results-as-a-table" title="Link to this heading">#</a></h4>
+<p>Format the top semantic-search hits into a plain-text table for clear comparison.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare table header and rows</span>
+<span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;CID&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Name&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;MW&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Sol&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Score&#39;</span><span class="si">:</span><span class="s2">&lt;6</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="n">cid</span>  <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;cid&#39;</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;unknown&gt;&#39;</span><span class="p">)</span>
+    <span class="n">mw</span>   <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;molecular_weight&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">sol</span>  <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;solubility_tag&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cid</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mw</span><span class="si">:</span><span class="s2">&lt;8.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sol</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">&lt;.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print query and table</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Results for query: </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">query_text</span><span class="si">}</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Results for query: &quot;central nervous system stimulants&quot;
+
+CID      Name                 MW       Sol        Score 
+--------------------------------------------------------
+187      acetylcholine        146.2    soluble    0.620
+5202     serotonin            176.2    moderately soluble 0.620
+5770     reserpine            608.7    insoluble  0.616
+245005   aconitine            645.7    sparingly soluble 0.614
+439260   norepinephrine       169.2    soluble    0.609
+774      histamine            111.1    soluble    0.592
+1548943  Capsaicin            305.4    sparingly soluble 0.587
+89594    nicotine             162.2    moderately soluble 0.580
+1150     tryptamine           160.2    moderately soluble 0.579
+239      beta-alanine         89.1     very soluble 0.577
+681      dopamine             153.2    soluble    0.574
+5184     (-)-Scopolamine      303.4    moderately soluble 0.572
+896      Melatonin            232.3    moderately soluble 0.572
+7028     PSEUDOEPHEDRINE      165.2    moderately soluble 0.571
+1983     acetaminophen        151.2    moderately soluble 0.570
+33032    L-glutamic acid      147.1    very soluble 0.570
+586      creatine             131.1    very soluble 0.569
+2519     caffeine             194.2    soluble    0.564
+156391   NAPROXEN             230.3    sparingly soluble 0.562
+5816     epinephrine          183.2    soluble    0.560
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="result-analysis-semantic-query-central-nervous-system-stimulants">
+<h2>🧠 Result Analysis: Semantic Query – “Central Nervous System Stimulants”<a class="headerlink" href="#result-analysis-semantic-query-central-nervous-system-stimulants" title="Link to this heading">#</a></h2>
+<p>We performed a semantic-only search across a local FAISS index of 91 molecules using the query:</p>
+<blockquote>
+<div><p><strong>“central nervous system stimulants”</strong></p>
+</div></blockquote>
+<p>The model ranked molecules based on their conceptual relevance to the query, using no structural constraints.</p>
+<section id="observations">
+<h3>🔬 Observations<a class="headerlink" href="#observations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Top-ranked results</strong> include caffeine, nicotine, pseudoephedrine, dopamine, serotonin, and epinephrine — all compounds with well-documented <strong>stimulant activity or involvement in neural signaling</strong>.</p></li>
+<li><p><strong>Neurotransmitters</strong> like acetylcholine, norepinephrine, and histamine also appear, reflecting the model’s understanding of their role in CNS excitation.</p></li>
+<li><p>Some <strong>biosynthetic precursors</strong> or modulators (e.g., tryptamine, beta-alanine, melatonin) are included due to their indirect relevance in neurophysiology.</p></li>
+<li><p>A few results like reserpine, aconitine, or naproxen are <strong>false positives</strong> in this context, but they still share textual or pharmacological proximity in literature.</p></li>
+</ul>
+</section>
+<section id="what-this-tells-us">
+<h3>✅ What This Tells Us<a class="headerlink" href="#what-this-tells-us" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Granite Instruct</strong> effectively enriched the input query, capturing both direct stimulants and adjacent biochemical actors.</p></li>
+<li><p><strong>Granite Embedding</strong> produced vectors that reflect semantic relationships, retrieving molecules that span neurotransmitters, methylxanthines, and sympathomimetics.</p></li>
+<li><p>No structural similarity was enforced — hence the occasional inclusion of pharmacologically unrelated compounds.</p></li>
+</ul>
+<p>This confirms that semantic-only search is useful for <strong>broad hypothesis generation</strong> or <strong>contextual exploration</strong>, especially when the query involves <strong>functional descriptions</strong> instead of precise chemical patterns.</p>
+<p>For more refined control, we can now combine semantic signals with structural filters.</p>
+</section>
+</section>
+<section id="combined-semantic-structural-search">
+<h2>🧬 Combined Semantic + Structural Search<a class="headerlink" href="#combined-semantic-structural-search" title="Link to this heading">#</a></h2>
+<p>To improve result specificity, we now combine <strong>semantic similarity</strong> with <strong>structural filtering</strong> using:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">search_by_semantics_and_structure</span></code></p>
+</div></blockquote>
+<p>This method first identifies semantically relevant candidates, then refines the list by applying <strong>Tanimoto similarity</strong> against inferred molecular scaffolds.</p>
+<section id="what-it-does">
+<h3>What It Does<a class="headerlink" href="#what-it-does" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>🧠 <strong>Granite Instruct</strong> enriches and interprets the user query to infer one or more scaffold SMILES.</p></li>
+<li><p>🧪 <strong>Granite Embedding</strong> embeds the query to locate semantically similar molecules in the FAISS index.</p></li>
+<li><p>🧬 <strong>Tanimoto filtering</strong> compares structural fingerprints of candidates to the inferred scaffolds and keeps only those above a similarity threshold (e.g. ≥ 0.70).</p></li>
+<li><p>✅ Final results combine <strong>semantic relevance</strong> and <strong>structural alignment</strong>.</p></li>
+</ul>
+</section>
+<section id="why-use-it">
+<h3>Why Use It?<a class="headerlink" href="#why-use-it" title="Link to this heading">#</a></h3>
+<p>This hybrid approach filters out semantically plausible but <strong>structurally unrelated molecules</strong>, giving priority to compounds that are <strong>both functionally and chemically close</strong> to the query.</p>
+<p>Perfect for:</p>
+<ul class="simple">
+<li><p>Querying drug analogues</p></li>
+<li><p>Scanning scaffold-specific chemotypes</p></li>
+<li><p>Prioritizing leads in a known structural class</p></li>
+</ul>
+<p>Let’s try it with the same query:</p>
+<blockquote>
+<div><p><em>“central nervous system stimulants”</em></p>
+</div></blockquote>
+<p>This time, we expect to retrieve methylxanthine-like structures with more consistent chemistry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query string</span>
+<span class="n">query_text</span> <span class="o">=</span> <span class="s2">&quot;central nervous system stimulants&quot;</span>
+
+<span class="c1"># Run combined semantic + structural search</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search_by_semantics_and_structure</span><span class="p">(</span>
+    <span class="n">query_text</span><span class="o">=</span><span class="n">query_text</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+    <span class="n">faiss_k</span><span class="o">=</span><span class="n">FAISS_K</span><span class="p">,</span>
+    <span class="n">sim_threshold</span><span class="o">=</span><span class="mf">0.45</span>
+<span class="p">)</span>
+
+<span class="c1"># Format results</span>
+<span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s2">&quot;CID </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;cid&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> Name:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;unknown&gt;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;MW:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;molecular_weight&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Sol:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;solubility_tag&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Score:</span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Tanimoto:</span><span class="si">{</span><span class="n">sim</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">results</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Results for query: </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">query_text</span><span class="si">}</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Top </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span><span class="si">}</span><span class="s2"> hits (Granite-inferred scaffolds, Tanimoto ≥ </span><span class="si">{</span><span class="n">SIM_THRESHOLD</span><span class="si">}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Note: Scaffold inference was performed using IBM&#39;s granite-3-8b-instruct model. &quot;</span>
+      <span class="s2">&quot;Semantic and structural similarity search was powered by granite-embedding-278m-multilingual.&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🔍 Inferred scaffolds: [&#39;amphetamine&#39;, &#39;methamphetamine&#39;, &#39;caffeine&#39;]
+⚠️ Failed to resolve scaffold &#39;amphetamine&#39;: &#39;CID 3007 not found in index.&#39;
+⚠️ Failed to resolve scaffold &#39;methamphetamine&#39;: &#39;CID 10836 not found in index.&#39;
+✅ CID 2519 for &#39;caffeine&#39; → ECFP vector loaded
+→ CID 187 Name:acetylcholine Tanimoto: 0.07
+→ CID 5202 Name:serotonin Tanimoto: 0.04
+→ CID 5770 Name:reserpine Tanimoto: 0.07
+→ CID 245005 Name:aconitine Tanimoto: 0.06
+→ CID 439260 Name:norepinephrine Tanimoto: 0.07
+→ CID 774 Name:histamine Tanimoto: 0.07
+→ CID 1548943 Name:Capsaicin Tanimoto: 0.10
+→ CID 89594 Name:nicotine Tanimoto: 0.13
+→ CID 1150 Name:tryptamine Tanimoto: 0.04
+→ CID 239 Name:beta-alanine Tanimoto: 0.03
+→ CID 681 Name:dopamine Tanimoto: 0.05
+→ CID 5184 Name:(-)-Scopolamine Tanimoto: 0.12
+→ CID 896 Name:Melatonin Tanimoto: 0.07
+→ CID 7028 Name:PSEUDOEPHEDRINE Tanimoto: 0.10
+→ CID 1983 Name:acetaminophen Tanimoto: 0.10
+→ CID 33032 Name:L-glutamic acid Tanimoto: 0.02
+→ CID 586 Name:creatine Tanimoto: 0.05
+→ CID 2519 Name:caffeine Tanimoto: 1.00
+→ CID 156391 Name:NAPROXEN Tanimoto: 0.10
+→ CID 5816 Name:epinephrine Tanimoto: 0.06
+→ CID 9064 Name:Cianidanol Tanimoto: 0.05
+→ CID 311 Name:citric acid Tanimoto: 0.03
+→ CID 3672 Name:ibuprofen Tanimoto: 0.11
+→ CID 6041 Name:phenylephrine Tanimoto: 0.06
+→ CID 4485 Name:nifedipine Tanimoto: 0.09
+→ CID 2353 Name:berberine Tanimoto: 0.08
+→ CID 4744 Name:PERAZINE Tanimoto: 0.10
+→ CID 3715 Name:indomethacin Tanimoto: 0.08
+→ CID 2244 Name:aspirin Tanimoto: 0.09
+→ CID 4781 Name:phenylbutazone Tanimoto: 0.13
+→ CID 6047 Name:levodopa Tanimoto: 0.06
+→ CID 2662 Name:celecoxib Tanimoto: 0.15
+→ CID 3826 Name:ketorolac Tanimoto: 0.08
+→ CID 54676228 Name:piroxicam Tanimoto: 0.14
+→ CID 5284371 Name:codeine Tanimoto: 0.07
+→ CID 4534 Name:NORDIHYDROGUAIARETIC ACID Tanimoto: 0.10
+→ CID 5961 Name:L-glutamine Tanimoto: 0.02
+→ CID 3033 Name:diclofenac Tanimoto: 0.08
+→ CID 247 Name:betaine Tanimoto: 0.08
+→ CID 750 Name:glycine Tanimoto: 0.03
+→ CID 232 Name:DL-Arginine Tanimoto: 0.02
+→ CID 1123 Name:taurine Tanimoto: 0.03
+→ CID 6167 Name:colchicine Tanimoto: 0.07
+→ CID 4236 Name:modafinil Tanimoto: 0.06
+→ CID 2153 Name:theophylline Tanimoto: 0.47
+→ CID 5288826 Name:morphine Tanimoto: 0.08
+→ CID 5280343 Name:quercetin Tanimoto: 0.07
+→ CID 3306 Name:Etilefrine Tanimoto: 0.06
+→ CID 119 Name:4-Aminobutanoic acid Tanimoto: 0.05
+→ CID 2236 Name:Aristolochic acid Tanimoto: 0.06
+→ CID 6137 Name:L-methionine Tanimoto: 0.05
+→ CID 3394 Name:flurbiprofen Tanimoto: 0.10
+→ CID 3825 Name:ketoprofen Tanimoto: 0.11
+→ CID 6989 Name:THYMOL Tanimoto: 0.12
+→ CID 4727 Name:DL-Penicillamine Tanimoto: 0.05
+→ CID 969516 Name:curcumin Tanimoto: 0.08
+→ CID 5280961 Name:genistein Tanimoto: 0.08
+→ CID 6057 Name:L-tyrosine Tanimoto: 0.07
+→ CID 5901 Name:6-AZAURIDINE Tanimoto: 0.15
+→ CID 5280953 Name:HARMINE Tanimoto: 0.10
+→ CID 8378 Name:Framycetin Tanimoto: 0.02
+→ CID 54670067 Name:l-ascorbic acid Tanimoto: 0.07
+→ CID 3314 Name:eugenol Tanimoto: 0.06
+→ CID 1183 Name:vanillin Tanimoto: 0.09
+→ CID 445154 Name:resveratrol Tanimoto: 0.05
+→ CID 971 Name:oxalic acid Tanimoto: 0.03
+→ CID 4044 Name:mefenamic acid Tanimoto: 0.10
+→ CID 5429 Name:theobromine Tanimoto: 0.52
+→ CID 1110 Name:succinic acid Tanimoto: 0.03
+→ CID 5950 Name:L-alanine Tanimoto: 0.09
+→ CID 5957 Name:Adenosine triphosphate Tanimoto: 0.14
+→ CID 5281515 Name:BETA-CARYOPHYLLENE Tanimoto: 0.08
+→ CID 284 Name:formic acid Tanimoto: 0.03
+→ CID 1001 Name:Phenethylamine Tanimoto: 0.05
+→ CID 8549 Name:Quininae Tanimoto: 0.08
+→ CID 3758 Name:3-Isobutyl-1-methylxanthine Tanimoto: 0.35
+→ CID 5120 Name:IBZM Tanimoto: 0.08
+→ CID 243 Name:benzoic acid Tanimoto: 0.09
+→ CID 5345 Name:Sulfobromophthalein Tanimoto: 0.07
+→ CID 865 Name:2,6-Diaminopimelic acid Tanimoto: 0.03
+→ CID 1176 Name:urea Tanimoto: 0.03
+→ CID 107735 Name:pyruvate Tanimoto: 0.06
+→ CID 4783 Name:phenyliodoundecynoate Tanimoto: 0.06
+→ CID 612 Name:lactic acid Tanimoto: 0.09
+→ CID 118943 Name:o-Isobutyltoluene Tanimoto: 0.10
+→ CID 176 Name:acetic acid Tanimoto: 0.07
+→ CID 338 Name:salicylic acid Tanimoto: 0.08
+→ CID 4055 Name:menadione Tanimoto: 0.15
+→ CID 525 Name:malic acid Tanimoto: 0.03
+→ CID 1030 Name:propylene glycol Tanimoto: 0.06
+→ CID 439203 Name:D-Arabinoketose Tanimoto: 0.05
+✅ 3 of 91 passed Tanimoto ≥ 0.45
+Results for query: &quot;central nervous system stimulants&quot;
+Top 3 hits (Granite-inferred scaffolds, Tanimoto ≥ 0.7):
+CID 2519 Name:caffeine MW:194.2 Sol:soluble Score:0.564 Tanimoto:1.00
+CID 2153 Name:theophylline MW:180.2 Sol:soluble Score:0.535 Tanimoto:0.47
+CID 5429 Name:theobromine MW:180.2 Sol:soluble Score:0.512 Tanimoto:0.52
+
+Note: Scaffold inference was performed using IBM&#39;s granite-3-8b-instruct model. Semantic and structural similarity search was powered by granite-embedding-278m-multilingual.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="result-analysis-combined-semantic-structural-search-tanimoto-0-45">
+<h2>🧬 Result Analysis: Combined Semantic + Structural Search (Tanimoto ≥ 0.45)<a class="headerlink" href="#result-analysis-combined-semantic-structural-search-tanimoto-0-45" title="Link to this heading">#</a></h2>
+<p>We executed a query for:</p>
+<blockquote>
+<div><p><strong>“central nervous system stimulants”</strong></p>
+</div></blockquote>
+<p>Using <code class="docutils literal notranslate"><span class="pre">search_by_semantics_and_structure</span></code>, this time with a <strong>Tanimoto threshold of 0.45</strong>.</p>
+<hr class="docutils" />
+<section id="inferred-scaffolds">
+<h3>✅ Inferred Scaffolds<a class="headerlink" href="#inferred-scaffolds" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">amphetamine</span></code> ❌ not present in the demo index</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">methamphetamine</span></code> ❌ not present in the demo index</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">caffeine</span></code> ✅ resolved and used for fingerprint comparison</p></li>
+</ul>
+<p>Only <code class="docutils literal notranslate"><span class="pre">caffeine</span></code> was found among the 91 indexed molecules and used as the reference scaffold.</p>
+</section>
+<hr class="docutils" />
+<section id="top-hits-tanimoto-0-45">
+<h3>🔍 Top Hits (Tanimoto ≥ 0.45)<a class="headerlink" href="#top-hits-tanimoto-0-45" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>CID</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Score</p></th>
+<th class="head"><p>Tanimoto</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2519</p></td>
+<td><p>caffeine</p></td>
+<td><p>0.564</p></td>
+<td><p>1.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>2153</p></td>
+<td><p>theophylline</p></td>
+<td><p>0.535</p></td>
+<td><p>0.47</p></td>
+</tr>
+<tr class="row-even"><td><p>5429</p></td>
+<td><p>theobromine</p></td>
+<td><p>0.512</p></td>
+<td><p>0.52</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These results reflect canonical <strong>methylxanthine CNS stimulants</strong>:</p>
+<ul class="simple">
+<li><p><strong>Caffeine</strong> is the direct scaffold.</p></li>
+<li><p><strong>Theobromine</strong> and <strong>theophylline</strong> are well-known derivatives with similar stimulant properties and shared structural motifs.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interpretation">
+<h3>🧠 Interpretation<a class="headerlink" href="#interpretation" title="Link to this heading">#</a></h3>
+<p>The combination of semantic and structural similarity successfully retrieved the most relevant compounds in the context of this query.</p>
+<p>Given that this is a <strong>demo subset with 91 molecules</strong>, these results demonstrate that:</p>
+<ul class="simple">
+<li><p><strong>Semantic enrichment</strong> correctly interpreted the functional intent of the query.</p></li>
+<li><p><strong>Scaffold-based filtering</strong> prioritized structurally consistent molecules.</p></li>
+<li><p><strong>Granite models</strong> are capable of aligning language and chemistry for precise and explainable search results.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="filtering-semantic-search-with-metadata">
+<h2>🧪 Filtering Semantic Search with Metadata<a class="headerlink" href="#filtering-semantic-search-with-metadata" title="Link to this heading">#</a></h2>
+<p>In addition to semantic and structural similarity, <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code> allows you to <strong>apply filters</strong> to the molecule metadata returned by the query.</p>
+<p>This enables powerful combinations like:</p>
+<ul class="simple">
+<li><p>Search for <strong>functional concepts</strong> (e.g. “anti-inflammatory drugs”)</p></li>
+<li><p>Filter by <strong>solubility</strong>, <strong>molecular weight</strong>, <strong>toxicity</strong>, or any numeric/tagged field</p></li>
+</ul>
+<section id="how-filters-work">
+<h3>🧩 How Filters Work<a class="headerlink" href="#how-filters-work" title="Link to this heading">#</a></h3>
+<p>Filters are passed as a dictionary where keys correspond to metadata fields. You can use:</p>
+<ul class="simple">
+<li><p><strong>Exact match</strong><br />
+<code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;solubility_tag&quot;:</span> <span class="pre">&quot;soluble&quot;</span> <span class="pre">}</span></code></p></li>
+<li><p><strong>Range filters</strong> (numeric values)<br />
+<code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;molecular_weight&quot;:</span> <span class="pre">(150,</span> <span class="pre">300)</span> <span class="pre">}</span></code></p></li>
+<li><p><strong>Multiple allowed values</strong><br />
+<code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;solubility_tag&quot;:</span> <span class="pre">[&quot;soluble&quot;,</span> <span class="pre">&quot;moderately</span> <span class="pre">soluble&quot;]</span> <span class="pre">}</span></code></p></li>
+</ul>
+<p>These filters are applied <strong>after</strong> semantic similarity is computed, helping to refine the final results.</p>
+</section>
+<hr class="docutils" />
+<section id="example-query-anti-inflammatory-agents">
+<h3>💊 Example Query: “Anti-inflammatory agents”<a class="headerlink" href="#example-query-anti-inflammatory-agents" title="Link to this heading">#</a></h3>
+<p>In this example, we’ll search for molecules related to:</p>
+<blockquote>
+<div><p><strong>“Anti-inflammatory agents”</strong></p>
+</div></blockquote>
+<p>…and restrict the results to those with:</p>
+<ul class="simple">
+<li><p><strong>Molecular weight between 200 and 400</strong></p></li>
+<li><p><strong>Solubility tag = “sparingly soluble” or “moderately soluble”</strong></p></li>
+</ul>
+<p>This should surface NSAIDs (non-steroidal anti-inflammatory drugs) like ibuprofen, naproxen, diclofenac, etc., based on their semantics and physical properties.</p>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query and filters</span>
+<span class="n">query_text</span> <span class="o">=</span> <span class="s2">&quot;anti-inflammatory agents&quot;</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;molecular_weight&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+    <span class="s2">&quot;solubility_tag&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sparingly soluble&quot;</span><span class="p">,</span> <span class="s2">&quot;moderately soluble&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Run filtered semantic search</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search_by_semantics</span><span class="p">(</span>
+    <span class="n">query_text</span><span class="o">=</span><span class="n">query_text</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+    <span class="n">faiss_k</span><span class="o">=</span><span class="n">FAISS_K</span><span class="p">,</span>
+    <span class="n">filters</span><span class="o">=</span><span class="n">filters</span>
+<span class="p">)</span>
+
+<span class="c1"># Print results</span>
+<span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;CID&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Name&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;MW&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Solubility&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Score&#39;</span><span class="si">:</span><span class="s2">&lt;6</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;cid&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;unknown&gt;&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;molecular_weight&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">:</span><span class="s2">&lt;8.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;solubility_tag&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">&lt;.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">results</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Results for query: </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">query_text</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2"> with filters:</span><span class="se">\n</span><span class="si">{</span><span class="n">filters</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Results for query: &quot;anti-inflammatory agents&quot; with filters:
+{&#39;molecular_weight&#39;: (200, 400), &#39;solubility_tag&#39;: [&#39;sparingly soluble&#39;, &#39;moderately soluble&#39;]}
+
+CID      Name                 MW       Solubility           Score 
+------------------------------------------------------------------
+3672     ibuprofen            206.3    sparingly soluble    0.642
+54676228 piroxicam            331.4    sparingly soluble    0.626
+3825     ketoprofen           254.3    sparingly soluble    0.625
+3394     flurbiprofen         244.3    sparingly soluble    0.617
+3826     ketorolac            255.3    sparingly soluble    0.614
+1548943  Capsaicin            305.4    sparingly soluble    0.611
+5184     (-)-Scopolamine      303.4    moderately soluble   0.608
+156391   NAPROXEN             230.3    sparingly soluble    0.606
+4236     modafinil            273.4    moderately soluble   0.603
+5280343  quercetin            302.2    sparingly soluble    0.593
+9064     Cianidanol           290.3    moderately soluble   0.590
+4044     mefenamic acid       241.3    sparingly soluble    0.588
+896      Melatonin            232.3    moderately soluble   0.586
+4485     nifedipine           346.3    sparingly soluble    0.576
+5280953  HARMINE              212.3    sparingly soluble    0.570
+5284371  codeine              299.4    moderately soluble   0.561
+445154   resveratrol          228.2    sparingly soluble    0.561
+5280961  genistein            270.2    sparingly soluble    0.560
+5288826  morphine             285.3    moderately soluble   0.557
+8549     Quininae             324.4    sparingly soluble    0.551
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="filtered-semantic-search-anti-inflammatory-agents">
+<h2>🧪 Filtered Semantic Search – Anti-inflammatory Agents<a class="headerlink" href="#filtered-semantic-search-anti-inflammatory-agents" title="Link to this heading">#</a></h2>
+<p>We ran a semantic query for:</p>
+<blockquote>
+<div><p><strong>“anti-inflammatory agents”</strong></p>
+</div></blockquote>
+<p>…using <code class="docutils literal notranslate"><span class="pre">search_by_semantics</span></code> with two metadata filters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;molecular_weight&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+    <span class="s2">&quot;solubility_tag&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sparingly soluble&quot;</span><span class="p">,</span> <span class="s2">&quot;moderately soluble&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This combination retrieved molecules that are:</p>
+<ul class="simple">
+<li><p>Semantically related to anti-inflammatory activity</p></li>
+<li><p>Within a <strong>realistic drug-like mass range</strong></p></li>
+<li><p>Limited to <strong>medium or low aqueous solubility</strong></p></li>
+</ul>
+<hr class="docutils" />
+<section id="top-hits-filtered">
+<h3>✅ Top Hits (Filtered)<a class="headerlink" href="#top-hits-filtered" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>CID</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>MW</p></th>
+<th class="head"><p>Solubility</p></th>
+<th class="head"><p>Score</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3672</p></td>
+<td><p>ibuprofen</p></td>
+<td><p>206.3</p></td>
+<td><p>sparingly soluble</p></td>
+<td><p>0.642</p></td>
+</tr>
+<tr class="row-odd"><td><p>54676228</p></td>
+<td><p>piroxicam</p></td>
+<td><p>331.4</p></td>
+<td><p>sparingly soluble</p></td>
+<td><p>0.626</p></td>
+</tr>
+<tr class="row-even"><td><p>3825</p></td>
+<td><p>ketoprofen</p></td>
+<td><p>254.3</p></td>
+<td><p>sparingly soluble</p></td>
+<td><p>0.625</p></td>
+</tr>
+<tr class="row-odd"><td><p>3394</p></td>
+<td><p>flurbiprofen</p></td>
+<td><p>244.3</p></td>
+<td><p>sparingly soluble</p></td>
+<td><p>0.617</p></td>
+</tr>
+<tr class="row-even"><td><p>3826</p></td>
+<td><p>ketorolac</p></td>
+<td><p>255.3</p></td>
+<td><p>sparingly soluble</p></td>
+<td><p>0.614</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Most top results are well-known <strong>NSAIDs</strong> (non-steroidal anti-inflammatory drugs), such as:</p>
+<ul class="simple">
+<li><p><strong>Ibuprofen</strong></p></li>
+<li><p><strong>Naproxen</strong></p></li>
+<li><p><strong>Ketoprofen</strong></p></li>
+<li><p><strong>Piroxicam</strong></p></li>
+<li><p><strong>Flurbiprofen</strong></p></li>
+</ul>
+<p>Also retrieved were compounds like:</p>
+<ul class="simple">
+<li><p><strong>Capsaicin</strong> – a topical anti-inflammatory</p></li>
+<li><p><strong>Quercetin, Genistein, Resveratrol</strong> – flavonoids with anti-inflammatory potential</p></li>
+<li><p><strong>Scopolamine, Modafinil, Harmine</strong> – functionally related or literature-associated hits</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="summary">
+<h3>🧠 Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The semantic model correctly captured anti-inflammatory meaning.</p></li>
+<li><p>The filters refined the space to <strong>drug-like, orally bioavailable candidates</strong>.</p></li>
+<li><p>This search illustrates how combining <strong>semantic queries with physicochemical constraints</strong> can support targeted molecule exploration even in small curated sets.</p></li>
+</ul>
+<p>This demonstrates a practical use case for medicinal chemistry, formulation profiling, or compound triage.</p>
+</section>
+</section>
+<section id="whats-next-for-robotu-molkit">
+<h2>🔮 What’s Next for <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code><a class="headerlink" href="#whats-next-for-robotu-molkit" title="Link to this heading">#</a></h2>
+<p>The current release of <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code> already supports advanced semantic search, molecular summarization, and FAISS-based local querying — all powered by IBM Granite models.</p>
+<p>But the next evolution is coming soon.</p>
+<hr class="docutils" />
+<section id="coming-soon-natural-languagedriven-code-generation">
+<h3>🚀 Coming Soon: Natural Language–Driven Code Generation<a class="headerlink" href="#coming-soon-natural-languagedriven-code-generation" title="Link to this heading">#</a></h3>
+<p>The next release will introduce support for:</p>
+<blockquote>
+<div><p><strong><code class="docutils literal notranslate"><span class="pre">granite-instruct-code</span></code></strong><br />
+An IBM Granite model designed to generate and execute code in response to natural-language queries.</p>
+</div></blockquote>
+<p>With this, <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code> will be able to:</p>
+<ul class="simple">
+<li><p><strong>Interpret free-form queries</strong> — even if they don’t contain explicit filters or numbers.</p></li>
+<li><p><strong>Infer filters automatically</strong> — such as molecular weight ranges, solubility classes, or structural constraints.</p></li>
+<li><p><strong>Generate and run internal code</strong> — directly from natural language, with no manual configuration needed.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="example-future-behavior">
+<h3>🗣️ Example (Future Behavior)<a class="headerlink" href="#example-future-behavior" title="Link to this heading">#</a></h3>
+<p>Input:</p>
+<blockquote>
+<div><p><em>“Show me small analgesics with moderate solubility”</em></p>
+</div></blockquote>
+<p>The library will:</p>
+<ol class="arabic simple">
+<li><p>Enrich the query with <code class="docutils literal notranslate"><span class="pre">granite-instruct</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">granite-instruct-code</span></code> to:</p>
+<ul class="simple">
+<li><p>Interpret <em>“small”</em> as <code class="docutils literal notranslate"><span class="pre">molecular_weight</span> <span class="pre">&lt;</span> <span class="pre">300</span></code></p></li>
+<li><p>Interpret <em>“moderate solubility”</em> as a tag filter</p></li>
+<li><p>Combine everything into a valid search operation</p></li>
+</ul>
+</li>
+<li><p>Execute the search internally and return ranked results — all from one sentence.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="why-it-matters">
+<h3>✨ Why It Matters<a class="headerlink" href="#why-it-matters" title="Link to this heading">#</a></h3>
+<p>This makes <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code>:</p>
+<ul class="simple">
+<li><p>Even more accessible to scientists who think in <strong>goals, not filters</strong></p></li>
+<li><p>Able to <strong>automatically convert text into queries</strong></p></li>
+<li><p>A foundation for <strong>intelligent chemical exploration interfaces</strong></p></li>
+</ul>
+<p>Stay tuned — natural-language–driven molecule discovery is almost here.</p>
+</section>
+</section>
+<section id="robotus-vision">
+<h2>🚀 RobotU’s Vision<a class="headerlink" href="#robotus-vision" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code> is just the <strong>foundation</strong> of RobotU’s bigger vision: creating an AI-powered, quantum-ready simulation platform for chemists and chemical engineers.</p>
+<p>Think of an experience like <strong>Shuri in Wakanda</strong>, interacting seamlessly with her AI in a holographic environment to virtually explore molecular structures, run instant simulations, and discover compounds—like the lost heart-shaped herb.</p>
+<p>RobotU aims to bring this futuristic interaction closer to reality:</p>
+<ul class="simple">
+<li><p><strong>Natural language commands:</strong> Interact effortlessly using everyday language, powered by AI models.</p></li>
+<li><p><strong>Seamless integration:</strong> Automatic retrieval, filtering, and preparation of molecular data for simulations.</p></li>
+<li><p><strong>Quantum simulation:</strong> Leveraging libraries like <strong>Qiskit Nature</strong> and IBM Quantum systems to execute advanced molecular simulations.</p></li>
+<li><p><strong>Visual insights:</strong> Immediate visual feedback through an intuitive graphical interface, displaying simulation outcomes interactively.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code> is our first step toward making molecule discovery and quantum simulations accessible to everyone—no supercomputers, vibranium, or holograms required (yet).</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./content"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to your Jupyter Book</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-ingest-91-molecules-from-pubchem">Step 1 – Ingest 91 Molecules from PubChem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-does">🔍 What This Does</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-options">🛠️ Available Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-with-direct-cids">Example with Direct CIDs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-limits-and-reliability">Rate Limits and Reliability</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-watsonx-credentials">🔐 Configuring Watsonx Credentials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-credential-resolution">🧠 Runtime Credential Resolution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-guide-credentialsmanager">✅ Usage Guide – <code class="docutils literal notranslate"><span class="pre">CredentialsManager</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-semantic-embeddings-with-ibm-watsonx">Step 2 – Generate Semantic Embeddings with IBM Watsonx</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-during-embedding">🔍 What Happens During Embedding?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-options-for-molkit-embed">🛠️ CLI Options for <code class="docutils literal notranslate"><span class="pre">molkit</span> <span class="pre">embed</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-model">🎯 Choosing the Right Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-mode-ibm-granite-embedding-278m-multilingual">✅ Default Mode (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-278m-multilingual</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-mode-ibm-granite-embedding-107m-multilingual">⚡ FAST Mode (<code class="docutils literal notranslate"><span class="pre">ibm/granite-embedding-107m-multilingual</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-commands">🖥️ Example Commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whats-next">🧠 What’s Next?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-semantic-search">🔎 Local Semantic Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-semantic-search-example">🔎 Simple Semantic Search Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#displaying-results-as-a-table">🔎 Displaying Results as a Table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result-analysis-semantic-query-central-nervous-system-stimulants">🧠 Result Analysis: Semantic Query – “Central Nervous System Stimulants”</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observations">🔬 Observations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-tells-us">✅ What This Tells Us</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-semantic-structural-search">🧬 Combined Semantic + Structural Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-does">What It Does</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-it">Why Use It?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result-analysis-combined-semantic-structural-search-tanimoto-0-45">🧬 Result Analysis: Combined Semantic + Structural Search (Tanimoto ≥ 0.45)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inferred-scaffolds">✅ Inferred Scaffolds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-hits-tanimoto-0-45">🔍 Top Hits (Tanimoto ≥ 0.45)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">🧠 Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-semantic-search-with-metadata">🧪 Filtering Semantic Search with Metadata</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-filters-work">🧩 How Filters Work</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-query-anti-inflammatory-agents">💊 Example Query: “Anti-inflammatory agents”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtered-semantic-search-anti-inflammatory-agents">🧪 Filtered Semantic Search – Anti-inflammatory Agents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-hits-filtered">✅ Top Hits (Filtered)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">🧠 Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whats-next-for-robotu-molkit">🔮 What’s Next for <code class="docutils literal notranslate"><span class="pre">robotu-molkit</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coming-soon-natural-languagedriven-code-generation">🚀 Coming Soon: Natural Language–Driven Code Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-future-behavior">🗣️ Example (Future Behavior)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-matters">✨ Why It Matters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robotus-vision">🚀 RobotU’s Vision</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
