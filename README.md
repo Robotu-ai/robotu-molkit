@@ -25,9 +25,7 @@ In short: robotu-molkit turns raw chemical records into **simulation-ready, AI-s
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/robotu-ai/robotu-molkit.git
-cd robotu-molkit
-pip install -e .
+pip install robotu-molkit
 ```
 
 ---
