@@ -7,7 +7,7 @@ name = "robotu-molkit"
 description = "Quantum-ready molecular toolkit. An open-source Python library that pulls PubChem records, structures them into Molecule objects with rich property sets, and enriches each with IBM Granite summaries and embeddings—ready for quantum simulations, AI pipelines, and scientific research."
 readme = "README.md"
 requires-python = ">=3.11"
-version = "0.1.2"
+version = "0.1.3"
 
 authors = [
   { name = "Robotu", email = "tech@robotu.ai" }
