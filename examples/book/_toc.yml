@@ -5,4 +5,4 @@ format: jb-book
 root: intro
 
 chapters:
-  - file: content/search_caffeine_example
+  - file: content/config_and_search_example
