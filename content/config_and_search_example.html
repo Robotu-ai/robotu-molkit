@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/config_and_search_example';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="🤖 Welcome to RobotU Molkit" href="../intro.html" />
+    <link rel="prev" title="🧪 Setup your IBM watsonx Credentials" href="watsonx_setup.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -466,6 +466,13 @@ document.write(`
 <div><p>⚙️ Before running the examples, make sure to install the package using:<br />
 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">robotu-molkit</span></code></p>
 </div></blockquote>
+<blockquote>
+<div><p>⚠️ <strong>Before you begin…</strong></p>
+</div></blockquote>
+<p>To use RobotU Molkit’s AI features, you must first configure your <strong>IBM watsonx credentials</strong> (API Key and Project ID).</p>
+<p>If you haven’t done that yet, follow the step-by-step guide here:</p>
+<p>➡️ <a class="reference internal" href="watsonx_setup.html"><span class="std std-doc">Set up your watsonx credentials →</span></a></p>
+<p>This is required before running semantic enrichment or vector-based search.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>robotu-molkit
@@ -674,7 +681,7 @@ INFO: Done! Raw → data/downloaded_data | Parsed → data/parsed
 <span class="c1"># Set or update values in ~/.config/molkit/config.json</span>
 <span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_api_key</span><span class="p">(</span><span class="s2">&quot;your-api-key&quot;</span><span class="p">)</span>
 <span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_project_id</span><span class="p">(</span><span class="s2">&quot;your-project-id&quot;</span><span class="p">)</span>
-<span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_watsonx_url</span><span class="p">(</span><span class="s2">&quot;https://your.custom.url&quot;</span><span class="p">)</span>
+<span class="n">CredentialsManager</span><span class="o">.</span><span class="n">set_watsonx_url</span><span class="p">(</span><span class="s2">&quot;your-watsonx-url&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This is the preferred way to <strong>inject or retrieve credentials programmatically</strong> during embedding or search workflows.</p>
@@ -1483,12 +1490,12 @@ An IBM Granite model designed to generate and execute code in response to natura
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../intro.html"
+       href="watsonx_setup.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">🤖 Welcome to RobotU Molkit</p>
+        <p class="prev-next-title">🧪 Setup your IBM watsonx Credentials</p>
       </div>
     </a>
 </div>
