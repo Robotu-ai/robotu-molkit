@@ -22,6 +22,15 @@ It’s the first library to:
 
 In short: robotu-molkit turns raw chemical records into **simulation-ready, AI-searchable molecules**.
 
+## 📝 Jupyter Notebook
+
+Dive into our step by step interactive Jupyter Notebook to explore a complete guide of installation, configuration, and examples in one place:
+
+[Jupyter Notebook - Step by Step Guide](https://robotu-ai.github.io/robotu-molkit/intro.html)
+
+
+## 🚀 Quick Guide
+
 ## 📦 Installation
 
 ```bash
