@@ -5,4 +5,5 @@ format: jb-book
 root: intro
 
 chapters:
+  - file: content/watsonx_setup
   - file: content/config_and_search_example
